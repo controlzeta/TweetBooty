@@ -1,2 +1,16 @@
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe.config
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe.config
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.pdb
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Hammock.ClientProfile.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Newtonsoft.Json.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\nunit.framework.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetSharp.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Newtonsoft.Json.xml
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\nunit.framework.xml
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csprojResolveAssemblyReference.cache
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Form1.resources
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Properties.Resources.resources
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csproj.GenerateResource.Cache
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.exe
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.pdb
