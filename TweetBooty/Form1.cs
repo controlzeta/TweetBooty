@@ -21,6 +21,7 @@ namespace TweetBooty
         public string _accessToken = ConfigurationSettings.AppSettings["AccessToken"];
         public string _accessTokenSecret = ConfigurationSettings.AppSettings["AccessTokenSecret"];
         public TwitterService service; public Utilities utility;
+
         public Form1()
         {
             InitializeComponent();
@@ -47,21 +48,28 @@ namespace TweetBooty
             IEnumerable<TwitterStatus> mentions = service.ListTweetsMentioningMe(new ListTweetsMentioningMeOptions());
             RateLimit(service.Response.RateLimitStatus);
 
-            //var tweets = service.ListTweetsOnHomeTimeline(new ListTweetsOnHomeTimelineOptions());
-            //foreach (var tweet in tweets)
-            //{
-            //    Console.WriteLine("{0} says '{1}'", tweet.User.ScreenName, tweet.Text);
-            //}
         }
 
-        public void Search()
-        {   
-            SearchOptions search = new SearchOptions ();
-            search.Q = txtSearch.Text.Trim();
-            search.Count = Convert.ToInt32(cbNumTweets.SelectedText);
-            search.IncludeEntities = true;
-            search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
-            service.Search(search);
+        public void ShowTweets(TwitterSearchResult tweetsearch)
+        {
+            dgvTweets.Rows.Clear();
+            dgvTweets.Refresh();
+            foreach (var tweet in tweetsearch.Statuses)
+            {
+                try
+                {
+                    DataGridViewRow row = (DataGridViewRow)dgvTweets.Rows[0].Clone();
+                    row.Cells[0].Value = tweet.Id;                      //TweetId
+                    row.Cells[1].Value = tweet.Author.ScreenName;       //Username
+                    row.Cells[2].Value = tweet.Text;                    //Tweet
+                    row.Cells[3].Value = tweet.RetweetCount;            //RT's
+                    dgvTweets.Rows.Add(row);
+                }
+                catch (Exception ex)
+                {
+                    lblErrors.Text = "Error: " + ex.Message;
+                }
+            }
         }
 
         public void RateLimit(TwitterRateLimitStatus rate)
@@ -70,19 +78,70 @@ namespace TweetBooty
             lblWaitingTime.Text = "You have to wait: " + rate.ResetTimeInSeconds / 60 + " minutes or to " + rate.ResetTime.ToLongTimeString();
         }
 
-        private void lblRateLimit_Click(object sender, EventArgs e)
+        public void FavTweet(long tweetID)
         {
-
+            FavoriteTweetOptions fav = new FavoriteTweetOptions();
+            fav.Id = tweetID;
+            service.FavoriteTweet(fav);
+            RateLimit(service.Response.RateLimitStatus);
+            int counter = Convert.ToInt32(FavCounter.Text);
+            if(service.Response.StatusDescription == "OK")
+            {counter++;}
+            FavCounter.Text = counter.ToString(); 
         }
 
-        private void lblWaitingTime_Click(object sender, EventArgs e)
-        {
-
+        public void RTTweet(long tweetID)
+        { 
+            RetweetOptions rt = new RetweetOptions();
+            rt.Id = tweetID;
+            service.Retweet(rt);
+            RateLimit(service.Response.RateLimitStatus);
+            int counter = Convert.ToInt32(TweetCounter.Text);
+            if (service.Response.StatusDescription == "OK")
+            { counter++; }
+            TweetCounter.Text = counter.ToString(); 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (txtSearch.Text != "" && txtSearch.Text.Length > 3)
+            {
+                try
+                {
+                    SearchOptions search = new SearchOptions();
+                    search.Q = txtSearch.Text.Trim();
+                    search.Count = Convert.ToInt32(cbNumTweets.SelectedItem);
+                    search.IncludeEntities = true;
+                    search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
+                    ShowTweets(service.Search(search));
+                    RateLimit(service.Response.RateLimitStatus);
+                }
+                catch(Exception ex)
+                {
+                    lblErrors.Text = "Error: " + ex.Message;
+                }
+            }
+            else
+            {
+                lblErrors.Text = "Error: Necesitas escribir un termino de búsqueda";
+            }
+        }
 
+        private void dgvTweets_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Int32 selectedRowCount = dgvTweets.Rows.GetRowCount(DataGridViewElementStates.Selected);
+            if (selectedRowCount > 0)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+                for (int i = 0; i < selectedRowCount; i++)
+                {
+                    sb.Append(dgvTweets.SelectedRows[i].Cells[0].Value);
+                    
+                }
+                DialogBox db = new DialogBox(sb.ToString());
+                db.ShowDialog();
+            }
         }
 
       
