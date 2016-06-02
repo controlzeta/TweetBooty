@@ -29,3 +29,6 @@ C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Form
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Properties.Resources.resources
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csproj.GenerateResource.Cache
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.DialogBox.resources
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.DialogBox.resources
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.xml

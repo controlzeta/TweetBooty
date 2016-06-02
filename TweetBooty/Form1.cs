@@ -32,7 +32,6 @@ namespace TweetBooty
         public void init()
         {
             cbTypeResult.SelectedIndex = 0;
-
             for (int i = 1; i <= 10; i++)
             {
                 cbNumTweets.Items.Add((i * 10).ToString());
@@ -44,10 +43,8 @@ namespace TweetBooty
         {
             service = new TwitterService(_consumerKey, _consumerSecret);
             service.AuthenticateWith(_accessToken, _accessTokenSecret);
-
             IEnumerable<TwitterStatus> mentions = service.ListTweetsMentioningMe(new ListTweetsMentioningMeOptions());
             RateLimit(service.Response.RateLimitStatus);
-
         }
 
         public void ShowTweets(TwitterSearchResult tweetsearch)
@@ -102,6 +99,19 @@ namespace TweetBooty
             TweetCounter.Text = counter.ToString(); 
         }
 
+        public void Follow(bool following, string screenName)
+        {
+            FollowUserOptions follow = new FollowUserOptions();
+            follow.Follow = following;
+            follow.ScreenName = screenName;
+            service.FollowUser(follow);
+            RateLimit(service.Response.RateLimitStatus);
+            int counter = Convert.ToInt32(FollowCounter.Text);
+            if (service.Response.StatusDescription == "OK")
+            { counter++; }
+            FollowCounter.Text = counter.ToString(); 
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtSearch.Text != "" && txtSearch.Text.Length > 3)
@@ -129,18 +139,24 @@ namespace TweetBooty
 
         private void dgvTweets_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            Int32 selectedRowCount = dgvTweets.Rows.GetRowCount(DataGridViewElementStates.Selected);
-            if (selectedRowCount > 0)
+            try
             {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-                for (int i = 0; i < selectedRowCount; i++)
+                Int32 selectedRowCount = dgvTweets.Rows.GetRowCount(DataGridViewElementStates.Selected);
+                string tweetID = ""; string screenName = "";
+                if (selectedRowCount > 0)
                 {
-                    sb.Append(dgvTweets.SelectedRows[i].Cells[0].Value);
-                    
+                    for (int i = 0; i < selectedRowCount; i++)
+                    {
+                        tweetID = dgvTweets.SelectedRows[i].Cells[0].Value.ToString();
+                        screenName = dgvTweets.SelectedRows[i].Cells[1].Value.ToString();
+                    }
+                    DialogBox db = new DialogBox(tweetID, screenName);
+                    db.ShowDialog();
                 }
-                DialogBox db = new DialogBox(sb.ToString());
-                db.ShowDialog();
+            }
+            catch(Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
             }
         }
 

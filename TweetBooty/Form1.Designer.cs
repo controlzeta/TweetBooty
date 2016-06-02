@@ -41,10 +41,6 @@
             this.cbTypeResult = new System.Windows.Forms.ComboBox();
             this.cbNumTweets = new System.Windows.Forms.ComboBox();
             this.dgvTweets = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tweet = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RTs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -55,6 +51,10 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblErrors = new System.Windows.Forms.Label();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tweet = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RTs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -196,27 +196,6 @@
             this.dgvTweets.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTweets_CellContentClick);
             this.dgvTweets.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTweets_CellContentClick);
             // 
-            // id
-            // 
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            // 
-            // UserName
-            // 
-            this.UserName.HeaderText = "Username";
-            this.UserName.Name = "UserName";
-            // 
-            // Tweet
-            // 
-            this.Tweet.HeaderText = "Tweet";
-            this.Tweet.Name = "Tweet";
-            this.Tweet.Width = 300;
-            // 
-            // RTs
-            // 
-            this.RTs.HeaderText = "RT\'s";
-            this.RTs.Name = "RTs";
-            // 
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(523, 46);
@@ -296,6 +275,29 @@
             this.lblErrors.TabIndex = 2;
             this.lblErrors.Text = "Error: ";
             // 
+            // id
+            // 
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Width = 50;
+            // 
+            // UserName
+            // 
+            this.UserName.HeaderText = "Username";
+            this.UserName.Name = "UserName";
+            // 
+            // Tweet
+            // 
+            this.Tweet.HeaderText = "Tweet";
+            this.Tweet.Name = "Tweet";
+            this.Tweet.Width = 350;
+            // 
+            // RTs
+            // 
+            this.RTs.HeaderText = "RT\'s";
+            this.RTs.Name = "RTs";
+            this.RTs.Width = 50;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,11 +344,11 @@
         private System.Windows.Forms.Label TweetCounter;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label lblErrors;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserName;
         private System.Windows.Forms.DataGridViewTextBoxColumn Tweet;
         private System.Windows.Forms.DataGridViewTextBoxColumn RTs;
-        private System.Windows.Forms.Label lblErrors;
 
     }
 }

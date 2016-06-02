@@ -33,6 +33,8 @@
             this.btnFav = new System.Windows.Forms.Button();
             this.btnRTandFav = new System.Windows.Forms.Button();
             this.lblTweetID = new System.Windows.Forms.Label();
+            this.btnFollow = new System.Windows.Forms.Button();
+            this.lblScreenName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -40,7 +42,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.label1.Location = new System.Drawing.Point(37, 12);
+            this.label1.Location = new System.Drawing.Point(65, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(222, 20);
             this.label1.TabIndex = 0;
@@ -48,7 +50,7 @@
             // 
             // btnRT
             // 
-            this.btnRT.Location = new System.Drawing.Point(28, 64);
+            this.btnRT.Location = new System.Drawing.Point(19, 64);
             this.btnRT.Name = "btnRT";
             this.btnRT.Size = new System.Drawing.Size(75, 23);
             this.btnRT.TabIndex = 1;
@@ -58,7 +60,7 @@
             // 
             // btnFav
             // 
-            this.btnFav.Location = new System.Drawing.Point(109, 64);
+            this.btnFav.Location = new System.Drawing.Point(100, 64);
             this.btnFav.Name = "btnFav";
             this.btnFav.Size = new System.Drawing.Size(75, 23);
             this.btnFav.TabIndex = 2;
@@ -68,11 +70,11 @@
             // 
             // btnRTandFav
             // 
-            this.btnRTandFav.Location = new System.Drawing.Point(190, 64);
+            this.btnRTandFav.Location = new System.Drawing.Point(181, 64);
             this.btnRTandFav.Name = "btnRTandFav";
             this.btnRTandFav.Size = new System.Drawing.Size(75, 23);
             this.btnRTandFav.TabIndex = 3;
-            this.btnRTandFav.Text = "FAV & RT";
+            this.btnRTandFav.Text = "FAV and RT";
             this.btnRTandFav.UseVisualStyleBackColor = true;
             this.btnRTandFav.Click += new System.EventHandler(this.btnRTandFav_Click);
             // 
@@ -81,17 +83,40 @@
             this.lblTweetID.AutoSize = true;
             this.lblTweetID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTweetID.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
-            this.lblTweetID.Location = new System.Drawing.Point(115, 36);
+            this.lblTweetID.Location = new System.Drawing.Point(77, 35);
             this.lblTweetID.Name = "lblTweetID";
             this.lblTweetID.Size = new System.Drawing.Size(69, 20);
             this.lblTweetID.TabIndex = 4;
             this.lblTweetID.Text = "TweetID";
             // 
+            // btnFollow
+            // 
+            this.btnFollow.Location = new System.Drawing.Point(259, 64);
+            this.btnFollow.Name = "btnFollow";
+            this.btnFollow.Size = new System.Drawing.Size(75, 23);
+            this.btnFollow.TabIndex = 5;
+            this.btnFollow.Text = "Follow";
+            this.btnFollow.UseVisualStyleBackColor = true;
+            this.btnFollow.Click += new System.EventHandler(this.btnFollow_Click);
+            // 
+            // lblScreenName
+            // 
+            this.lblScreenName.AutoSize = true;
+            this.lblScreenName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScreenName.ImageAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.lblScreenName.Location = new System.Drawing.Point(218, 32);
+            this.lblScreenName.Name = "lblScreenName";
+            this.lblScreenName.Size = new System.Drawing.Size(83, 20);
+            this.lblScreenName.TabIndex = 6;
+            this.lblScreenName.Text = "Username";
+            // 
             // DialogBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 113);
+            this.ClientSize = new System.Drawing.Size(355, 113);
+            this.Controls.Add(this.lblScreenName);
+            this.Controls.Add(this.btnFollow);
             this.Controls.Add(this.lblTweetID);
             this.Controls.Add(this.btnRTandFav);
             this.Controls.Add(this.btnFav);
@@ -111,5 +136,7 @@
         private System.Windows.Forms.Button btnFav;
         private System.Windows.Forms.Button btnRTandFav;
         private System.Windows.Forms.Label lblTweetID;
+        private System.Windows.Forms.Button btnFollow;
+        private System.Windows.Forms.Label lblScreenName;
     }
 }
