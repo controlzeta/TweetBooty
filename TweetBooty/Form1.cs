@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TweetSharp;
+using System.IO;
+using System.Reflection;
 
 
 namespace TweetBooty
@@ -21,12 +23,14 @@ namespace TweetBooty
         public string _accessToken = ConfigurationSettings.AppSettings["AccessToken"];
         public string _accessTokenSecret = ConfigurationSettings.AppSettings["AccessTokenSecret"];
         public TwitterService service; public Utilities utility;
+        public static string[] fileEntries;
 
         public Form1()
         {
             InitializeComponent();
             init();
             Connect();
+            ScanForMedia();
         }
 
         public void init()
@@ -73,6 +77,49 @@ namespace TweetBooty
         {
             lblRateLimit.Text ="You have used " + rate.RemainingHits + " out of your " + rate.HourlyLimit ;
             lblWaitingTime.Text = "You have to wait: " + rate.ResetTimeInSeconds / 60 + " minutes or to " + rate.ResetTime.ToLongTimeString();
+        }
+
+        public void TweetWithMedia()
+        {
+            SendTweetWithMediaOptions MediaOp = new SendTweetWithMediaOptions();
+            var stream = new FileStream(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg", FileMode.Open, FileAccess.Read);
+            Bitmap img = new Bitmap(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg");
+            MemoryStream ms = new MemoryStream();
+            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            ms.Seek(0, SeekOrigin.Begin);
+            Dictionary<string, Stream> images = new Dictionary<string, Stream> { { "mypicture", ms } };
+            //Twitter compares status contents and rejects dublicated status messages. 
+            //Therefore in order to create a unique message dynamically, a generic guid has been used
+
+            var result = service.SendTweetWithMedia(new SendTweetWithMediaOptions { Status = Guid.NewGuid().ToString(), Images = images });
+            
+            //service.SendTweetWithMedia(new SendTweetWithMediaOptions { 
+            //    Status = "Tweet with media",
+            //    Images = 
+            //});
+        }
+
+        public void ScanForMedia()
+        {
+            string exeFile = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
+            string exeDir = Path.GetDirectoryName(exeFile);
+            //string fullPath = Path.Combine(exeDir, "..\\..\\Images\\");
+            string fullPath = Path.Combine(exeDir + "\\Images\\");
+            if (Directory.Exists(fullPath))
+            {
+                ProcessDirectory(fullPath);
+            }
+        
+        }
+
+        public static void ProcessDirectory(string targetDirectory)
+        {
+            // Process the list of files found in the directory.
+            fileEntries = Directory.GetFiles(targetDirectory);
+        }
+        public static void ProcessFile(string path)
+        {
+            Console.WriteLine("Processed file '{0}'.", path);
         }
 
         public void FavTweet(long tweetID)
@@ -159,7 +206,5 @@ namespace TweetBooty
                 lblErrors.Text = "Error: " + ex.Message;
             }
         }
-
-      
     }
 }
