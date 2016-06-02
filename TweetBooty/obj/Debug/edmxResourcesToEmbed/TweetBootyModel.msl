@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TweetBotDBModelStoreContainer" CdmEntityContainer="TweetBootyDBEntities">
+    <EntitySetMapping Name="BannedWords">
+      <EntityTypeMapping TypeName="TweetBotDBModel.BannedWord">
+        <MappingFragment StoreEntitySet="BannedWords">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="bannedWord1" ColumnName="bannedWord" />
+          <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Hashtags">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Hashtag">
+        <MappingFragment StoreEntitySet="Hashtags">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="hashtag1" ColumnName="hashtag" />
+          <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+          <ScalarProperty Name="repeated" ColumnName="repeated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Links">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Link">
+        <MappingFragment StoreEntitySet="Links">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="sortOrder" ColumnName="sortOrder" />
+          <ScalarProperty Name="link1" ColumnName="link" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tweets">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Tweet">
+        <MappingFragment StoreEntitySet="Tweets">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="tweet1" ColumnName="tweet" />
+          <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+          <ScalarProperty Name="tweeted" ColumnName="tweeted" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
