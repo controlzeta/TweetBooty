@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using TweetSharp;
 using System.IO;
 using System.Reflection;
+using System.Timers;
+using System.Xml;
 
 
 namespace TweetBooty
@@ -22,8 +24,24 @@ namespace TweetBooty
         public string _consumerSecret = ConfigurationSettings.AppSettings["ConsumerSecret"];
         public string _accessToken = ConfigurationSettings.AppSettings["AccessToken"];
         public string _accessTokenSecret = ConfigurationSettings.AppSettings["AccessTokenSecret"];
+
         public TwitterService service; public Utilities utility;
         public static string[] fileEntries;
+        public string fullPath;
+        public string tweetedPath;
+
+        System.Timers.Timer FifteenMinuteTimer = new System.Timers.Timer();
+        System.Timers.Timer OneHourTimer = new System.Timers.Timer();
+
+        public int TweetsByTheHour = 2;
+        public int RTsByTheHour = 12;
+        public int FavsByTheHour = 12;
+        public int FollowsByTheHour = 2;
+        public int FifteenMinutes = 0;
+        public int Hours = 0;
+
+        public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
+        public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
 
         public Form1()
         {
@@ -41,6 +59,18 @@ namespace TweetBooty
                 cbNumTweets.Items.Add((i * 10).ToString());
             }
             cbNumTweets.SelectedIndex = 0;
+
+            // Create a 15 minute timer 
+            FifteenMinuteTimer = new System.Timers.Timer(15 * 60 * 1000);
+            // Hook up the Elapsed event for the timer.
+            FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(FifteenMinuteEvent);
+            FifteenMinuteTimer.Enabled = true;
+
+            // Create a 1 hour timer 
+            FifteenMinuteTimer = new System.Timers.Timer(60 * 60 * 1000);
+            // Hook up the Elapsed event for the timer.
+            FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(OneHourEvent);
+            FifteenMinuteTimer.Enabled = true;
         }
 
         public void Connect()
@@ -51,10 +81,58 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
         }
 
+        private void FifteenMinuteEvent(object source, ElapsedEventArgs e)
+        {
+            FifteenMinutes++;
+            //AutomatedSearch()
+            if (TweetsByTheHour > 0)
+            { 
+                //Tweet
+                TweetsByTheHour--;
+            }
+            if (RTsByTheHour > 0)
+            {
+                for (int i = 1; i <= 3; i++)
+                { 
+                    //Retweet most RT's
+                    RTsByTheHour--;
+                }
+            }
+            if (FavsByTheHour > 0)
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    //Retweet most RT's
+                    FavsByTheHour--;
+                }
+            }
+            if (FifteenMinutes == 2 || FifteenMinutes == 4 && FollowsByTheHour > 0 )
+            { 
+                //MostRetweeted follow
+                FollowsByTheHour--;
+            }
+        }
+
+        private void OneHourEvent(object source, ElapsedEventArgs e)
+        {
+            Hours++;
+            ResetCounters();
+        }
+
+        public void ResetCounters()
+        {
+            TweetsByTheHour = 2;
+            RTsByTheHour = 13;
+            FavsByTheHour = 15;
+            FollowsByTheHour = 2;
+            FifteenMinutes = 0;
+        }
+
         public void ShowTweets(TwitterSearchResult tweetsearch)
         {
             dgvTweets.Rows.Clear();
             dgvTweets.Refresh();
+            getHashtags(tweetsearch);
             foreach (var tweet in tweetsearch.Statuses)
             {
                 try
@@ -73,30 +151,91 @@ namespace TweetBooty
             }
         }
 
+        public void getHashtags(TwitterSearchResult tweetsearch)
+        {
+            try
+            {
+
+                hashtagsDistintos = new List<TwitterHashTag>();
+                foreach (var tweet in tweetsearch.Statuses)
+                {
+                    hashtags = hashtags.Concat(tweet.Entities.HashTags).ToList();
+                }
+                hashtagsDistintos = hashtags.Distinct(new HashtagComparer()).ToList();
+                dgvCurrentHashtags.Rows.Clear();
+                dgvCurrentHashtags.Refresh();
+                foreach (TwitterHashTag hash in hashtagsDistintos)
+                {
+                    DataGridViewRow row = (DataGridViewRow)dgvCurrentHashtags.Rows[0].Clone();
+                    row.Cells[0].Value = hash.Text;
+                    dgvCurrentHashtags.Rows.Add(row);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
         public void RateLimit(TwitterRateLimitStatus rate)
         {
             lblRateLimit.Text ="You have used " + rate.RemainingHits + " out of your " + rate.HourlyLimit ;
             lblWaitingTime.Text = "You have to wait: " + rate.ResetTimeInSeconds / 60 + " minutes or to " + rate.ResetTime.ToLongTimeString();
         }
 
-        public void TweetWithMedia()
+        public void SendTweet(string status)
         {
-            SendTweetWithMediaOptions MediaOp = new SendTweetWithMediaOptions();
-            var stream = new FileStream(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg", FileMode.Open, FileAccess.Read);
-            Bitmap img = new Bitmap(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg");
-            MemoryStream ms = new MemoryStream();
-            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-            ms.Seek(0, SeekOrigin.Begin);
-            Dictionary<string, Stream> images = new Dictionary<string, Stream> { { "mypicture", ms } };
-            //Twitter compares status contents and rejects dublicated status messages. 
-            //Therefore in order to create a unique message dynamically, a generic guid has been used
+            if (fileEntries.Length > 0)
+            {
+                TweetWithMedia(status, fileEntries[0]);
+                var list = new List<string>(fileEntries);
+                list.Remove(fileEntries[0]);
+                fileEntries = list.ToArray();
+            }
+            else
+            {
+                Tweet(status);
+            }
+        }
 
-            var result = service.SendTweetWithMedia(new SendTweetWithMediaOptions { Status = Guid.NewGuid().ToString(), Images = images });
-            
-            //service.SendTweetWithMedia(new SendTweetWithMediaOptions { 
-            //    Status = "Tweet with media",
-            //    Images = 
-            //});
+        public void Tweet(string Status)
+        {
+            try
+            {
+                SendTweetOptions tweet = new SendTweetOptions();
+                tweet.Status = Status;
+                service.SendTweet(tweet);
+                RateLimit(service.Response.RateLimitStatus);
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+        public void TweetWithMedia(string status, string mediaPath)
+        {
+            try
+            {
+                SendTweetWithMediaOptions MediaOp = new SendTweetWithMediaOptions();
+                Bitmap img = new Bitmap(mediaPath); //Bitmap img = new Bitmap(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg");
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    Dictionary<string, Stream> images = new Dictionary<string, Stream> { { "mypicture", ms } };
+                    var result = service.SendTweetWithMedia(
+                        new SendTweetWithMediaOptions { Status = status, Images = images });
+                    ((IDisposable)img).Dispose();
+                }
+                RateLimit(service.Response.RateLimitStatus);
+                string copyFilePath = tweetedPath + "\\" + Path.GetFileName(mediaPath);
+                System.IO.File.Move(mediaPath, copyFilePath);
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
         }
 
         public void ScanForMedia()
@@ -104,10 +243,15 @@ namespace TweetBooty
             string exeFile = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
             string exeDir = Path.GetDirectoryName(exeFile);
             //string fullPath = Path.Combine(exeDir, "..\\..\\Images\\");
-            string fullPath = Path.Combine(exeDir + "\\Images\\");
+            fullPath = Path.Combine(exeDir + "\\Images\\");
+            tweetedPath = Path.Combine(exeDir + "\\Images\\tweeted");
             if (Directory.Exists(fullPath))
             {
                 ProcessDirectory(fullPath);
+            }
+            if (!System.IO.Directory.Exists(tweetedPath))
+            {
+                System.IO.Directory.CreateDirectory(tweetedPath);
             }
         
         }
@@ -117,6 +261,7 @@ namespace TweetBooty
             // Process the list of files found in the directory.
             fileEntries = Directory.GetFiles(targetDirectory);
         }
+
         public static void ProcessFile(string path)
         {
             Console.WriteLine("Processed file '{0}'.", path);
@@ -206,5 +351,125 @@ namespace TweetBooty
                 lblErrors.Text = "Error: " + ex.Message;
             }
         }
+
+        #region "Database Access"
+
+        private void readSiteMap()
+        {
+            try
+            {
+                XmlDocument xdoc = new XmlDocument();
+                // Poner un Examinar para elegir el archivo de sitemap
+                xdoc.Load(@"C:\Users\Francisco\Dropbox\Freelance Ko\TweetBot\TweetBot\App_Data\sitemap.xml");
+                XmlNodeList nodelist = xdoc.SelectNodes("//item");
+                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                {
+                    Link link = new Link();
+                    foreach (XmlNode node in nodelist)
+                    {
+                        link = new Link();
+                        link.title = node["title"].InnerText;
+                        link.description = node["description"].InnerText;
+                        link.link1 = node["link"].InnerText;
+                        link.sortOrder = Convert.ToInt32(node["ror:sortOrder"].InnerText);
+                        if (link.sortOrder != 1)
+                        {
+                            bd.Links.Add(link);
+                            bd.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (EntityException ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void SaveHashtags()
+        {
+            try
+            {
+                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                {
+                    List<BannedWord> lstBanned = (from banned in bd.BannedWords
+                                                  select banned).ToList();
+
+                    Hashtag h = new TweetBooty.Hashtag();
+                    int contains = 0;
+                    foreach (TwitterHashTag hash in hashtagsDistintos)
+                    {
+                        List<Hashtag> query = (from b in bd.Hashtags
+                                               orderby b.id
+                                               where b.hashtag1 == hash.Text
+                                               select b).ToList();
+                        //query.Where(m => m.hashtag.ToLower() == hash.Text.ToLower()).ToList();
+                        h = new TweetBooty.Hashtag();
+                        if (query.Count < 1)
+                        {
+                            h.hashtag1 = hash.Text.ToLower();
+                            h.timestamp = DateTime.Now;
+                            h.repeated = 1; contains = 0;
+                            foreach (BannedWord ban in lstBanned)
+                            {
+                                if (h.hashtag1.Contains(ban.bannedWord1))
+                                {
+                                    contains++;
+                                }
+                            }
+                            if (contains == 0)
+                                bd.Hashtags.Add(h);
+                        }
+                        else
+                        {
+                            h = query.FirstOrDefault();
+                            h.repeated++;
+                            bd.Entry(h).State = EntityState.Modified;
+                        }
+                        bd.SaveChanges();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+
+        }
+
+        #endregion "Database Access"
+
+        #region "Funciones"
+
+        class HashtagComparer : IEqualityComparer<TwitterHashTag>
+        {
+            public bool Equals(TwitterHashTag x, TwitterHashTag y)
+            {
+                if (Object.ReferenceEquals(x, y)) return true;
+
+                if (Object.ReferenceEquals(x, null) || Object.ReferenceEquals(y, null))
+                    return false;
+
+                return x.Text.ToLower() == y.Text.ToLower() && x.EntityType == y.EntityType;
+            }
+
+            public int GetHashCode(TwitterHashTag Hashtag)
+            {
+                //Check whether the object is null
+                if (Object.ReferenceEquals(Hashtag, null)) return 0;
+
+                //Get hash code for the Name field if it is not null.
+                int hashProductName = Hashtag.Text == null ? 0 : Hashtag.Text.GetHashCode();
+
+                //Get hash code for the Code field.
+                int hashProductCode = Hashtag.EntityType.GetHashCode();
+
+                //Calculate the hash code for the product.
+                return hashProductName ^ hashProductCode;
+            }
+        }
+
+        #endregion "Funciones"
     }
 }
