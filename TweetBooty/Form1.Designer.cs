@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dgvCurrentHashtags = new System.Windows.Forms.DataGridView();
+            this.Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.FollowCounter = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,6 +42,10 @@
             this.cbTypeResult = new System.Windows.Forms.ComboBox();
             this.cbNumTweets = new System.Windows.Forms.ComboBox();
             this.dgvTweets = new System.Windows.Forms.DataGridView();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Tweets = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RTs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -49,24 +55,26 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Tweets = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RTs = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgvCurrentHashtags = new System.Windows.Forms.DataGridView();
-            this.Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblNumFotos = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnSendTweet = new System.Windows.Forms.Button();
+            this.txtSendTweet = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTweets)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -76,8 +84,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.lblNumFotos);
             this.tabPage1.Controls.Add(this.dgvCurrentHashtags);
             this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.cbTypeResult);
             this.tabPage1.Controls.Add(this.cbNumTweets);
             this.tabPage1.Controls.Add(this.dgvTweets);
@@ -92,6 +102,22 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tweet Explorer";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // dgvCurrentHashtags
+            // 
+            this.dgvCurrentHashtags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCurrentHashtags.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Hashtag});
+            this.dgvCurrentHashtags.Location = new System.Drawing.Point(650, 80);
+            this.dgvCurrentHashtags.Name = "dgvCurrentHashtags";
+            this.dgvCurrentHashtags.Size = new System.Drawing.Size(247, 330);
+            this.dgvCurrentHashtags.TabIndex = 11;
+            // 
+            // Hashtag
+            // 
+            this.Hashtag.HeaderText = "Hashtag";
+            this.Hashtag.Name = "Hashtag";
+            this.Hashtag.Width = 200;
             // 
             // groupBox1
             // 
@@ -198,6 +224,29 @@
             this.dgvTweets.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTweets_CellContentClick);
             this.dgvTweets.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTweets_CellContentClick);
             // 
+            // id
+            // 
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.Width = 50;
+            // 
+            // UserName
+            // 
+            this.UserName.HeaderText = "Username";
+            this.UserName.Name = "UserName";
+            // 
+            // Tweets
+            // 
+            this.Tweets.HeaderText = "Tweet";
+            this.Tweets.Name = "Tweets";
+            this.Tweets.Width = 350;
+            // 
+            // RTs
+            // 
+            this.RTs.HeaderText = "RT\'s";
+            this.RTs.Name = "RTs";
+            this.RTs.Width = 50;
+            // 
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(541, 46);
@@ -221,7 +270,7 @@
             this.flowLayoutPanel1.Controls.Add(this.lblWaitingTime);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 15);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(610, 28);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(541, 28);
             this.flowLayoutPanel1.TabIndex = 4;
             // 
             // lblRateLimit
@@ -277,44 +326,62 @@
             this.lblErrors.TabIndex = 2;
             this.lblErrors.Text = "Error: ";
             // 
-            // id
+            // label3
             // 
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.Width = 50;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(557, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Fotos:";
             // 
-            // UserName
+            // lblNumFotos
             // 
-            this.UserName.HeaderText = "Username";
-            this.UserName.Name = "UserName";
+            this.lblNumFotos.AutoSize = true;
+            this.lblNumFotos.Location = new System.Drawing.Point(594, 22);
+            this.lblNumFotos.Name = "lblNumFotos";
+            this.lblNumFotos.Size = new System.Drawing.Size(13, 13);
+            this.lblNumFotos.TabIndex = 12;
+            this.lblNumFotos.Text = "0";
             // 
-            // Tweets
+            // tabPage3
             // 
-            this.Tweets.HeaderText = "Tweet";
-            this.Tweets.Name = "Tweets";
-            this.Tweets.Width = 350;
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.txtSendTweet);
+            this.tabPage3.Controls.Add(this.btnSendTweet);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(927, 425);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Tweet";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // RTs
+            // btnSendTweet
             // 
-            this.RTs.HeaderText = "RT\'s";
-            this.RTs.Name = "RTs";
-            this.RTs.Width = 50;
+            this.btnSendTweet.Location = new System.Drawing.Point(441, 22);
+            this.btnSendTweet.Name = "btnSendTweet";
+            this.btnSendTweet.Size = new System.Drawing.Size(75, 23);
+            this.btnSendTweet.TabIndex = 0;
+            this.btnSendTweet.Text = "Send Tweet";
+            this.btnSendTweet.UseVisualStyleBackColor = true;
+            this.btnSendTweet.Click += new System.EventHandler(this.btnSendTweet_Click);
             // 
-            // dgvCurrentHashtags
+            // txtSendTweet
             // 
-            this.dgvCurrentHashtags.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCurrentHashtags.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Hashtag});
-            this.dgvCurrentHashtags.Location = new System.Drawing.Point(650, 80);
-            this.dgvCurrentHashtags.Name = "dgvCurrentHashtags";
-            this.dgvCurrentHashtags.Size = new System.Drawing.Size(247, 330);
-            this.dgvCurrentHashtags.TabIndex = 11;
+            this.txtSendTweet.Location = new System.Drawing.Point(14, 24);
+            this.txtSendTweet.Name = "txtSendTweet";
+            this.txtSendTweet.Size = new System.Drawing.Size(421, 20);
+            this.txtSendTweet.TabIndex = 1;
             // 
-            // Hashtag
+            // label6
             // 
-            this.Hashtag.HeaderText = "Hashtag";
-            this.Hashtag.Name = "Hashtag";
-            this.Hashtag.Width = 200;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(170, 8);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.TabIndex = 2;
+            this.label6.Text = "Tweets";
             // 
             // Form1
             // 
@@ -329,12 +396,14 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTweets)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -369,6 +438,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn RTs;
         private System.Windows.Forms.DataGridView dgvCurrentHashtags;
         private System.Windows.Forms.DataGridViewTextBoxColumn Hashtag;
+        private System.Windows.Forms.Label lblNumFotos;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtSendTweet;
+        private System.Windows.Forms.Button btnSendTweet;
 
     }
 }

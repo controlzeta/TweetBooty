@@ -45,6 +45,7 @@ namespace TweetBooty
 
         public Form1()
         {
+            CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
             init();
             Connect();
@@ -83,15 +84,53 @@ namespace TweetBooty
 
         private void FifteenMinuteEvent(object source, ElapsedEventArgs e)
         {
+            Random rnd = new Random();
             FifteenMinutes++;
             //AutomatedSearch()
             if (TweetsByTheHour > 0)
             { 
                 //Tweet
+                try
+                {
+                    TweetsByTheHour++;
+                    string nuevoStatus;
+                    int random = rnd.Next(1, 396);
+                    using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                    {
+                        Link link = (from l in bd.Links
+                                     where l.id == random
+                                     select l).FirstOrDefault();
+
+                        nuevoStatus = ShortenedString(link.title, 119);
+                        while (nuevoStatus.Length <= 100)
+                        {
+                            List<Hashtag> lsthashtags = (from h in bd.Hashtags
+                                                         where h.repeated > 40
+                                                         select h).ToList();
+                            random = rnd.Next(0, lsthashtags.Count);
+                            nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
+                        }
+                        nuevoStatus = ShortenedString(nuevoStatus, 100) + " " + link.link1;
+
+                    }
+                    SendTweet(nuevoStatus);
+
+                    string message = "Just Tweeted: " + nuevoStatus;
+                    string caption = "Tweet Send";
+                    MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+                    DialogResult result;
+                    // Displays the MessageBox.
+                    result = MessageBox.Show(message, caption, buttons);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
                 TweetsByTheHour--;
             }
             if (RTsByTheHour > 0)
             {
+                
                 for (int i = 1; i <= 3; i++)
                 { 
                     //Retweet most RT's
@@ -191,6 +230,7 @@ namespace TweetBooty
                 var list = new List<string>(fileEntries);
                 list.Remove(fileEntries[0]);
                 fileEntries = list.ToArray();
+                lblNumFotos.Text = fileEntries.Length.ToString();
             }
             else
             {
@@ -247,7 +287,7 @@ namespace TweetBooty
             tweetedPath = Path.Combine(exeDir + "\\Images\\tweeted");
             if (Directory.Exists(fullPath))
             {
-                ProcessDirectory(fullPath);
+                lblNumFotos.Text = ProcessDirectory(fullPath).ToString();
             }
             if (!System.IO.Directory.Exists(tweetedPath))
             {
@@ -256,10 +296,23 @@ namespace TweetBooty
         
         }
 
-        public static void ProcessDirectory(string targetDirectory)
+        public static int ProcessDirectory(string targetDirectory)
         {
             // Process the list of files found in the directory.
             fileEntries = Directory.GetFiles(targetDirectory);
+            return fileEntries.Length;
+        }
+
+        private string ShortenedString(string linea, int medida)
+        {
+            if (linea.Length <= medida)
+            {
+                return linea;
+            }
+            string lineaCorta;
+            int cuantos = linea.Length - medida;
+            lineaCorta = linea.Remove(medida, cuantos);
+            return lineaCorta;
         }
 
         public static void ProcessFile(string path)
@@ -471,5 +524,10 @@ namespace TweetBooty
         }
 
         #endregion "Funciones"
+
+        private void btnSendTweet_Click(object sender, EventArgs e)
+        {
+            SendTweet(txtSendTweet.Text);
+        }
     }
 }
