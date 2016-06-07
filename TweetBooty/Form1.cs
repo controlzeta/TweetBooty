@@ -72,6 +72,8 @@ namespace TweetBooty
             // Hook up the Elapsed event for the timer.
             FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(OneHourEvent);
             FifteenMinuteTimer.Enabled = true;
+
+            GetExplorerHashtag();
         }
 
         public void Connect()
@@ -82,45 +84,86 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
         }
 
+        public void GetExplorerHashtag()
+        {
+            dgvHashtagExplorer.Rows.Clear();
+            dgvHashtagExplorer.Refresh();
+            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            {
+                var lsthashtags = (from h in bd.Hashtags
+                                   where h.repeated > 50
+                                   select h).ToList();
+                foreach (Hashtag hash in lsthashtags)
+                {
+                    try
+                    {
+                        DataGridViewRow row = (DataGridViewRow)dgvTweets.Rows[0].Clone();
+                        row.Cells[0].Value = hash.id;                               //HashtagId
+                        row.Cells[1].Value = hash.hashtag1.Trim();                  //Hashtag
+                        row.Cells[2].Value = hash.timestamp.ToShortDateString();    //Date
+                        row.Cells[3].Value = hash.repeated;                         //Repeated
+                        dgvHashtagExplorer.Rows.Add(row);
+                    }
+                    catch (Exception ex)
+                    {
+                        lblErrors.Text = "Error: " + ex.Message;
+                    }
+                }
+
+            }
+        }
+
+        public string ConstructTweet(int tweetLength)
+        {
+            Random rnd = new Random();
+            string nuevoStatus = ""; 
+            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            {
+                int NumLinks = (from li in bd.Links
+                             select li).ToList().Count;
+                int random = rnd.Next(1, NumLinks);
+                Link link = (from l in bd.Links
+                             where l.id == random
+                             select l).FirstOrDefault();
+                nuevoStatus = ShortenedString(link.title, tweetLength);
+                int counter = 0;
+                while (nuevoStatus.Length <= tweetLength)
+                {
+                    List<Hashtag> lsthashtags = (from h in bd.Hashtags
+                                                 where h.repeated > 40
+                                                 select h).ToList();
+                    random = rnd.Next(0, lsthashtags.Count);
+                    if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
+                    {
+                        nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
+                    }
+                    else
+                    {
+                        counter++;
+                    }
+                    if (counter == 5)
+                    {
+                        break;
+                    }
+                }
+                nuevoStatus = ShortenedString(nuevoStatus, tweetLength) + " " + link.link1;
+            }
+            return nuevoStatus;
+        }
+
         private void FifteenMinuteEvent(object source, ElapsedEventArgs e)
         {
             Random rnd = new Random();
             FifteenMinutes++;
-            //AutomatedSearch()
             if (TweetsByTheHour > 0)
             { 
                 //Tweet
                 try
                 {
                     TweetsByTheHour++;
-                    string nuevoStatus;
-                    int random = rnd.Next(1, 396);
-                    using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
-                    {
-                        Link link = (from l in bd.Links
-                                     where l.id == random
-                                     select l).FirstOrDefault();
-
-                        nuevoStatus = ShortenedString(link.title, 119);
-                        while (nuevoStatus.Length <= 100)
-                        {
-                            List<Hashtag> lsthashtags = (from h in bd.Hashtags
-                                                         where h.repeated > 40
-                                                         select h).ToList();
-                            random = rnd.Next(0, lsthashtags.Count);
-                            nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
-                        }
-                        nuevoStatus = ShortenedString(nuevoStatus, 100) + " " + link.link1;
-
-                    }
+                    string nuevoStatus = ConstructTweet(100);
                     SendTweet(nuevoStatus);
-
-                    string message = "Just Tweeted: " + nuevoStatus;
-                    string caption = "Tweet Send";
-                    MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-                    DialogResult result;
-                    // Displays the MessageBox.
-                    result = MessageBox.Show(message, caption, buttons);
+                    ShowMessage("Tweet Send!", nuevoStatus);
                 }
                 catch (Exception ex)
                 {
@@ -130,18 +173,21 @@ namespace TweetBooty
             }
             if (RTsByTheHour > 0)
             {
-                
-                for (int i = 1; i <= 3; i++)
+                var statuses = GetBestTweets();
+                for (int i = 1; i <= 1; i++)
                 { 
                     //Retweet most RT's
+                    RTTweet(statuses.ElementAt(i).Id);
                     RTsByTheHour--;
                 }
             }
             if (FavsByTheHour > 0)
             {
-                for (int i = 1; i <= 3; i++)
+                var statuses = GetBestTweets();
+                for (int i = 1; i <= 2; i++)
                 {
-                    //Retweet most RT's
+                    //Fav most RT's
+                    FavTweet(statuses.ElementAt(i).Id);
                     FavsByTheHour--;
                 }
             }
@@ -152,10 +198,29 @@ namespace TweetBooty
             }
         }
 
+        public List<TwitterStatus> GetBestTweets()
+        {
+            TwitterSearchResult tweets = Search(getRandomHashtag() + " pic");
+            List<TwitterStatus> statuses = (from x in tweets.Statuses
+                           orderby x.RetweetCount
+                           select x).ToList();
+            return statuses;
+        }
+
         private void OneHourEvent(object source, ElapsedEventArgs e)
         {
             Hours++;
             ResetCounters();
+        }
+
+        private void ShowMessage(string Caption, string Message)
+        {
+            string message = Message;
+            string caption = Caption;
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result;
+            // Displays the MessageBox.
+            result = MessageBox.Show(message, caption, buttons);
         }
 
         public void ResetCounters()
@@ -236,6 +301,9 @@ namespace TweetBooty
             {
                 Tweet(status);
             }
+            int tweetCounter = Convert.ToInt32(TweetCounter.Text);
+            tweetCounter++;
+            TweetCounter.Text = tweetCounter.ToString();
         }
 
         public void Tweet(string Status)
@@ -357,31 +425,18 @@ namespace TweetBooty
             FollowCounter.Text = counter.ToString(); 
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private TwitterSearchResult Search(string query)
         {
-            if (txtSearch.Text != "" && txtSearch.Text.Length > 3)
-            {
-                try
-                {
-                    SearchOptions search = new SearchOptions();
-                    search.Q = txtSearch.Text.Trim();
-                    search.Count = Convert.ToInt32(cbNumTweets.SelectedItem);
-                    search.IncludeEntities = true;
-                    search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
-                    ShowTweets(service.Search(search));
-                    RateLimit(service.Response.RateLimitStatus);
-                }
-                catch(Exception ex)
-                {
-                    lblErrors.Text = "Error: " + ex.Message;
-                }
-            }
-            else
-            {
-                lblErrors.Text = "Error: Necesitas escribir un termino de búsqueda";
-            }
+            SearchOptions search = new SearchOptions();
+            TwitterSearchResult results = new TwitterSearchResult();
+            search.Q = query;
+            search.Count = 50;
+            search.IncludeEntities = true;
+            search.Resulttype = TwitterSearchResultType.Mixed;
+            results = service.Search(search);
+            RateLimit(service.Response.RateLimitStatus);
+            return results;
         }
-
         private void dgvTweets_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -491,6 +546,20 @@ namespace TweetBooty
 
         }
 
+        public string getRandomHashtag()
+        {
+            Random rnd = new Random(); int random = 0;
+            List<Hashtag> lsthashtags;
+            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            {
+                lsthashtags = (from h in bd.Hashtags
+                               where h.repeated > 40
+                               select h).ToList();
+                random = rnd.Next(0, lsthashtags.Count);
+            }
+            return lsthashtags.ElementAt(random).hashtag1;
+        }
+
         #endregion "Database Access"
 
         #region "Funciones"
@@ -525,9 +594,39 @@ namespace TweetBooty
 
         #endregion "Funciones"
 
+        #region "Botones"
+
         private void btnSendTweet_Click(object sender, EventArgs e)
         {
             SendTweet(txtSendTweet.Text);
+            ShowMessage("Tweet Send!", txtSendTweet.Text);
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (txtSearch.Text != "" && txtSearch.Text.Length > 3)
+            {
+                try
+                {
+                    SearchOptions search = new SearchOptions();
+                    search.Q = txtSearch.Text.Trim();
+                    search.Count = Convert.ToInt32(cbNumTweets.SelectedItem);
+                    search.IncludeEntities = true;
+                    search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
+                    ShowTweets(service.Search(search));
+                    RateLimit(service.Response.RateLimitStatus);
+                }
+                catch (Exception ex)
+                {
+                    lblErrors.Text = "Error: " + ex.Message;
+                }
+            }
+            else
+            {
+                lblErrors.Text = "Error: Necesitas escribir un termino de búsqueda";
+            }
+        }
+
+        #endregion "Botones"
     }
 }

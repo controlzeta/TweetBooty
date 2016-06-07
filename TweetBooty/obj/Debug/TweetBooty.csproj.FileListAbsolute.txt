@@ -34,4 +34,3 @@ F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.xml
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.xml
-C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Images\001.jpg
