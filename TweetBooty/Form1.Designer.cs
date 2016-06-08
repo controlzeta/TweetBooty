@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lblNumFotos = new System.Windows.Forms.Label();
@@ -55,17 +56,21 @@
             this.lblWaitingTime = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dgvHashtagExplorer = new System.Windows.Forms.DataGridView();
+            this.Id_Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hashtagText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
             this.txtSendTweet = new System.Windows.Forms.TextBox();
             this.btnSendTweet = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
-            this.dgvHashtagExplorer = new System.Windows.Forms.DataGridView();
-            this.Id_Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.hashtagText = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgvTrendingTopics = new System.Windows.Forms.DataGridView();
+            this.label7 = new System.Windows.Forms.Label();
+            this.TrendingTopic = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TrendDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -73,8 +78,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTweets)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -336,8 +342,45 @@
             this.tabPage2.Text = "Hashtag Explorer";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // dgvHashtagExplorer
+            // 
+            this.dgvHashtagExplorer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvHashtagExplorer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Id_Hashtag,
+            this.hashtagText,
+            this.Date,
+            this.Repeated});
+            this.dgvHashtagExplorer.Location = new System.Drawing.Point(23, 28);
+            this.dgvHashtagExplorer.Name = "dgvHashtagExplorer";
+            this.dgvHashtagExplorer.Size = new System.Drawing.Size(395, 356);
+            this.dgvHashtagExplorer.TabIndex = 0;
+            // 
+            // Id_Hashtag
+            // 
+            this.Id_Hashtag.HeaderText = "Id\'s";
+            this.Id_Hashtag.Name = "Id_Hashtag";
+            this.Id_Hashtag.ReadOnly = true;
+            this.Id_Hashtag.Width = 50;
+            // 
+            // hashtagText
+            // 
+            this.hashtagText.HeaderText = "Hashtag";
+            this.hashtagText.Name = "hashtagText";
+            // 
+            // Date
+            // 
+            this.Date.HeaderText = "Date";
+            this.Date.Name = "Date";
+            // 
+            // Repeated
+            // 
+            this.Repeated.HeaderText = "Repeated";
+            this.Repeated.Name = "Repeated";
+            // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label7);
+            this.tabPage3.Controls.Add(this.dgvTrendingTopics);
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.txtSendTweet);
             this.tabPage3.Controls.Add(this.btnSendTweet);
@@ -391,40 +434,36 @@
             this.lblErrors.TabIndex = 2;
             this.lblErrors.Text = "Error: ";
             // 
-            // dgvHashtagExplorer
+            // dgvTrendingTopics
             // 
-            this.dgvHashtagExplorer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHashtagExplorer.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Id_Hashtag,
-            this.hashtagText,
-            this.Date,
-            this.Repeated});
-            this.dgvHashtagExplorer.Location = new System.Drawing.Point(23, 28);
-            this.dgvHashtagExplorer.Name = "dgvHashtagExplorer";
-            this.dgvHashtagExplorer.Size = new System.Drawing.Size(395, 356);
-            this.dgvHashtagExplorer.TabIndex = 0;
+            this.dgvTrendingTopics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTrendingTopics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.TrendingTopic,
+            this.TrendDate});
+            this.dgvTrendingTopics.Location = new System.Drawing.Point(552, 45);
+            this.dgvTrendingTopics.Name = "dgvTrendingTopics";
+            this.dgvTrendingTopics.Size = new System.Drawing.Size(339, 348);
+            this.dgvTrendingTopics.TabIndex = 3;
             // 
-            // Id_Hashtag
+            // label7
             // 
-            this.Id_Hashtag.HeaderText = "Id\'s";
-            this.Id_Hashtag.Name = "Id_Hashtag";
-            this.Id_Hashtag.ReadOnly = true;
-            this.Id_Hashtag.Width = 50;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(678, 22);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Trending Topics";
             // 
-            // hashtagText
+            // TrendingTopic
             // 
-            this.hashtagText.HeaderText = "Hashtag";
-            this.hashtagText.Name = "hashtagText";
+            this.TrendingTopic.HeaderText = "Trending Topic";
+            this.TrendingTopic.Name = "TrendingTopic";
+            this.TrendingTopic.Width = 200;
             // 
-            // Date
+            // TrendDate
             // 
-            this.Date.HeaderText = "Date";
-            this.Date.Name = "Date";
-            // 
-            // Repeated
-            // 
-            this.Repeated.HeaderText = "Repeated";
-            this.Repeated.Name = "Repeated";
+            this.TrendDate.HeaderText = "Date";
+            this.TrendDate.Name = "TrendDate";
             // 
             // Form1
             // 
@@ -434,6 +473,7 @@
             this.Controls.Add(this.lblErrors);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.tabControl1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Tweet Booty - Yummy Tweets";
             this.tabControl1.ResumeLayout(false);
@@ -446,9 +486,10 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -494,6 +535,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn hashtagText;
         private System.Windows.Forms.DataGridViewTextBoxColumn Date;
         private System.Windows.Forms.DataGridViewTextBoxColumn Repeated;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridView dgvTrendingTopics;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrendingTopic;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TrendDate;
 
     }
 }

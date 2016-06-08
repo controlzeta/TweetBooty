@@ -50,6 +50,7 @@ namespace TweetBooty
             init();
             Connect();
             ScanForMedia();
+            GetTrendingTopics();
         }
 
         public void init()
@@ -207,10 +208,36 @@ namespace TweetBooty
             return statuses;
         }
 
+        public void GetTrendingTopics()
+        {
+            //var countries = service.ListAvailableTrendsLocations();
+            ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
+            lctfo.Id = 116545; //Mexico City
+            var trendss = service.ListLocalTrendsFor(lctfo);
+            dgvTrendingTopics.Rows.Clear();
+            dgvTrendingTopics.Refresh();
+            foreach(TwitterTrend tt in trendss)
+            {
+
+                try
+                {
+                    DataGridViewRow row = (DataGridViewRow)dgvTrendingTopics.Rows[0].Clone();
+                    row.Cells[0].Value = tt.Name;                                   //TrendingTopic
+                    row.Cells[1].Value = tt.TrendingAsOf.ToShortTimeString();       //StartedTrendingAt
+                    dgvTrendingTopics.Rows.Add(row);
+                }
+                catch (Exception ex)
+                {
+                    lblErrors.Text = "Error: " + ex.Message;
+                }
+            }
+        }
+
         private void OneHourEvent(object source, ElapsedEventArgs e)
         {
             Hours++;
             ResetCounters();
+            GetTrendingTopics();
         }
 
         private void ShowMessage(string Caption, string Message)
@@ -325,6 +352,7 @@ namespace TweetBooty
         {
             try
             {
+                TwitterStatus result;
                 SendTweetWithMediaOptions MediaOp = new SendTweetWithMediaOptions();
                 Bitmap img = new Bitmap(mediaPath); //Bitmap img = new Bitmap(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg");
                 using (MemoryStream ms = new MemoryStream())
@@ -332,13 +360,16 @@ namespace TweetBooty
                     img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                     ms.Seek(0, SeekOrigin.Begin);
                     Dictionary<string, Stream> images = new Dictionary<string, Stream> { { "mypicture", ms } };
-                    var result = service.SendTweetWithMedia(
+                    result = service.SendTweetWithMedia(
                         new SendTweetWithMediaOptions { Status = status, Images = images });
                     ((IDisposable)img).Dispose();
                 }
                 RateLimit(service.Response.RateLimitStatus);
-                string copyFilePath = tweetedPath + "\\" + Path.GetFileName(mediaPath);
-                System.IO.File.Move(mediaPath, copyFilePath);
+                if (result != null)
+                {
+                    string copyFilePath = tweetedPath + "\\" + Path.GetFileName(mediaPath);
+                    System.IO.File.Move(mediaPath, copyFilePath);
+                }
             }
             catch (Exception ex)
             {

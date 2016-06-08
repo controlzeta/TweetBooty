@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="Hashtag.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="id.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="UserName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Tweets.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="RTs.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="Id_Hashtag.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -129,34 +144,35 @@
   <metadata name="Repeated.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="Hashtag.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="TrendingTopic.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="Hashtag.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="TrendDate.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="id.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UserName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Tweets.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="RTs.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="id.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="UserName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Tweets.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="RTs.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAA
+        AAAAAAAAAAAAAB8OjQAfDo0AHw6NCB8OjTofDo15Hw6Nmx8OjZofDo13Hw6NOB8OjQcfDo0AHw6NAAAA
+        AAAAAAAAAAAAAB8OjQAfDo0AHw6NLR8OjaIfDo3rHw6N/h8Ojf8fDo3/Hw6N/h8OjeofDo2eHw6NKh8O
+        jQAfDo0AAAAAAB8OjQAfDo0AHw6NQB8OjdcfDo3/HAuM/xsKi/8dDIz/HQyM/xsKi/8cC4z/Hw6N/x8O
+        jdQfDo07Hw6NAB8OjQAbCosAHAqLJhsKi9IeDY3/Hg2M/15Rrf99c73/Rzmi/0c5ov99c73/XlGt/x4N
+        jP8eDY3/GwqLzRsKiyIbCYsAAABeAi8glZBWSan/Lh6V/1ZJqf+fmM7/ubTc/2BUrv9gVK7/ubTc/5+Y
+        zv9WSan/Lh6V/1ZKqf8wIJaJAAAAAREAhiVBM57czsvm/05Apf/Dv+H/jIPF/1VJqf9WSan/Vkmp/1VJ
+        qf+Mg8X/w7/h/05Apf/Oy+b/QjSf1w8AhSEZB4pUPi+d99bT6v9vZLb/08/o//z8/v/29vv/9vX6//b1
+        +v/29vv//Pz+/9PP6P9vZLb/1tPq/z4vnfQYBolNGwmLbTgpmv3Py+b/7+73//v7/f/s6vX/9PP5////
+        ////////9PP5/+zq9f/7+/3/7+73/8/L5v85KZr8GgmLZh4NjWciEY78Rjih/9LP6P/6+vz/gXi//7iz
+        2////////////7iz2/+BeL//+vr8/9LP6P9GOKH/IhGO+h4NjV8fDo1CHw2N8CAPjv9IOqL/zsrm/+Lg
+        8P/p6PT/9/b7//f2+//p6PT/4uDw/87K5v9IOqL/IA+O/x8Nje0fDo08Hw6NEx8OjcQfDo3/Hw6N/05A
+        pf/Nyeb/l4/K/1JFp/9SRaf/l4/K/83J5v9OQKX/Hw6N/x8Ojf8fDo2/Hw6NEB8OjQAfDo1jHw6N+SYW
+        kf+Sisj/f3a+/zYnmf8bCYv/GwmL/zYnmf9/dr7/korI/yYWkf8fDo33Hw6NXR8OjQAfDo0AHw6NCx8O
+        jZwjE4/+Y1iw/zkqmv8cC4v/Hw6N/x8Ojf8cC4v/OSqa/2NYsP8jE4/+Hw6Nlx8OjQkfDo0AHw6NAB8O
+        jQAfDo0UHw6NlRwLi/UeDYz/Hw6N/x8Ojf8fDo3/Hw6N/x4NjP8cC4v0Hw6NkR8OjRIfDo0AHw6NAAAA
+        AAAAAAAAHw6NAB8OjQgfDo1PHw6NrB8Ojd4fDo3uHw6N7h8Ojd0fDo2qHw6NTB8OjQcfDo0AAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAfDo0AHw6NAB8OjQcfDo0jHw6NOh8OjTofDo0iHw6NBx8OjQAfDo0AAAAAAAAA
+        AAAAAAAA8A8AAOAHAADAAwAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAAgAEAAMAD
+        AADgBwAA+B8AAA==
+</value>
+  </data>
 </root>
