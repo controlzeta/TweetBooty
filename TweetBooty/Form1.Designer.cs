@@ -62,15 +62,20 @@
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dgvTrendingTopics = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.txtSendTweet = new System.Windows.Forms.TextBox();
             this.btnSendTweet = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
-            this.dgvTrendingTopics = new System.Windows.Forms.DataGridView();
-            this.label7 = new System.Windows.Forms.Label();
+            this.dgvLog = new System.Windows.Forms.DataGridView();
+            this.Action = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ScreenName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TweetId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TrendingTopic = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TrendDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -81,6 +86,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).BeginInit();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -379,6 +385,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.dgvLog);
             this.tabPage3.Controls.Add(this.label7);
             this.tabPage3.Controls.Add(this.dgvTrendingTopics);
             this.tabPage3.Controls.Add(this.label6);
@@ -391,6 +398,25 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Tweet";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(733, 22);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(84, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Trending Topics";
+            // 
+            // dgvTrendingTopics
+            // 
+            this.dgvTrendingTopics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTrendingTopics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.TrendingTopic});
+            this.dgvTrendingTopics.Location = new System.Drawing.Point(650, 45);
+            this.dgvTrendingTopics.Name = "dgvTrendingTopics";
+            this.dgvTrendingTopics.Size = new System.Drawing.Size(241, 348);
+            this.dgvTrendingTopics.TabIndex = 3;
             // 
             // label6
             // 
@@ -434,36 +460,50 @@
             this.lblErrors.TabIndex = 2;
             this.lblErrors.Text = "Error: ";
             // 
-            // dgvTrendingTopics
+            // dgvLog
             // 
-            this.dgvTrendingTopics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTrendingTopics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.TrendingTopic,
-            this.TrendDate});
-            this.dgvTrendingTopics.Location = new System.Drawing.Point(552, 45);
-            this.dgvTrendingTopics.Name = "dgvTrendingTopics";
-            this.dgvTrendingTopics.Size = new System.Drawing.Size(339, 348);
-            this.dgvTrendingTopics.TabIndex = 3;
+            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Action,
+            this.Text,
+            this.ScreenName,
+            this.TimeStamp,
+            this.TweetId});
+            this.dgvLog.Location = new System.Drawing.Point(14, 61);
+            this.dgvLog.Name = "dgvLog";
+            this.dgvLog.Size = new System.Drawing.Size(604, 321);
+            this.dgvLog.TabIndex = 5;
             // 
-            // label7
+            // Action
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(678, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(84, 13);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Trending Topics";
+            this.Action.HeaderText = "Action";
+            this.Action.Name = "Action";
+            // 
+            // Text
+            // 
+            this.Text.HeaderText = "Text";
+            this.Text.Name = "Text";
+            // 
+            // ScreenName
+            // 
+            this.ScreenName.HeaderText = "Screen Name";
+            this.ScreenName.Name = "ScreenName";
+            // 
+            // TimeStamp
+            // 
+            this.TimeStamp.HeaderText = "TimeStamp";
+            this.TimeStamp.Name = "TimeStamp";
+            // 
+            // TweetId
+            // 
+            this.TweetId.HeaderText = "Id";
+            this.TweetId.Name = "TweetId";
             // 
             // TrendingTopic
             // 
             this.TrendingTopic.HeaderText = "Trending Topic";
             this.TrendingTopic.Name = "TrendingTopic";
             this.TrendingTopic.Width = 200;
-            // 
-            // TrendDate
-            // 
-            this.TrendDate.HeaderText = "Date";
-            this.TrendDate.Name = "TrendDate";
             // 
             // Form1
             // 
@@ -475,7 +515,7 @@
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Tweet Booty - Yummy Tweets";
+            //this.Text = "Tweet Booty - Yummy Tweets";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -490,6 +530,7 @@
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -537,8 +578,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Repeated;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView dgvTrendingTopics;
+        private System.Windows.Forms.DataGridView dgvLog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Action;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Text;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ScreenName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TimeStamp;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TweetId;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrendingTopic;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TrendDate;
 
     }
 }

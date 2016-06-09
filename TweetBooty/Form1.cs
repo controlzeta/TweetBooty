@@ -47,10 +47,9 @@ namespace TweetBooty
         {
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
-            init();
             Connect();
+            init();
             ScanForMedia();
-            GetTrendingTopics();
         }
 
         public void init()
@@ -75,6 +74,8 @@ namespace TweetBooty
             FifteenMinuteTimer.Enabled = true;
 
             GetExplorerHashtag();
+            GetTrendingTopics();
+            getLog();
         }
 
         public void Connect()
@@ -154,6 +155,11 @@ namespace TweetBooty
 
         private void FifteenMinuteEvent(object source, ElapsedEventArgs e)
         {
+            progressBar.Visible = true;
+            progressBar.Minimum = 1;
+            progressBar.Value = 1;
+            progressBar.Step = 1;
+            progressBar.Maximum = 4;
             Random rnd = new Random();
             FifteenMinutes++;
             if (TweetsByTheHour > 0)
@@ -162,9 +168,9 @@ namespace TweetBooty
                 try
                 {
                     TweetsByTheHour++;
-                    string nuevoStatus = ConstructTweet(100);
-                    SendTweet(nuevoStatus);
-                    ShowMessage("Tweet Send!", nuevoStatus);
+                    string nuevoStatus = ConstructTweet(90);
+                    if(SendTweet(nuevoStatus))
+                        ShowMessage("Tweet Send!", nuevoStatus);
                 }
                 catch (Exception ex)
                 {
@@ -172,6 +178,7 @@ namespace TweetBooty
                 }
                 TweetsByTheHour--;
             }
+            progressBar.PerformStep();
             if (RTsByTheHour > 0)
             {
                 var statuses = GetBestTweets();
@@ -182,6 +189,7 @@ namespace TweetBooty
                     RTsByTheHour--;
                 }
             }
+            progressBar.PerformStep();
             if (FavsByTheHour > 0)
             {
                 var statuses = GetBestTweets();
@@ -192,11 +200,15 @@ namespace TweetBooty
                     FavsByTheHour--;
                 }
             }
+            progressBar.PerformStep();
             if (FifteenMinutes == 2 || FifteenMinutes == 4 && FollowsByTheHour > 0 )
             { 
                 //MostRetweeted follow
                 FollowsByTheHour--;
             }
+            progressBar.PerformStep();
+            getLog();
+            progressBar.PerformStep();
         }
 
         public List<TwitterStatus> GetBestTweets()
@@ -223,7 +235,7 @@ namespace TweetBooty
                 {
                     DataGridViewRow row = (DataGridViewRow)dgvTrendingTopics.Rows[0].Clone();
                     row.Cells[0].Value = tt.Name;                                   //TrendingTopic
-                    row.Cells[1].Value = tt.TrendingAsOf.ToShortTimeString();       //StartedTrendingAt
+                    //row.Cells[1].Value = tt.TrendingAsOf.ToShortTimeString();       //StartedTrendingAt
                     dgvTrendingTopics.Rows.Add(row);
                 }
                 catch (Exception ex)
@@ -261,9 +273,14 @@ namespace TweetBooty
 
         public void ShowTweets(TwitterSearchResult tweetsearch)
         {
+            progressBar.Visible = true;
+            progressBar.Minimum = 1;
+            progressBar.Value = 1;
+            progressBar.Step = 1;
             dgvTweets.Rows.Clear();
             dgvTweets.Refresh();
             getHashtags(tweetsearch);
+            progressBar.Maximum = tweetsearch.Statuses.ToList().Count;
             foreach (var tweet in tweetsearch.Statuses)
             {
                 try
@@ -274,6 +291,7 @@ namespace TweetBooty
                     row.Cells[2].Value = tweet.Text;                    //Tweet
                     row.Cells[3].Value = tweet.RetweetCount;            //RT's
                     dgvTweets.Rows.Add(row);
+                    progressBar.PerformStep();
                 }
                 catch (Exception ex)
                 {
@@ -308,47 +326,91 @@ namespace TweetBooty
             }
         }
 
+        public void getLog()
+        {
+            dgvLog.Rows.Clear();
+            dgvLog.Refresh();
+            using(TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            {
+                var oldTweets = (from o in bd.Tweeteds
+                                 orderby o.Id descending
+                                 select o).Take(50).ToList();
+                foreach (Tweeted t in oldTweets)
+                {
+                    DataGridViewRow row = (DataGridViewRow)dgvLog.Rows[0].Clone();
+                    row.Cells[0].Value = t.Action;                          //Action
+                    row.Cells[1].Value = t.Text;                            //Text
+                    row.Cells[2].Value = t.Username;                        //ScreenName
+                    row.Cells[3].Value = t.Timestamp.ToShortDateString();   //TimeStamp
+                    row.Cells[4].Value = t.TweetId;                         //Id
+                    dgvLog.Rows.Add(row);
+                }
+            }
+        }
+
         public void RateLimit(TwitterRateLimitStatus rate)
         {
             lblRateLimit.Text ="You have used " + rate.RemainingHits + " out of your " + rate.HourlyLimit ;
             lblWaitingTime.Text = "You have to wait: " + rate.ResetTimeInSeconds / 60 + " minutes or to " + rate.ResetTime.ToLongTimeString();
         }
 
-        public void SendTweet(string status)
+        public bool SendTweet(string status)
         {
+            progressBar.Visible = true;
+            progressBar.Minimum = 1;
+            progressBar.Value = 1;
+            progressBar.Step = 1;
+            progressBar.Maximum = 3;
+            bool success = false;
             if (fileEntries.Length > 0)
             {
-                TweetWithMedia(status, fileEntries[0]);
+                success = TweetWithMedia(status, fileEntries[0]);
                 var list = new List<string>(fileEntries);
                 list.Remove(fileEntries[0]);
                 fileEntries = list.ToArray();
                 lblNumFotos.Text = fileEntries.Length.ToString();
+                progressBar.PerformStep();
             }
             else
             {
-                Tweet(status);
+                success = Tweet(status);
             }
-            int tweetCounter = Convert.ToInt32(TweetCounter.Text);
-            tweetCounter++;
-            TweetCounter.Text = tweetCounter.ToString();
+            if (success)
+            {
+                int tweetCounter = Convert.ToInt32(TweetCounter.Text);
+                tweetCounter++;
+                TweetCounter.Text = tweetCounter.ToString();
+                progressBar.PerformStep();
+            }
+            getLog();
+            progressBar.PerformStep();
+            return success;
         }
 
-        public void Tweet(string Status)
+        public bool Tweet(string Status)
         {
             try
             {
                 SendTweetOptions tweet = new SendTweetOptions();
                 tweet.Status = Status;
-                service.SendTweet(tweet);
+                var result = service.SendTweet(tweet);
                 RateLimit(service.Response.RateLimitStatus);
+                if (result != null)
+                {
+                    SaveAction("Tweet", Status, result.Id, result.User.ScreenName);
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception ex)
             {
                 lblErrors.Text = "Error: " + ex.Message;
+                return false;
             }
         }
 
-        public void TweetWithMedia(string status, string mediaPath)
+        public bool TweetWithMedia(string status, string mediaPath)
         {
             try
             {
@@ -367,13 +429,17 @@ namespace TweetBooty
                 RateLimit(service.Response.RateLimitStatus);
                 if (result != null)
                 {
+                    SaveAction("Tweet", status, result.Id, result.User.ScreenName);
                     string copyFilePath = tweetedPath + "\\" + Path.GetFileName(mediaPath);
                     System.IO.File.Move(mediaPath, copyFilePath);
+                    return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {
                 lblErrors.Text = "Error: " + ex.Message;
+                return false;
             }
         }
 
@@ -414,11 +480,6 @@ namespace TweetBooty
             return lineaCorta;
         }
 
-        public static void ProcessFile(string path)
-        {
-            Console.WriteLine("Processed file '{0}'.", path);
-        }
-
         public void FavTweet(long tweetID)
         {
             FavoriteTweetOptions fav = new FavoriteTweetOptions();
@@ -427,7 +488,10 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
             int counter = Convert.ToInt32(FavCounter.Text);
             if(service.Response.StatusDescription == "OK")
-            {counter++;}
+            {
+                SaveAction("Favorite", " ", tweetID, " ");
+                counter++;
+            }
             FavCounter.Text = counter.ToString(); 
         }
 
@@ -439,7 +503,10 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
             int counter = Convert.ToInt32(TweetCounter.Text);
             if (service.Response.StatusDescription == "OK")
-            { counter++; }
+            {
+                SaveAction("ReTweet", " ", tweetID, " ");
+                counter++; 
+            }
             TweetCounter.Text = counter.ToString(); 
         }
 
@@ -452,7 +519,10 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
             int counter = Convert.ToInt32(FollowCounter.Text);
             if (service.Response.StatusDescription == "OK")
-            { counter++; }
+            {
+                SaveAction( following ? "Follow" : "Unfollow", " ", 0, screenName);
+                counter++; 
+            }
             FollowCounter.Text = counter.ToString(); 
         }
 
@@ -468,6 +538,7 @@ namespace TweetBooty
             RateLimit(service.Response.RateLimitStatus);
             return results;
         }
+
         private void dgvTweets_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -591,6 +662,29 @@ namespace TweetBooty
             return lsthashtags.ElementAt(random).hashtag1;
         }
 
+        public void SaveAction(string action, string text, long TweetId, string Username)
+        {
+            try
+            {
+                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                {
+                    Tweeted t = new Tweeted();
+                    t.Action = action;
+                    t.Text = text;
+                    t.Timestamp = DateTime.Now;
+                    t.TweetId = TweetId;
+                    t.Username = Username;
+                    bd.Tweeteds.Add(t);
+                    bd.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+
         #endregion "Database Access"
 
         #region "Funciones"
@@ -629,8 +723,10 @@ namespace TweetBooty
 
         private void btnSendTweet_Click(object sender, EventArgs e)
         {
-            SendTweet(txtSendTweet.Text);
-            ShowMessage("Tweet Send!", txtSendTweet.Text);
+            if(SendTweet(txtSendTweet.Text))
+                ShowMessage("Tweet Send!", txtSendTweet.Text);
+            else
+                ShowMessage("Something went wrong!", txtSendTweet.Text);
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

@@ -109,6 +109,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TweetBootyModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Tweeted.cs">
+      <DependentUpon>TweetBootyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="DialogBox.resx">
       <DependentUpon>DialogBox.cs</DependentUpon>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="BannedWords">
     <Key>
       <PropertyRef Name="id" />
@@ -27,6 +27,17 @@
     <Property Name="sortOrder" Type="int" Nullable="false" />
     <Property Name="link" Type="nvarchar" MaxLength="255" Nullable="false" />
   </EntityType>
+  <EntityType Name="Tweeted">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Timestamp" Type="datetime" Nullable="false" />
+    <Property Name="Action" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" MaxLength="50" />
+    <Property Name="TweetId" Type="float" />
+  </EntityType>
   <EntityType Name="Tweets">
     <Key>
       <PropertyRef Name="id" />
@@ -40,6 +51,7 @@
     <EntitySet Name="BannedWords" EntityType="Self.BannedWords" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Hashtags" EntityType="Self.Hashtags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>
