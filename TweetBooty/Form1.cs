@@ -76,13 +76,28 @@ namespace TweetBooty
             GetExplorerHashtag();
             GetTrendingTopics();
             getLog();
+            GetMentions();
         }
 
         public void Connect()
         {
             service = new TwitterService(_consumerKey, _consumerSecret);
             service.AuthenticateWith(_accessToken, _accessTokenSecret);
-            IEnumerable<TwitterStatus> mentions = service.ListTweetsMentioningMe(new ListTweetsMentioningMeOptions());
+        }
+
+        public void GetMentions()
+        {
+            dgvMentions.Rows.Clear();
+            dgvMentions.Refresh();
+            List<TwitterStatus> mentions = service.ListTweetsMentioningMe(new ListTweetsMentioningMeOptions()).ToList();
+            foreach (TwitterStatus t in mentions)
+            {
+                DataGridViewRow row = (DataGridViewRow)dgvMentions.Rows[0].Clone();
+                row.Cells[0].Value = t.Author.ScreenName;                   //UserName
+                row.Cells[1].Value = t.Text;                                //Text
+                row.Cells[2].Value = t.Id.ToString();                         //Id
+                dgvMentions.Rows.Add(row);
+            }
             RateLimit(service.Response.RateLimitStatus);
         }
 
@@ -211,12 +226,24 @@ namespace TweetBooty
             progressBar.PerformStep();
         }
 
+        private void OneHourEvent(object source, ElapsedEventArgs e)
+        {
+            Hours++;
+            ResetCounters();
+            GetTrendingTopics();
+            GetMentions();
+        }
+
         public List<TwitterStatus> GetBestTweets()
         {
+            List<TwitterStatus> statuses = new List<TwitterStatus>();
             TwitterSearchResult tweets = Search(getRandomHashtag() + " pic");
-            List<TwitterStatus> statuses = (from x in tweets.Statuses
-                           orderby x.RetweetCount
-                           select x).ToList();
+            if (tweets != null)
+            {
+                statuses = (from x in tweets.Statuses
+                                                orderby x.RetweetCount
+                                                select x).ToList();
+            }
             return statuses;
         }
 
@@ -243,13 +270,6 @@ namespace TweetBooty
                     lblErrors.Text = "Error: " + ex.Message;
                 }
             }
-        }
-
-        private void OneHourEvent(object source, ElapsedEventArgs e)
-        {
-            Hours++;
-            ResetCounters();
-            GetTrendingTopics();
         }
 
         private void ShowMessage(string Caption, string Message)
@@ -341,7 +361,7 @@ namespace TweetBooty
                     row.Cells[0].Value = t.Action;                          //Action
                     row.Cells[1].Value = t.Text;                            //Text
                     row.Cells[2].Value = t.Username;                        //ScreenName
-                    row.Cells[3].Value = t.Timestamp.ToShortDateString();   //TimeStamp
+                    row.Cells[3].Value = t.Timestamp.ToString();            //TimeStamp
                     row.Cells[4].Value = t.TweetId;                         //Id
                     dgvLog.Rows.Add(row);
                 }

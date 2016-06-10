@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lblNumFotos = new System.Windows.Forms.Label();
             this.dgvCurrentHashtags = new System.Windows.Forms.DataGridView();
@@ -62,21 +62,26 @@
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
-            this.dgvTrendingTopics = new System.Windows.Forms.DataGridView();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtSendTweet = new System.Windows.Forms.TextBox();
-            this.btnSendTweet = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.lblErrors = new System.Windows.Forms.Label();
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.Action = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ScreenName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TimeStamp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TweetId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label7 = new System.Windows.Forms.Label();
+            this.dgvTrendingTopics = new System.Windows.Forms.DataGridView();
             this.TrendingTopic = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1.SuspendLayout();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtSendTweet = new System.Windows.Forms.TextBox();
+            this.btnSendTweet = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.lblErrors = new System.Windows.Forms.Label();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.dgvMentions = new System.Windows.Forms.DataGridView();
+            this.MentionUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -85,21 +90,24 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).BeginInit();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).BeginInit();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // TabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(12, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(935, 451);
-            this.tabControl1.TabIndex = 0;
-            this.tabControl1.Tag = "";
+            this.TabControl.Controls.Add(this.tabPage1);
+            this.TabControl.Controls.Add(this.tabPage2);
+            this.TabControl.Controls.Add(this.tabPage3);
+            this.TabControl.Controls.Add(this.tabPage4);
+            this.TabControl.Location = new System.Drawing.Point(12, 12);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new System.Drawing.Size(935, 451);
+            this.TabControl.TabIndex = 0;
+            this.TabControl.Tag = "Mentions";
             // 
             // tabPage1
             // 
@@ -399,6 +407,45 @@
             this.tabPage3.Text = "Tweet";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // dgvLog
+            // 
+            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Action,
+            this.Text,
+            this.ScreenName,
+            this.TimeStamp,
+            this.TweetId});
+            this.dgvLog.Location = new System.Drawing.Point(14, 61);
+            this.dgvLog.Name = "dgvLog";
+            this.dgvLog.Size = new System.Drawing.Size(604, 321);
+            this.dgvLog.TabIndex = 5;
+            // 
+            // Action
+            // 
+            this.Action.HeaderText = "Action";
+            this.Action.Name = "Action";
+            // 
+            // Text
+            // 
+            this.Text.HeaderText = "Text";
+            this.Text.Name = "Text";
+            // 
+            // ScreenName
+            // 
+            this.ScreenName.HeaderText = "Screen Name";
+            this.ScreenName.Name = "ScreenName";
+            // 
+            // TimeStamp
+            // 
+            this.TimeStamp.HeaderText = "TimeStamp";
+            this.TimeStamp.Name = "TimeStamp";
+            // 
+            // TweetId
+            // 
+            this.TweetId.HeaderText = "Id";
+            this.TweetId.Name = "TweetId";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -417,6 +464,12 @@
             this.dgvTrendingTopics.Name = "dgvTrendingTopics";
             this.dgvTrendingTopics.Size = new System.Drawing.Size(241, 348);
             this.dgvTrendingTopics.TabIndex = 3;
+            // 
+            // TrendingTopic
+            // 
+            this.TrendingTopic.HeaderText = "Trending Topic";
+            this.TrendingTopic.Name = "TrendingTopic";
+            this.TrendingTopic.Width = 200;
             // 
             // label6
             // 
@@ -460,50 +513,44 @@
             this.lblErrors.TabIndex = 2;
             this.lblErrors.Text = "Error: ";
             // 
-            // dgvLog
+            // tabPage4
             // 
-            this.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLog.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Action,
-            this.Text,
-            this.ScreenName,
-            this.TimeStamp,
-            this.TweetId});
-            this.dgvLog.Location = new System.Drawing.Point(14, 61);
-            this.dgvLog.Name = "dgvLog";
-            this.dgvLog.Size = new System.Drawing.Size(604, 321);
-            this.dgvLog.TabIndex = 5;
+            this.tabPage4.Controls.Add(this.dgvMentions);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(927, 425);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Mentions";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // Action
+            // dgvMentions
             // 
-            this.Action.HeaderText = "Action";
-            this.Action.Name = "Action";
+            this.dgvMentions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMentions.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.MentionUserName,
+            this.MentionText,
+            this.MentionId});
+            this.dgvMentions.Location = new System.Drawing.Point(41, 34);
+            this.dgvMentions.Name = "dgvMentions";
+            this.dgvMentions.Size = new System.Drawing.Size(553, 322);
+            this.dgvMentions.TabIndex = 0;
             // 
-            // Text
+            // MentionUserName
             // 
-            this.Text.HeaderText = "Text";
-            this.Text.Name = "Text";
+            this.MentionUserName.HeaderText = "UserName";
+            this.MentionUserName.Name = "MentionUserName";
             // 
-            // ScreenName
+            // MentionText
             // 
-            this.ScreenName.HeaderText = "Screen Name";
-            this.ScreenName.Name = "ScreenName";
+            this.MentionText.HeaderText = "Text";
+            this.MentionText.Name = "MentionText";
+            this.MentionText.Width = 300;
             // 
-            // TimeStamp
+            // MentionId
             // 
-            this.TimeStamp.HeaderText = "TimeStamp";
-            this.TimeStamp.Name = "TimeStamp";
-            // 
-            // TweetId
-            // 
-            this.TweetId.HeaderText = "Id";
-            this.TweetId.Name = "TweetId";
-            // 
-            // TrendingTopic
-            // 
-            this.TrendingTopic.HeaderText = "Trending Topic";
-            this.TrendingTopic.Name = "TrendingTopic";
-            this.TrendingTopic.Width = 200;
+            this.MentionId.HeaderText = "Id";
+            this.MentionId.Name = "MentionId";
             // 
             // Form1
             // 
@@ -512,11 +559,10 @@
             this.ClientSize = new System.Drawing.Size(959, 487);
             this.Controls.Add(this.lblErrors);
             this.Controls.Add(this.progressBar);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.TabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            //this.Text = "Tweet Booty - Yummy Tweets";
-            this.tabControl1.ResumeLayout(false);
+            this.TabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).EndInit();
@@ -529,8 +575,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvHashtagExplorer)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLog)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -538,7 +586,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label lblWaitingTime;
@@ -585,6 +633,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn TimeStamp;
         private System.Windows.Forms.DataGridViewTextBoxColumn TweetId;
         private System.Windows.Forms.DataGridViewTextBoxColumn TrendingTopic;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.DataGridView dgvMentions;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MentionUserName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MentionText;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MentionId;
 
     }
 }
