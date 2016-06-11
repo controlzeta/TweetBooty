@@ -81,6 +81,7 @@
             this.MentionUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnConstructTweet = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -393,6 +394,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btnConstructTweet);
             this.tabPage3.Controls.Add(this.dgvLog);
             this.tabPage3.Controls.Add(this.label7);
             this.tabPage3.Controls.Add(this.dgvTrendingTopics);
@@ -552,6 +554,16 @@
             this.MentionId.HeaderText = "Id";
             this.MentionId.Name = "MentionId";
             // 
+            // btnConstructTweet
+            // 
+            this.btnConstructTweet.Location = new System.Drawing.Point(522, 22);
+            this.btnConstructTweet.Name = "btnConstructTweet";
+            this.btnConstructTweet.Size = new System.Drawing.Size(96, 23);
+            this.btnConstructTweet.TabIndex = 6;
+            this.btnConstructTweet.Text = "Construct Tweet";
+            this.btnConstructTweet.UseVisualStyleBackColor = true;
+            this.btnConstructTweet.Click += new System.EventHandler(this.btnConstructTweet_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -638,6 +650,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MentionUserName;
         private System.Windows.Forms.DataGridViewTextBoxColumn MentionText;
         private System.Windows.Forms.DataGridViewTextBoxColumn MentionId;
+        private System.Windows.Forms.Button btnConstructTweet;
 
     }
 }

@@ -249,9 +249,13 @@ namespace TweetBooty
 
         public void GetTrendingTopics()
         {
-            //var countries = service.ListAvailableTrendsLocations();
+            var countries = service.ListAvailableTrendsLocations();
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
-            lctfo.Id = 116545; //Mexico City
+            //lctfo.Id = 116545; //Mexico City
+            lctfo.Id = 134047; //Monterrey
+            //lctfo.Id = 395269; //Caracas
+            //lctfo.Id = 753692; //Barcelona
+            //lctfo.Id = 766273; //Madrid
             var trendss = service.ListLocalTrendsFor(lctfo);
             dgvTrendingTopics.Rows.Clear();
             dgvTrendingTopics.Refresh();
@@ -512,7 +516,8 @@ namespace TweetBooty
                 SaveAction("Favorite", " ", tweetID, " ");
                 counter++;
             }
-            FavCounter.Text = counter.ToString(); 
+            FavCounter.Text = counter.ToString();
+            getLog();
         }
 
         public void RTTweet(long tweetID)
@@ -527,7 +532,8 @@ namespace TweetBooty
                 SaveAction("ReTweet", " ", tweetID, " ");
                 counter++; 
             }
-            TweetCounter.Text = counter.ToString(); 
+            TweetCounter.Text = counter.ToString();
+            getLog();
         }
 
         public void Follow(bool following, string screenName)
@@ -543,7 +549,8 @@ namespace TweetBooty
                 SaveAction( following ? "Follow" : "Unfollow", " ", 0, screenName);
                 counter++; 
             }
-            FollowCounter.Text = counter.ToString(); 
+            FollowCounter.Text = counter.ToString();
+            getLog();
         }
 
         private TwitterSearchResult Search(string query)
@@ -743,14 +750,17 @@ namespace TweetBooty
 
         private void btnSendTweet_Click(object sender, EventArgs e)
         {
+            btnSearch.Enabled = false;
             if(SendTweet(txtSendTweet.Text))
                 ShowMessage("Tweet Send!", txtSendTweet.Text);
             else
                 ShowMessage("Something went wrong!", txtSendTweet.Text);
+            btnSearch.Enabled = true;
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            btnSearch.Enabled = false;
             if (txtSearch.Text != "" && txtSearch.Text.Length > 3)
             {
                 try
@@ -772,8 +782,14 @@ namespace TweetBooty
             {
                 lblErrors.Text = "Error: Necesitas escribir un termino de búsqueda";
             }
+            btnSearch.Enabled = true;
         }
 
+        private void btnConstructTweet_Click(object sender, EventArgs e)
+        {
+            txtSendTweet.Text = ConstructTweet(110);
+        }
         #endregion "Botones"
+
     }
 }
