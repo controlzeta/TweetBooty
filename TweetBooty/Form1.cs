@@ -33,10 +33,10 @@ namespace TweetBooty
         System.Timers.Timer FifteenMinuteTimer = new System.Timers.Timer();
         System.Timers.Timer OneHourTimer = new System.Timers.Timer();
 
-        public int TweetsByTheHour = 2;
-        public int RTsByTheHour = 12;
-        public int FavsByTheHour = 12;
-        public int FollowsByTheHour = 2;
+        public int TweetsByTheHour = 0;
+        public int RTsByTheHour = 0;
+        public int FavsByTheHour = 0;
+        public int FollowsByTheHour = 0;
         public int FifteenMinutes = 0;
         public int Hours = 0;
 
@@ -98,6 +98,10 @@ namespace TweetBooty
                 _consumerSecret = config.ConsumerSecret;
                 _accessToken = config.AccessToken;
                 _accessTokenSecret = config.AccessTokenSecret;
+                TweetsByTheHour = config.TweetLimit;
+                RTsByTheHour = config.TweetLimit;
+                FavsByTheHour = config.FavLimit;
+                FollowsByTheHour = config.FollowLimit;
             }
         }
 
@@ -266,11 +270,7 @@ namespace TweetBooty
         public void GetTrendingTopics(int id)
         {
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
-            //lctfo.Id = 116545; //Mexico City
-            lctfo.Id = id == 0 ? 116545 : id; //Monterrey
-            //lctfo.Id = 395269; //Caracas
-            //lctfo.Id = 753692; //Barcelona
-            //lctfo.Id = 766273; //Madrid
+            lctfo.Id = id == 0 ? 116545 : id; //Mexico City
             var trendss = service.ListLocalTrendsFor(lctfo);
             dgvTrendingTopics.Rows.Clear();
             dgvTrendingTopics.Refresh();
@@ -418,7 +418,7 @@ namespace TweetBooty
             progressBar.Step = 1;
             progressBar.Maximum = 3;
             bool success = false;
-            if (fileEntries.Length > 0)
+            if (fileEntries != null && fileEntries.Length > 0)
             {
                 success = TweetWithMedia(status, fileEntries[0]);
                 var list = new List<string>(fileEntries);
@@ -742,7 +742,6 @@ namespace TweetBooty
                 lblErrors.Text = "Error: " + ex.Message;
             }
         }
-
 
         #endregion "Database Access"
 
