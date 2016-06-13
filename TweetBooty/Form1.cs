@@ -232,6 +232,7 @@ namespace TweetBooty
             ResetCounters();
             GetTrendingTopics();
             GetMentions();
+            ScanForMedia();
         }
 
         public List<TwitterStatus> GetBestTweets()
@@ -251,8 +252,8 @@ namespace TweetBooty
         {
             var countries = service.ListAvailableTrendsLocations();
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
-            //lctfo.Id = 116545; //Mexico City
-            lctfo.Id = 134047; //Monterrey
+            lctfo.Id = 116545; //Mexico City
+            //lctfo.Id = 134047; //Monterrey
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
             //lctfo.Id = 766273; //Madrid
@@ -352,23 +353,30 @@ namespace TweetBooty
 
         public void getLog()
         {
-            dgvLog.Rows.Clear();
-            dgvLog.Refresh();
-            using(TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            try
             {
-                var oldTweets = (from o in bd.Tweeteds
-                                 orderby o.Id descending
-                                 select o).Take(50).ToList();
-                foreach (Tweeted t in oldTweets)
+                dgvLog.Rows.Clear();
+                dgvLog.Refresh();
+                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
                 {
-                    DataGridViewRow row = (DataGridViewRow)dgvLog.Rows[0].Clone();
-                    row.Cells[0].Value = t.Action;                          //Action
-                    row.Cells[1].Value = t.Text;                            //Text
-                    row.Cells[2].Value = t.Username;                        //ScreenName
-                    row.Cells[3].Value = t.Timestamp.ToString();            //TimeStamp
-                    row.Cells[4].Value = t.TweetId;                         //Id
-                    dgvLog.Rows.Add(row);
+                    var oldTweets = (from o in bd.Tweeteds
+                                     orderby o.Id descending
+                                     select o).Take(50).ToList();
+                    foreach (Tweeted t in oldTweets)
+                    {
+                        DataGridViewRow row = (DataGridViewRow)dgvLog.Rows[0].Clone();
+                        row.Cells[0].Value = t.Action;                          //Action
+                        row.Cells[1].Value = t.Text;                            //Text
+                        row.Cells[2].Value = t.Username;                        //ScreenName
+                        row.Cells[3].Value = t.Timestamp.ToString();            //TimeStamp
+                        row.Cells[4].Value = t.TweetId;                         //Id
+                        dgvLog.Rows.Add(row);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
             }
         }
 
