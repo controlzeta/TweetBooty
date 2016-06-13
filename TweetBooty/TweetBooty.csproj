@@ -71,6 +71,9 @@
     <Compile Include="BannedWord.cs">
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs">
+      <DependentUpon>TweetBootyModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DialogBox.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -62,6 +62,7 @@
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnConstructTweet = new System.Windows.Forms.Button();
             this.dgvLog = new System.Windows.Forms.DataGridView();
             this.Action = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -74,14 +75,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtSendTweet = new System.Windows.Forms.TextBox();
             this.btnSendTweet = new System.Windows.Forms.Button();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.lblErrors = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.dgvMentions = new System.Windows.Forms.DataGridView();
             this.MentionUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnConstructTweet = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.lblErrors = new System.Windows.Forms.Label();
+            this.btnHashtagDelete = new System.Windows.Forms.Button();
+            this.btnHashtagEdit = new System.Windows.Forms.Button();
+            this.cbTrendingTopics = new System.Windows.Forms.ComboBox();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -348,6 +351,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnHashtagEdit);
+            this.tabPage2.Controls.Add(this.btnHashtagDelete);
             this.tabPage2.Controls.Add(this.dgvHashtagExplorer);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -394,6 +399,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.cbTrendingTopics);
             this.tabPage3.Controls.Add(this.btnConstructTweet);
             this.tabPage3.Controls.Add(this.dgvLog);
             this.tabPage3.Controls.Add(this.label7);
@@ -408,6 +414,16 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Tweet";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // btnConstructTweet
+            // 
+            this.btnConstructTweet.Location = new System.Drawing.Point(522, 22);
+            this.btnConstructTweet.Name = "btnConstructTweet";
+            this.btnConstructTweet.Size = new System.Drawing.Size(96, 23);
+            this.btnConstructTweet.TabIndex = 6;
+            this.btnConstructTweet.Text = "Construct Tweet";
+            this.btnConstructTweet.UseVisualStyleBackColor = true;
+            this.btnConstructTweet.Click += new System.EventHandler(this.btnConstructTweet_Click);
             // 
             // dgvLog
             // 
@@ -451,7 +467,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(733, 22);
+            this.label7.Location = new System.Drawing.Point(731, 16);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(84, 13);
             this.label7.TabIndex = 4;
@@ -462,9 +478,9 @@
             this.dgvTrendingTopics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTrendingTopics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TrendingTopic});
-            this.dgvTrendingTopics.Location = new System.Drawing.Point(650, 45);
+            this.dgvTrendingTopics.Location = new System.Drawing.Point(650, 61);
             this.dgvTrendingTopics.Name = "dgvTrendingTopics";
-            this.dgvTrendingTopics.Size = new System.Drawing.Size(241, 348);
+            this.dgvTrendingTopics.Size = new System.Drawing.Size(247, 321);
             this.dgvTrendingTopics.TabIndex = 3;
             // 
             // TrendingTopic
@@ -498,22 +514,6 @@
             this.btnSendTweet.Text = "Send Tweet";
             this.btnSendTweet.UseVisualStyleBackColor = true;
             this.btnSendTweet.Click += new System.EventHandler(this.btnSendTweet_Click);
-            // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(666, 465);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(281, 23);
-            this.progressBar.TabIndex = 1;
-            // 
-            // lblErrors
-            // 
-            this.lblErrors.AutoSize = true;
-            this.lblErrors.Location = new System.Drawing.Point(13, 466);
-            this.lblErrors.Name = "lblErrors";
-            this.lblErrors.Size = new System.Drawing.Size(35, 13);
-            this.lblErrors.TabIndex = 2;
-            this.lblErrors.Text = "Error: ";
             // 
             // tabPage4
             // 
@@ -554,15 +554,50 @@
             this.MentionId.HeaderText = "Id";
             this.MentionId.Name = "MentionId";
             // 
-            // btnConstructTweet
+            // progressBar
             // 
-            this.btnConstructTweet.Location = new System.Drawing.Point(522, 22);
-            this.btnConstructTweet.Name = "btnConstructTweet";
-            this.btnConstructTweet.Size = new System.Drawing.Size(96, 23);
-            this.btnConstructTweet.TabIndex = 6;
-            this.btnConstructTweet.Text = "Construct Tweet";
-            this.btnConstructTweet.UseVisualStyleBackColor = true;
-            this.btnConstructTweet.Click += new System.EventHandler(this.btnConstructTweet_Click);
+            this.progressBar.Location = new System.Drawing.Point(666, 465);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(281, 23);
+            this.progressBar.TabIndex = 1;
+            // 
+            // lblErrors
+            // 
+            this.lblErrors.AutoSize = true;
+            this.lblErrors.Location = new System.Drawing.Point(13, 466);
+            this.lblErrors.Name = "lblErrors";
+            this.lblErrors.Size = new System.Drawing.Size(35, 13);
+            this.lblErrors.TabIndex = 2;
+            this.lblErrors.Text = "Error: ";
+            // 
+            // btnHashtagDelete
+            // 
+            this.btnHashtagDelete.Location = new System.Drawing.Point(438, 28);
+            this.btnHashtagDelete.Name = "btnHashtagDelete";
+            this.btnHashtagDelete.Size = new System.Drawing.Size(96, 23);
+            this.btnHashtagDelete.TabIndex = 7;
+            this.btnHashtagDelete.Text = "Delete";
+            this.btnHashtagDelete.UseVisualStyleBackColor = true;
+            this.btnHashtagDelete.Click += new System.EventHandler(this.btnHashtagDelete_Click);
+            // 
+            // btnHashtagEdit
+            // 
+            this.btnHashtagEdit.Location = new System.Drawing.Point(438, 60);
+            this.btnHashtagEdit.Name = "btnHashtagEdit";
+            this.btnHashtagEdit.Size = new System.Drawing.Size(96, 23);
+            this.btnHashtagEdit.TabIndex = 9;
+            this.btnHashtagEdit.Text = "Edit";
+            this.btnHashtagEdit.UseVisualStyleBackColor = true;
+            this.btnHashtagEdit.Click += new System.EventHandler(this.btnHashtagEdit_Click);
+            // 
+            // cbTrendingTopics
+            // 
+            this.cbTrendingTopics.FormattingEnabled = true;
+            this.cbTrendingTopics.Location = new System.Drawing.Point(650, 32);
+            this.cbTrendingTopics.Name = "cbTrendingTopics";
+            this.cbTrendingTopics.Size = new System.Drawing.Size(247, 21);
+            this.cbTrendingTopics.TabIndex = 7;
+            this.cbTrendingTopics.SelectedIndexChanged += new System.EventHandler(this.cbTrendingTopics_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -651,6 +686,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn MentionText;
         private System.Windows.Forms.DataGridViewTextBoxColumn MentionId;
         private System.Windows.Forms.Button btnConstructTweet;
+        private System.Windows.Forms.Button btnHashtagEdit;
+        private System.Windows.Forms.Button btnHashtagDelete;
+        private System.Windows.Forms.ComboBox cbTrendingTopics;
 
     }
 }

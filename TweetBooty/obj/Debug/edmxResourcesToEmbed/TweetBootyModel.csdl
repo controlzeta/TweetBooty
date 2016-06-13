@@ -42,6 +42,7 @@
     <EntitySet Name="Links" EntityType="Self.Link" />
     <EntitySet Name="Tweets" EntityType="Self.Tweet" />
     <EntitySet Name="Tweeteds" EntityType="TweetBotDBModel.Tweeted" />
+    <EntitySet Name="Configurations" EntityType="TweetBotDBModel.Configuration" />
   </EntityContainer>
   <EntityType Name="Tweeted">
     <Key>
@@ -53,5 +54,27 @@
     <Property Name="Action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="TweetId" Type="Double" />
+  </EntityType>
+  <EntityType Name="Configuration">
+    <Key>
+      <PropertyRef Name="ConsumerKey" />
+      <PropertyRef Name="ConsumerSecret" />
+      <PropertyRef Name="AccessToken" />
+      <PropertyRef Name="AccessTokenSecret" />
+      <PropertyRef Name="Minutes" />
+      <PropertyRef Name="RTCount" />
+      <PropertyRef Name="TweetLimit" />
+      <PropertyRef Name="FavLimit" />
+      <PropertyRef Name="FollowLimit" />
+    </Key>
+    <Property Name="ConsumerKey" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ConsumerSecret" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="AccessToken" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="AccessTokenSecret" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Minutes" Type="Int32" Nullable="false" />
+    <Property Name="RTCount" Type="Int32" Nullable="false" />
+    <Property Name="TweetLimit" Type="Int32" Nullable="false" />
+    <Property Name="FavLimit" Type="Int32" Nullable="false" />
+    <Property Name="FollowLimit" Type="Int32" Nullable="false" />
   </EntityType>
 </Schema>

@@ -30,5 +30,6 @@ namespace TweetBooty
         public DbSet<Link> Links { get; set; }
         public DbSet<Tweet> Tweets { get; set; }
         public DbSet<Tweeted> Tweeteds { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
     }
 }
