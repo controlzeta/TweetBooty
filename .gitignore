@@ -4,8 +4,9 @@ ehthumbs.db
 
 # Folder config file
 Desktop.ini
-TweetBooty\App.config
-TweetBooty\bin\Debug\TweetBooty.exe.config
+TweetBooty/App.config
+TweetBooty/bin/Debug/TweetBooty.exe.config
+TweetBooty/bin/Debug/
 
 
 # Recycle Bin used on file shares
