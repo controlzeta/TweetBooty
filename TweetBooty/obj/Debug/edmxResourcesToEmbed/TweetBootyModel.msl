@@ -53,5 +53,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Configurations">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Configuration">
+        <MappingFragment StoreEntitySet="Configuration">
+          <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
+          <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
+          <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
+          <ScalarProperty Name="RTCount" ColumnName="RTCount" />
+          <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+          <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
+          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+          <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+          <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

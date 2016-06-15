@@ -20,10 +20,10 @@ namespace TweetBooty
 {
     public partial class Form1 : Form
     {
-        public string _consumerKey = ConfigurationSettings.AppSettings["ConsumerKey"];
-        public string _consumerSecret = ConfigurationSettings.AppSettings["ConsumerSecret"];
-        public string _accessToken = ConfigurationSettings.AppSettings["AccessToken"];
-        public string _accessTokenSecret = ConfigurationSettings.AppSettings["AccessTokenSecret"];
+        public string _consumerKey = "";
+        public string _consumerSecret = "";
+        public string _accessToken = "";
+        public string _accessTokenSecret = "";
 
         public TwitterService service; public Utilities utility;
         public static string[] fileEntries;
@@ -33,10 +33,10 @@ namespace TweetBooty
         System.Timers.Timer FifteenMinuteTimer = new System.Timers.Timer();
         System.Timers.Timer OneHourTimer = new System.Timers.Timer();
 
-        public int TweetsByTheHour = 2;
-        public int RTsByTheHour = 12;
-        public int FavsByTheHour = 12;
-        public int FollowsByTheHour = 2;
+        public int TweetsByTheHour = 0;
+        public int RTsByTheHour = 0;
+        public int FavsByTheHour = 0;
+        public int FollowsByTheHour = 0;
         public int FifteenMinutes = 0;
         public int Hours = 0;
 
@@ -74,15 +74,35 @@ namespace TweetBooty
             FifteenMinuteTimer.Enabled = true;
 
             GetExplorerHashtag();
-            GetTrendingTopics();
+            GetTrendingTopics( 0 );
             getLog();
             GetMentions();
+            GetCountries();
         }
 
         public void Connect()
         {
+            GetConfiguration();
             service = new TwitterService(_consumerKey, _consumerSecret);
             service.AuthenticateWith(_accessToken, _accessTokenSecret);
+        }
+
+        public void GetConfiguration()
+        {
+            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            {
+                var config = (from cfg in bd.Configurations
+                              select cfg).FirstOrDefault();
+
+                _consumerKey = config.ConsumerKey;
+                _consumerSecret = config.ConsumerSecret;
+                _accessToken = config.AccessToken;
+                _accessTokenSecret = config.AccessTokenSecret;
+                TweetsByTheHour = config.TweetLimit;
+                RTsByTheHour = config.TweetLimit;
+                FavsByTheHour = config.FavLimit;
+                FollowsByTheHour = config.FollowLimit;
+            }
         }
 
         public void GetMentions()
@@ -230,7 +250,7 @@ namespace TweetBooty
         {
             Hours++;
             ResetCounters();
-            GetTrendingTopics();
+            GetTrendingTopics(0);
             GetMentions();
             ScanForMedia();
         }
@@ -248,11 +268,11 @@ namespace TweetBooty
             return statuses;
         }
 
-        public void GetTrendingTopics()
+        public void GetTrendingTopics(int id)
         {
-            var countries = service.ListAvailableTrendsLocations();
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
-            lctfo.Id = 116545; //Mexico City
+            lctfo.Id = id == 0 ? 116545 : id; //Mexico City
+            //lctfo.Id = 116545; //Mexico City
             //lctfo.Id = 134047; //Monterrey
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
@@ -262,7 +282,6 @@ namespace TweetBooty
             dgvTrendingTopics.Refresh();
             foreach(TwitterTrend tt in trendss)
             {
-
                 try
                 {
                     DataGridViewRow row = (DataGridViewRow)dgvTrendingTopics.Rows[0].Clone();
@@ -274,6 +293,24 @@ namespace TweetBooty
                 {
                     lblErrors.Text = "Error: " + ex.Message;
                 }
+            }
+        }
+
+        public void GetCountries()
+        {
+            var countries = service.ListAvailableTrendsLocations();
+            cbTrendingTopics.DisplayMember = "Text";
+            cbTrendingTopics.ValueMember = "Value";
+            foreach(WhereOnEarthLocation country in countries )
+            {
+                ComboboxItem cbi = new ComboboxItem();
+                cbi.Text = country.Country + " - " + country.Name;
+                cbi.Value = country.WoeId;
+                cbTrendingTopics.Items.Add(cbi);
+                //cbTrendingTopics.Items.Add(new { 
+                //    Text = country.Country + " - " + country.Name , 
+                //    Value = country.WoeId });
+                
             }
         }
 
@@ -394,7 +431,7 @@ namespace TweetBooty
             progressBar.Step = 1;
             progressBar.Maximum = 3;
             bool success = false;
-            if (fileEntries.Length > 0)
+            if (fileEntries != null && fileEntries.Length > 0)
             {
                 success = TweetWithMedia(status, fileEntries[0]);
                 var list = new List<string>(fileEntries);
@@ -719,7 +756,6 @@ namespace TweetBooty
             }
         }
 
-
         #endregion "Database Access"
 
         #region "Funciones"
@@ -749,6 +785,17 @@ namespace TweetBooty
 
                 //Calculate the hash code for the product.
                 return hashProductName ^ hashProductCode;
+            }
+        }
+
+        public class ComboboxItem
+        {
+            public string Text { get; set; }
+            public object Value { get; set; }
+
+            public override string ToString()
+            {
+                return Text;
             }
         }
 
@@ -797,6 +844,25 @@ namespace TweetBooty
         {
             txtSendTweet.Text = ConstructTweet(110);
         }
+
+        private void btnHashtagDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnHashtagEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbTrendingTopics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            comboBox.DisplayMember = "Text";
+            comboBox.ValueMember = "Value";
+            GetTrendingTopics(Convert.ToInt32(((TweetBooty.Form1.ComboboxItem)(comboBox.SelectedItem)).Value));
+        }
+
         #endregion "Botones"
 
     }

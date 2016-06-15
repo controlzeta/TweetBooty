@@ -8,6 +8,30 @@
     <Property Name="bannedWord" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="timestamp" Type="datetime" Nullable="false" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Configuration">
+    <Key>
+      <PropertyRef Name="ConsumerKey" />
+      <PropertyRef Name="ConsumerSecret" />
+      <PropertyRef Name="AccessToken" />
+      <PropertyRef Name="AccessTokenSecret" />
+      <PropertyRef Name="Minutes" />
+      <PropertyRef Name="RTCount" />
+      <PropertyRef Name="TweetLimit" />
+      <PropertyRef Name="FavLimit" />
+      <PropertyRef Name="FollowLimit" />
+    </Key>
+    <Property Name="ConsumerKey" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="AccessToken" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="AccessTokenSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="Minutes" Type="int" Nullable="false" />
+    <Property Name="RTCount" Type="int" Nullable="false" />
+    <Property Name="TweetLimit" Type="int" Nullable="false" />
+    <Property Name="FavLimit" Type="int" Nullable="false" />
+    <Property Name="FollowLimit" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="Hashtags">
     <Key>
       <PropertyRef Name="id" />
@@ -53,5 +77,18 @@
     <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Configuration" EntityType="Self.Configuration" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+[Configuration].[ConsumerKey] AS [ConsumerKey], 
+[Configuration].[ConsumerSecret] AS [ConsumerSecret], 
+[Configuration].[AccessToken] AS [AccessToken], 
+[Configuration].[AccessTokenSecret] AS [AccessTokenSecret], 
+[Configuration].[Minutes] AS [Minutes], 
+[Configuration].[RTCount] AS [RTCount], 
+[Configuration].[TweetLimit] AS [TweetLimit], 
+[Configuration].[FavLimit] AS [FavLimit], 
+[Configuration].[FollowLimit] AS [FollowLimit]
+FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
+    </EntitySet>
   </EntityContainer>
 </Schema>
