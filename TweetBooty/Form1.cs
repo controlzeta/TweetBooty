@@ -197,14 +197,15 @@ namespace TweetBooty
             progressBar.Maximum = 4;
             Random rnd = new Random();
             FifteenMinutes++;
+            progressBar.PerformStep();
             if (TweetsByTheHour > 0)
-            { 
+            {
                 //Tweet
                 try
                 {
                     TweetsByTheHour++;
-                    string nuevoStatus = ConstructTweet(90);
-                    if(SendTweet(nuevoStatus))
+                    string nuevoStatus = ConstructTweet(85);
+                    if (SendTweet(nuevoStatus))
                         ShowMessage("Tweet Send!", nuevoStatus);
                 }
                 catch (Exception ex)
@@ -213,7 +214,6 @@ namespace TweetBooty
                 }
                 TweetsByTheHour--;
             }
-            progressBar.PerformStep();
             if (RTsByTheHour > 0)
             {
                 var statuses = GetBestTweets();
@@ -318,7 +318,7 @@ namespace TweetBooty
         {
             string message = Message;
             string caption = Caption;
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
             DialogResult result;
             // Displays the MessageBox.
             result = MessageBox.Show(message, caption, buttons);
@@ -453,6 +453,7 @@ namespace TweetBooty
             }
             getLog();
             progressBar.PerformStep();
+            progressBar.Visible = false;
             return success;
         }
 
