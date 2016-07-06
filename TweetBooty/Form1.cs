@@ -14,6 +14,8 @@ using System.IO;
 using System.Reflection;
 using System.Timers;
 using System.Xml;
+using System.Net;
+using HtmlAgilityPack;
 
 
 namespace TweetBooty
@@ -341,7 +343,7 @@ namespace TweetBooty
             FifteenMinutes = 0;
         }
 
-        public void ShowTweets(TwitterSearchResult tweetsearch)
+        public void ShowTweets(TwitterSearchResult tweetsearch, string terminoBusqueda)
         {
             progressBar.Visible = true;
             progressBar.Minimum = 1;
@@ -360,6 +362,7 @@ namespace TweetBooty
                     row.Cells[1].Value = tweet.Author.ScreenName;       //Username
                     row.Cells[2].Value = tweet.Text;                    //Tweet
                     row.Cells[3].Value = tweet.RetweetCount;            //RT's
+                    getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda);
                     dgvTweets.Rows.Add(row);
                     progressBar.PerformStep();
                 }
@@ -368,6 +371,11 @@ namespace TweetBooty
                     lblErrors.Text = "Error: " + ex.Message;
                 }
             }
+        }
+
+        public string constructStatusURL(string user, string id)
+        {
+            return "https://twitter.com/" + user + "/status/" + id;
         }
 
         public void getHashtags(TwitterSearchResult tweetsearch)
@@ -620,6 +628,40 @@ namespace TweetBooty
             return results;
         }
 
+        public void getTweetImage(string urlAddress, string hashtag)
+        {
+            try
+            {
+                string exeFile = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
+                string exeDir = Path.GetDirectoryName(exeFile);
+                string extension = "";
+                fullPath = Path.Combine(exeDir + "\\Images\\" + hashtag);
+                if (!System.IO.Directory.Exists(fullPath))
+                {
+                    System.IO.Directory.CreateDirectory(fullPath);
+                }
+                HtmlWeb client = new HtmlWeb();
+                HtmlAgilityPack.HtmlDocument doc = client.Load(urlAddress);
+                HtmlNodeCollection Nodes = doc.DocumentNode.SelectNodes("//img[@src]");
+                foreach (var link in Nodes)
+                {
+                    if (link.OuterHtml.Contains("aria"))
+                    {
+                        Console.WriteLine(link.Attributes["src"].Value);
+                        using (WebClient webClient = new WebClient())
+                        {
+                            extension = Path.GetExtension(link.Attributes["src"].Value);
+                            webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
         private void dgvTweets_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -834,7 +876,7 @@ namespace TweetBooty
                     search.Count = Convert.ToInt32(cbNumTweets.SelectedItem);
                     search.IncludeEntities = true;
                     search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
-                    ShowTweets(service.Search(search));
+                    ShowTweets(service.Search(search), txtSearch.Text.Trim());
                     RateLimit(service.Response.RateLimitStatus);
                 }
                 catch (Exception ex)
