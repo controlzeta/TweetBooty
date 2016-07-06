@@ -271,20 +271,14 @@ namespace TweetBooty
         public void GetTrendingTopics(int id)
         {
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
-<<<<<<< HEAD
             lctfo.Id = id == 0 ? 116545 : id; //Mexico City
             //lctfo.Id = 116545; //Mexico City
-=======
-<<<<<<< HEAD
             lctfo.Id = id == 0 ? 116545 : id; //Mexico City
-=======
             lctfo.Id = 116545; //Mexico City
->>>>>>> origin/master
             //lctfo.Id = 134047; //Monterrey
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
             //lctfo.Id = 766273; //Madrid
->>>>>>> origin/master
             var trendss = service.ListLocalTrendsFor(lctfo);
             dgvTrendingTopics.Rows.Clear();
             dgvTrendingTopics.Refresh();
