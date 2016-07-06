@@ -217,22 +217,28 @@ namespace TweetBooty
             if (RTsByTheHour > 0)
             {
                 var statuses = GetBestTweets();
-                for (int i = 1; i <= 1; i++)
-                { 
-                    //Retweet most RT's
-                    RTTweet(statuses.ElementAt(i).Id);
-                    RTsByTheHour--;
+                if (statuses.Count > 0) 
+                {
+                    for (int i = 1; i <= 1; i++)
+                    {
+                        //Retweet most RT's
+                        RTTweet(statuses.ElementAt(i).Id);
+                        RTsByTheHour--;
+                    }
                 }
             }
             progressBar.PerformStep();
             if (FavsByTheHour > 0)
             {
                 var statuses = GetBestTweets();
-                for (int i = 1; i <= 2; i++)
+                if (statuses.Count > 0)
                 {
-                    //Fav most RT's
-                    FavTweet(statuses.ElementAt(i).Id);
-                    FavsByTheHour--;
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        //Fav most RT's
+                        FavTweet(statuses.ElementAt(i).Id);
+                        FavsByTheHour--;
+                    }
                 }
             }
             progressBar.PerformStep();
