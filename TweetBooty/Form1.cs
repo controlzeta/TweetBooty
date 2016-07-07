@@ -282,7 +282,7 @@ namespace TweetBooty
             lctfo.Id = id == 0 ? 116545 : id; //Mexico City
             //lctfo.Id = 116545; //Mexico City
             lctfo.Id = id == 0 ? 116545 : id; //Mexico City
-            lctfo.Id = 116545; //Mexico City
+            //lctfo.Id = 116545; //Mexico City
             //lctfo.Id = 134047; //Monterrey
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
@@ -362,7 +362,7 @@ namespace TweetBooty
                     row.Cells[1].Value = tweet.Author.ScreenName;       //Username
                     row.Cells[2].Value = tweet.Text;                    //Tweet
                     row.Cells[3].Value = tweet.RetweetCount;            //RT's
-                    getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda);
+                    getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda, tweet.IdStr);
                     dgvTweets.Rows.Add(row);
                     progressBar.PerformStep();
                 }
@@ -628,7 +628,7 @@ namespace TweetBooty
             return results;
         }
 
-        public void getTweetImage(string urlAddress, string hashtag)
+        public void getTweetImage(string urlAddress, string hashtag, string tweetId)
         {
             try
             {
@@ -651,7 +651,14 @@ namespace TweetBooty
                         using (WebClient webClient = new WebClient())
                         {
                             extension = Path.GetExtension(link.Attributes["src"].Value);
-                            webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
+                            if(extension == ".jpg")
+                            {
+                                if (!File.Exists(fullPath + "\\" + hashtag + "-" + tweetId + extension))
+                                {
+                                    //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
+                                    webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + tweetId + extension);
+                                }
+                            }
                         }
                     }
                 }
