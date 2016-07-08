@@ -224,7 +224,7 @@ namespace TweetBooty
                     for (int i = 1; i <= 1; i++)
                     {
                         //Retweet most RT's
-                        RTTweet(statuses.ElementAt(i).Id);
+                        RTTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
                         RTsByTheHour--;
                     }
                 }
@@ -238,7 +238,7 @@ namespace TweetBooty
                     for (int i = 1; i <= 2; i++)
                     {
                         //Fav most RT's
-                        FavTweet(statuses.ElementAt(i).Id);
+                        FavTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
                         FavsByTheHour--;
                     }
                 }
@@ -566,7 +566,7 @@ namespace TweetBooty
             return lineaCorta;
         }
 
-        public void FavTweet(long tweetID)
+        public void FavTweet(long tweetID, string tweet)
         {
             FavoriteTweetOptions fav = new FavoriteTweetOptions();
             fav.Id = tweetID;
@@ -575,14 +575,14 @@ namespace TweetBooty
             int counter = Convert.ToInt32(FavCounter.Text);
             if(service.Response.StatusDescription == "OK")
             {
-                SaveAction("Favorite", " ", tweetID, " ");
+                SaveAction("Favorite", tweet, tweetID, " ");
                 counter++;
             }
             FavCounter.Text = counter.ToString();
             getLog();
         }
 
-        public void RTTweet(long tweetID)
+        public void RTTweet(long tweetID, string tweet)
         { 
             RetweetOptions rt = new RetweetOptions();
             rt.Id = tweetID;
@@ -591,7 +591,7 @@ namespace TweetBooty
             int counter = Convert.ToInt32(TweetCounter.Text);
             if (service.Response.StatusDescription == "OK")
             {
-                SaveAction("ReTweet", " ", tweetID, " ");
+                SaveAction("ReTweet", tweet, tweetID, " ");
                 counter++; 
             }
             TweetCounter.Text = counter.ToString();
@@ -674,15 +674,16 @@ namespace TweetBooty
             try
             {
                 Int32 selectedRowCount = dgvTweets.Rows.GetRowCount(DataGridViewElementStates.Selected);
-                string tweetID = ""; string screenName = "";
+                string tweetID = ""; string screenName = ""; string tweet = "";
                 if (selectedRowCount > 0)
                 {
                     for (int i = 0; i < selectedRowCount; i++)
                     {
                         tweetID = dgvTweets.SelectedRows[i].Cells[0].Value.ToString();
                         screenName = dgvTweets.SelectedRows[i].Cells[1].Value.ToString();
+                        tweet = dgvTweets.SelectedRows[i].Cells[2].Value.ToString();
                     }
-                    DialogBox db = new DialogBox(tweetID, screenName);
+                    DialogBox db = new DialogBox(tweetID, screenName, tweet);
                     db.ShowDialog();
                 }
             }

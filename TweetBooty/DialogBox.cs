@@ -17,18 +17,19 @@ namespace TweetBooty
             InitializeComponent();
         }
 
-        public DialogBox(string TweetID, string ScreenName)
+        public DialogBox(string TweetID, string ScreenName, string Tweet)
         {
             InitializeComponent();
             lblTweetID.Text = TweetID;
             lblScreenName.Text = ScreenName;
+            lblTweet.Text = Tweet;
         }
 
         private void btnRT_Click(object sender, EventArgs e)
         {
             if (System.Windows.Forms.Application.OpenForms["Form1"] != null)
             {
-                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).RTTweet(Convert.ToInt64(lblTweetID.Text));
+                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).RTTweet(Convert.ToInt64(lblTweetID.Text), lblTweet.Text);
             }
             this.Hide();
         }
@@ -37,7 +38,7 @@ namespace TweetBooty
         {
             if (System.Windows.Forms.Application.OpenForms["Form1"] != null)
             {
-                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).FavTweet(Convert.ToInt64(lblTweetID.Text));
+                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).FavTweet(Convert.ToInt64(lblTweetID.Text), lblTweet.Text);
             }
             this.Hide();
         }
@@ -46,8 +47,8 @@ namespace TweetBooty
         {
             if (System.Windows.Forms.Application.OpenForms["Form1"] != null)
             {
-                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).FavTweet(Convert.ToInt64(lblTweetID.Text));
-                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).RTTweet(Convert.ToInt64(lblTweetID.Text));
+                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).FavTweet(Convert.ToInt64(lblTweetID.Text), lblTweet.Text);
+                (System.Windows.Forms.Application.OpenForms["Form1"] as Form1).RTTweet(Convert.ToInt64(lblTweetID.Text), lblTweet.Text);
             }
             this.Hide();
         }

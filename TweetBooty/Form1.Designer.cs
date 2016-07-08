@@ -71,6 +71,15 @@
             this.MentionUserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.txtAccessToken = new System.Windows.Forms.TextBox();
+            this.txtConsumerSecret = new System.Windows.Forms.TextBox();
+            this.txtConsumerKey = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -85,6 +94,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TweetCounter = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtAccessTokenSecret = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -96,8 +118,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).BeginInit();
+            this.tabPage5.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControl
@@ -106,6 +130,7 @@
             this.TabControl.Controls.Add(this.tabPage2);
             this.TabControl.Controls.Add(this.tabPage3);
             this.TabControl.Controls.Add(this.tabPage4);
+            this.TabControl.Controls.Add(this.tabPage5);
             this.TabControl.Location = new System.Drawing.Point(12, 47);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -465,6 +490,101 @@
             this.MentionId.HeaderText = "Id";
             this.MentionId.Name = "MentionId";
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.comboBox4);
+            this.tabPage5.Controls.Add(this.label16);
+            this.tabPage5.Controls.Add(this.comboBox3);
+            this.tabPage5.Controls.Add(this.label15);
+            this.tabPage5.Controls.Add(this.comboBox2);
+            this.tabPage5.Controls.Add(this.label14);
+            this.tabPage5.Controls.Add(this.button1);
+            this.tabPage5.Controls.Add(this.groupBox2);
+            this.tabPage5.Controls.Add(this.comboBox1);
+            this.tabPage5.Controls.Add(this.label13);
+            this.tabPage5.Controls.Add(this.txtAccessTokenSecret);
+            this.tabPage5.Controls.Add(this.txtAccessToken);
+            this.tabPage5.Controls.Add(this.txtConsumerSecret);
+            this.tabPage5.Controls.Add(this.txtConsumerKey);
+            this.tabPage5.Controls.Add(this.label12);
+            this.tabPage5.Controls.Add(this.label11);
+            this.tabPage5.Controls.Add(this.label10);
+            this.tabPage5.Controls.Add(this.label9);
+            this.tabPage5.Controls.Add(this.label8);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(927, 410);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Configuration";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // txtAccessToken
+            // 
+            this.txtAccessToken.Location = new System.Drawing.Point(26, 155);
+            this.txtAccessToken.Name = "txtAccessToken";
+            this.txtAccessToken.Size = new System.Drawing.Size(412, 20);
+            this.txtAccessToken.TabIndex = 7;
+            // 
+            // txtConsumerSecret
+            // 
+            this.txtConsumerSecret.Location = new System.Drawing.Point(26, 106);
+            this.txtConsumerSecret.Name = "txtConsumerSecret";
+            this.txtConsumerSecret.Size = new System.Drawing.Size(412, 20);
+            this.txtConsumerSecret.TabIndex = 6;
+            // 
+            // txtConsumerKey
+            // 
+            this.txtConsumerKey.Location = new System.Drawing.Point(26, 55);
+            this.txtConsumerKey.Name = "txtConsumerKey";
+            this.txtConsumerKey.Size = new System.Drawing.Size(412, 20);
+            this.txtConsumerKey.TabIndex = 5;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(27, 193);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(110, 13);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Access Token Secret";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(27, 139);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(73, 13);
+            this.label11.TabIndex = 3;
+            this.label11.Text = "AccessToken";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(27, 90);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(88, 13);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "Consumer Secret";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(27, 39);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(75, 13);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Consumer Key";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(356, 13);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(167, 20);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "Configuration Panel";
+            // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(666, 495);
@@ -522,9 +642,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(580, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 13;
-            this.label3.Text = "Fotos:";
+            this.label3.Text = "Photos:";
             // 
             // groupBox1
             // 
@@ -539,7 +659,7 @@
             this.groupBox1.Size = new System.Drawing.Size(273, 49);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Contadores";
+            this.groupBox1.Text = "Counters";
             // 
             // FollowCounter
             // 
@@ -595,6 +715,123 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "RT\'s o Tweets:";
             // 
+            // txtAccessTokenSecret
+            // 
+            this.txtAccessTokenSecret.Location = new System.Drawing.Point(26, 209);
+            this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
+            this.txtAccessTokenSecret.Size = new System.Drawing.Size(412, 20);
+            this.txtAccessTokenSecret.TabIndex = 8;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(518, 39);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 13);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "Span in Minutes";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(521, 55);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(101, 21);
+            this.comboBox1.TabIndex = 10;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.radioButton2);
+            this.groupBox2.Controls.Add(this.radioButton1);
+            this.groupBox2.Location = new System.Drawing.Point(671, 30);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(212, 48);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Save Photos on Searches";
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(20, 20);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(41, 17);
+            this.radioButton1.TabIndex = 0;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "yes";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(114, 20);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(37, 17);
+            this.radioButton2.TabIndex = 1;
+            this.radioButton2.TabStop = true;
+            this.radioButton2.Text = "no";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(413, 296);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Guardar";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(521, 105);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(56, 21);
+            this.comboBox2.TabIndex = 14;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(518, 89);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(61, 13);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "Tweet Limit";
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(604, 105);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(56, 21);
+            this.comboBox3.TabIndex = 16;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(601, 89);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(49, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "Fav Limit";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(686, 105);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(56, 21);
+            this.comboBox4.TabIndex = 18;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(683, 89);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(64, 13);
+            this.label16.TabIndex = 17;
+            this.label16.Text = "Follow  Limit";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -622,10 +859,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvTrendingTopics)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,6 +930,28 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label TweetCounter;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TextBox txtAccessToken;
+        private System.Windows.Forms.TextBox txtConsumerSecret;
+        private System.Windows.Forms.TextBox txtConsumerKey;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtAccessTokenSecret;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button button1;
 
     }
 }
