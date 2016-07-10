@@ -63,6 +63,36 @@ namespace TweetBooty
             }
             cbNumTweets.SelectedIndex = 0;
 
+            for (int i = 1; i <= 12; i++)
+            {
+                cbSpanMinutes.Items.Add((i * 5).ToString());
+            }
+            cbSpanMinutes.SelectedIndex = 2;
+
+            for (int i = 1; i <= 15; i++)
+            {
+                cbTweetLimit.Items.Add((i).ToString());
+            }
+            cbTweetLimit.SelectedIndex = 2;
+
+            for (int i = 1; i <= 15; i++)
+            {
+                cbRTLimit.Items.Add((i).ToString());
+            }
+            cbRTLimit.SelectedIndex = 2;
+
+            for (int i = 1; i <= 15; i++)
+            {
+                cbFavLimit.Items.Add((i).ToString());
+            }
+            cbFavLimit.SelectedIndex = 2;
+
+            for (int i = 1; i <= 10; i++)
+            {
+                cbFollowLimit.Items.Add((i).ToString());
+            }
+            cbFollowLimit.SelectedIndex = 0;
+
             // Create a 15 minute timer 
             FifteenMinuteTimer = new System.Timers.Timer(15 * 60 * 1000);
             // Hook up the Elapsed event for the timer.
@@ -104,6 +134,11 @@ namespace TweetBooty
                 RTsByTheHour = config.TweetLimit;
                 FavsByTheHour = config.FavLimit;
                 FollowsByTheHour = config.FollowLimit;
+
+                txtConsumerKey.Text = _consumerKey;
+                txtConsumerSecret.Text = _consumerSecret;
+                txtAccessToken.Text = _accessToken;
+                txtAccessTokenSecret.Text = _accessTokenSecret;
             }
         }
 
@@ -281,8 +316,6 @@ namespace TweetBooty
             ListLocalTrendsForOptions lctfo = new ListLocalTrendsForOptions();
             lctfo.Id = id == 0 ? 116545 : id; //Mexico City
             //lctfo.Id = 116545; //Mexico City
-            lctfo.Id = id == 0 ? 116545 : id; //Mexico City
-            //lctfo.Id = 116545; //Mexico City
             //lctfo.Id = 134047; //Monterrey
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
@@ -362,7 +395,10 @@ namespace TweetBooty
                     row.Cells[1].Value = tweet.Author.ScreenName;       //Username
                     row.Cells[2].Value = tweet.Text;                    //Tweet
                     row.Cells[3].Value = tweet.RetweetCount;            //RT's
-                    getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda, tweet.IdStr);
+                    if (rbtnYesSavePhotos.Checked)
+                    {
+                        getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda, tweet.IdStr);
+                    }
                     dgvTweets.Rows.Add(row);
                     progressBar.PerformStep();
                 }
@@ -886,6 +922,10 @@ namespace TweetBooty
                     search.Resulttype = Utilities.ResultType(cbTypeResult.SelectedIndex);
                     ShowTweets(service.Search(search), txtSearch.Text.Trim());
                     RateLimit(service.Response.RateLimitStatus);
+                    if (rbtnYesSaveHashtags.Checked)
+                    {
+                        SaveHashtags();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -923,6 +963,11 @@ namespace TweetBooty
         }
 
         #endregion "Botones"
+
+        private void btnReloadPhotos_Click(object sender, EventArgs e)
+        {
+            ScanForMedia();
+        }
 
     }
 }

@@ -37,3 +37,6 @@ C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.xml
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.pdb
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.xml

@@ -72,6 +72,24 @@
             this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.cbRTLimit = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbtnNoSaveHashtags = new System.Windows.Forms.RadioButton();
+            this.rbtnYesSaveHashtags = new System.Windows.Forms.RadioButton();
+            this.cbFollowLimit = new System.Windows.Forms.ComboBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.cbFavLimit = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.cbTweetLimit = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbtnNoSavePhotos = new System.Windows.Forms.RadioButton();
+            this.rbtnYesSavePhotos = new System.Windows.Forms.RadioButton();
+            this.cbSpanMinutes = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.txtAccessTokenSecret = new System.Windows.Forms.TextBox();
             this.txtAccessToken = new System.Windows.Forms.TextBox();
             this.txtConsumerSecret = new System.Windows.Forms.TextBox();
             this.txtConsumerKey = new System.Windows.Forms.TextBox();
@@ -94,19 +112,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TweetCounter = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtAccessTokenSecret = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.label16 = new System.Windows.Forms.Label();
+            this.btnReloadPhotos = new System.Windows.Forms.Button();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -119,9 +125,10 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).BeginInit();
             this.tabPage5.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // TabControl
@@ -492,15 +499,18 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this.comboBox4);
+            this.tabPage5.Controls.Add(this.cbRTLimit);
+            this.tabPage5.Controls.Add(this.label17);
+            this.tabPage5.Controls.Add(this.groupBox3);
+            this.tabPage5.Controls.Add(this.cbFollowLimit);
             this.tabPage5.Controls.Add(this.label16);
-            this.tabPage5.Controls.Add(this.comboBox3);
+            this.tabPage5.Controls.Add(this.cbFavLimit);
             this.tabPage5.Controls.Add(this.label15);
-            this.tabPage5.Controls.Add(this.comboBox2);
+            this.tabPage5.Controls.Add(this.cbTweetLimit);
             this.tabPage5.Controls.Add(this.label14);
             this.tabPage5.Controls.Add(this.button1);
             this.tabPage5.Controls.Add(this.groupBox2);
-            this.tabPage5.Controls.Add(this.comboBox1);
+            this.tabPage5.Controls.Add(this.cbSpanMinutes);
             this.tabPage5.Controls.Add(this.label13);
             this.tabPage5.Controls.Add(this.txtAccessTokenSecret);
             this.tabPage5.Controls.Add(this.txtAccessToken);
@@ -517,6 +527,173 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Configuration";
             this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // cbRTLimit
+            // 
+            this.cbRTLimit.FormattingEnabled = true;
+            this.cbRTLimit.Location = new System.Drawing.Point(604, 105);
+            this.cbRTLimit.Name = "cbRTLimit";
+            this.cbRTLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbRTLimit.TabIndex = 21;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(601, 89);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(46, 13);
+            this.label17.TabIndex = 20;
+            this.label17.Text = "RT Limit";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rbtnNoSaveHashtags);
+            this.groupBox3.Controls.Add(this.rbtnYesSaveHashtags);
+            this.groupBox3.Location = new System.Drawing.Point(684, 84);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(212, 48);
+            this.groupBox3.TabIndex = 19;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Save Hashtags on Searches";
+            // 
+            // rbtnNoSaveHashtags
+            // 
+            this.rbtnNoSaveHashtags.AutoSize = true;
+            this.rbtnNoSaveHashtags.Checked = true;
+            this.rbtnNoSaveHashtags.Location = new System.Drawing.Point(114, 20);
+            this.rbtnNoSaveHashtags.Name = "rbtnNoSaveHashtags";
+            this.rbtnNoSaveHashtags.Size = new System.Drawing.Size(37, 17);
+            this.rbtnNoSaveHashtags.TabIndex = 1;
+            this.rbtnNoSaveHashtags.TabStop = true;
+            this.rbtnNoSaveHashtags.Text = "no";
+            this.rbtnNoSaveHashtags.UseVisualStyleBackColor = true;
+            // 
+            // rbtnYesSaveHashtags
+            // 
+            this.rbtnYesSaveHashtags.AutoSize = true;
+            this.rbtnYesSaveHashtags.Location = new System.Drawing.Point(20, 20);
+            this.rbtnYesSaveHashtags.Name = "rbtnYesSaveHashtags";
+            this.rbtnYesSaveHashtags.Size = new System.Drawing.Size(41, 17);
+            this.rbtnYesSaveHashtags.TabIndex = 0;
+            this.rbtnYesSaveHashtags.Text = "yes";
+            this.rbtnYesSaveHashtags.UseVisualStyleBackColor = true;
+            // 
+            // cbFollowLimit
+            // 
+            this.cbFollowLimit.FormattingEnabled = true;
+            this.cbFollowLimit.Location = new System.Drawing.Point(604, 155);
+            this.cbFollowLimit.Name = "cbFollowLimit";
+            this.cbFollowLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbFollowLimit.TabIndex = 18;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(601, 139);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(64, 13);
+            this.label16.TabIndex = 17;
+            this.label16.Text = "Follow  Limit";
+            // 
+            // cbFavLimit
+            // 
+            this.cbFavLimit.FormattingEnabled = true;
+            this.cbFavLimit.Location = new System.Drawing.Point(521, 155);
+            this.cbFavLimit.Name = "cbFavLimit";
+            this.cbFavLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbFavLimit.TabIndex = 16;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(518, 139);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(49, 13);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "Fav Limit";
+            // 
+            // cbTweetLimit
+            // 
+            this.cbTweetLimit.FormattingEnabled = true;
+            this.cbTweetLimit.Location = new System.Drawing.Point(521, 105);
+            this.cbTweetLimit.Name = "cbTweetLimit";
+            this.cbTweetLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbTweetLimit.TabIndex = 14;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(518, 89);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(61, 13);
+            this.label14.TabIndex = 13;
+            this.label14.Text = "Tweet Limit";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(413, 296);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Guardar";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbtnNoSavePhotos);
+            this.groupBox2.Controls.Add(this.rbtnYesSavePhotos);
+            this.groupBox2.Location = new System.Drawing.Point(684, 30);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(212, 48);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Save Photos on Searches";
+            // 
+            // rbtnNoSavePhotos
+            // 
+            this.rbtnNoSavePhotos.AutoSize = true;
+            this.rbtnNoSavePhotos.Checked = true;
+            this.rbtnNoSavePhotos.Location = new System.Drawing.Point(114, 20);
+            this.rbtnNoSavePhotos.Name = "rbtnNoSavePhotos";
+            this.rbtnNoSavePhotos.Size = new System.Drawing.Size(37, 17);
+            this.rbtnNoSavePhotos.TabIndex = 1;
+            this.rbtnNoSavePhotos.TabStop = true;
+            this.rbtnNoSavePhotos.Text = "no";
+            this.rbtnNoSavePhotos.UseVisualStyleBackColor = true;
+            // 
+            // rbtnYesSavePhotos
+            // 
+            this.rbtnYesSavePhotos.AutoSize = true;
+            this.rbtnYesSavePhotos.Location = new System.Drawing.Point(20, 20);
+            this.rbtnYesSavePhotos.Name = "rbtnYesSavePhotos";
+            this.rbtnYesSavePhotos.Size = new System.Drawing.Size(41, 17);
+            this.rbtnYesSavePhotos.TabIndex = 0;
+            this.rbtnYesSavePhotos.Text = "yes";
+            this.rbtnYesSavePhotos.UseVisualStyleBackColor = true;
+            // 
+            // cbSpanMinutes
+            // 
+            this.cbSpanMinutes.FormattingEnabled = true;
+            this.cbSpanMinutes.Location = new System.Drawing.Point(521, 55);
+            this.cbSpanMinutes.Name = "cbSpanMinutes";
+            this.cbSpanMinutes.Size = new System.Drawing.Size(101, 21);
+            this.cbSpanMinutes.TabIndex = 10;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(518, 39);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(83, 13);
+            this.label13.TabIndex = 9;
+            this.label13.Text = "Span in Minutes";
+            // 
+            // txtAccessTokenSecret
+            // 
+            this.txtAccessTokenSecret.Location = new System.Drawing.Point(26, 209);
+            this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
+            this.txtAccessTokenSecret.Size = new System.Drawing.Size(412, 20);
+            this.txtAccessTokenSecret.TabIndex = 8;
             // 
             // txtAccessToken
             // 
@@ -607,7 +784,7 @@
             this.flowLayoutPanel1.Controls.Add(this.lblWaitingTime);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(21, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(541, 28);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(497, 28);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // lblRateLimit
@@ -631,7 +808,7 @@
             // lblNumFotos
             // 
             this.lblNumFotos.AutoSize = true;
-            this.lblNumFotos.Location = new System.Drawing.Point(617, 16);
+            this.lblNumFotos.Location = new System.Drawing.Point(614, 13);
             this.lblNumFotos.Name = "lblNumFotos";
             this.lblNumFotos.Size = new System.Drawing.Size(13, 13);
             this.lblNumFotos.TabIndex = 14;
@@ -640,7 +817,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(580, 16);
+            this.label3.Location = new System.Drawing.Point(577, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 13;
@@ -715,128 +892,22 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "RT\'s o Tweets:";
             // 
-            // txtAccessTokenSecret
+            // btnReloadPhotos
             // 
-            this.txtAccessTokenSecret.Location = new System.Drawing.Point(26, 209);
-            this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
-            this.txtAccessTokenSecret.Size = new System.Drawing.Size(412, 20);
-            this.txtAccessTokenSecret.TabIndex = 8;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(518, 39);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 13);
-            this.label13.TabIndex = 9;
-            this.label13.Text = "Span in Minutes";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(521, 55);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(101, 21);
-            this.comboBox1.TabIndex = 10;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.radioButton2);
-            this.groupBox2.Controls.Add(this.radioButton1);
-            this.groupBox2.Location = new System.Drawing.Point(671, 30);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(212, 48);
-            this.groupBox2.TabIndex = 11;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Save Photos on Searches";
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(20, 20);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(41, 17);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "yes";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(114, 20);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(37, 17);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "no";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(413, 296);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Guardar";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(521, 105);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(56, 21);
-            this.comboBox2.TabIndex = 14;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(518, 89);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(61, 13);
-            this.label14.TabIndex = 13;
-            this.label14.Text = "Tweet Limit";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(604, 105);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(56, 21);
-            this.comboBox3.TabIndex = 16;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(601, 89);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(49, 13);
-            this.label15.TabIndex = 15;
-            this.label15.Text = "Fav Limit";
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(686, 105);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(56, 21);
-            this.comboBox4.TabIndex = 18;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(683, 89);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(64, 13);
-            this.label16.TabIndex = 17;
-            this.label16.Text = "Follow  Limit";
+            this.btnReloadPhotos.Location = new System.Drawing.Point(558, 30);
+            this.btnReloadPhotos.Name = "btnReloadPhotos";
+            this.btnReloadPhotos.Size = new System.Drawing.Size(96, 23);
+            this.btnReloadPhotos.TabIndex = 16;
+            this.btnReloadPhotos.Text = "Reload Photos";
+            this.btnReloadPhotos.UseVisualStyleBackColor = true;
+            this.btnReloadPhotos.Click += new System.EventHandler(this.btnReloadPhotos_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(959, 530);
+            this.Controls.Add(this.btnReloadPhotos);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.lblNumFotos);
             this.Controls.Add(this.flowLayoutPanel1);
@@ -861,12 +932,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvMentions)).EndInit();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -941,17 +1014,23 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtAccessTokenSecret;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RadioButton rbtnNoSavePhotos;
+        private System.Windows.Forms.RadioButton rbtnYesSavePhotos;
+        private System.Windows.Forms.ComboBox cbSpanMinutes;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox cbFollowLimit;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox cbFavLimit;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbTweetLimit;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton rbtnNoSaveHashtags;
+        private System.Windows.Forms.RadioButton rbtnYesSaveHashtags;
+        private System.Windows.Forms.ComboBox cbRTLimit;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button btnReloadPhotos;
 
     }
 }
