@@ -41,6 +41,9 @@ namespace TweetBooty
         public int FollowsByTheHour = 0;
         public int FifteenMinutes = 0;
         public int Hours = 0;
+        public int minutesLeft = 0;
+        public int secondsLeft = 0;
+        Random rand = new Random();
 
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
@@ -60,6 +63,10 @@ namespace TweetBooty
             for (int i = 1; i <= 10; i++)
             {
                 cbNumTweets.Items.Add((i * 10).ToString());
+            }
+            for (int i = 2; i <= 6; i++)
+            {
+                cbNumTweets.Items.Add((i * 100).ToString());
             }
             cbNumTweets.SelectedIndex = 0;
 
@@ -94,10 +101,11 @@ namespace TweetBooty
             cbFollowLimit.SelectedIndex = 0;
 
             // Create a 15 minute timer 
-            FifteenMinuteTimer = new System.Timers.Timer(15 * 60 * 1000);
-            // Hook up the Elapsed event for the timer.
-            FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(FifteenMinuteEvent);
-            FifteenMinuteTimer.Enabled = true;
+            //FifteenMinuteTimer = new System.Timers.Timer(15 * 60 * 1000);
+            //// Hook up the Elapsed event for the timer.
+            //FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(FifteenMinuteEvent);
+            //FifteenMinuteTimer.Enabled = true;
+            RandomTime();
 
             // Create a 1 hour timer 
             FifteenMinuteTimer = new System.Timers.Timer(60 * 60 * 1000);
@@ -204,7 +212,7 @@ namespace TweetBooty
                 while (nuevoStatus.Length <= tweetLength)
                 {
                     List<Hashtag> lsthashtags = (from h in bd.Hashtags
-                                                 where h.repeated > 40
+                                                 where h.repeated > 80
                                                  select h).ToList();
                     random = rnd.Next(0, lsthashtags.Count);
                     if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
@@ -227,66 +235,112 @@ namespace TweetBooty
 
         private void FifteenMinuteEvent(object source, ElapsedEventArgs e)
         {
-            progressBar.Visible = true;
-            progressBar.Minimum = 1;
-            progressBar.Value = 1;
-            progressBar.Step = 1;
-            progressBar.Maximum = 4;
-            Random rnd = new Random();
-            FifteenMinutes++;
-            progressBar.PerformStep();
-            if (TweetsByTheHour > 0)
-            {
-                //Tweet
-                try
+            try
                 {
-                    TweetsByTheHour++;
-                    string nuevoStatus = ConstructTweet(85);
-                    if (SendTweet(nuevoStatus))
-                        ShowMessage("Tweet Send!", nuevoStatus);
-                }
-                catch (Exception ex)
+                timer1.Stop();
+                FifteenMinuteTimer.Stop();
+                // Create Random number 
+                int times = rand.Next(1,5);
+                while (times > 0)
                 {
-                    throw ex;
-                }
-                TweetsByTheHour--;
-            }
-            if (RTsByTheHour > 0)
-            {
-                var statuses = GetBestTweets();
-                if (statuses.Count > 0) 
-                {
-                    for (int i = 1; i <= 1; i++)
+                    int action = rand.Next(1, 3);
+                    switch (action)
                     {
-                        //Retweet most RT's
-                        RTTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
-                        RTsByTheHour--;
+                        case 1: //Tweet
+                            string nuevoStatus = ConstructTweet(85);
+                            SendTweet(nuevoStatus);
+                            break;
+                        case 2: //Fav
+                            var statuses = GetBestTweets();
+                            if (statuses.Count > 0)
+                            {
+                                FavTweet(statuses.ElementAt(0).Id, statuses.ElementAt(0).Text);
+                            }
+                            break;
+                        case 3: //RT
+                            var statuses2 = GetBestTweets();
+                            if (statuses2.Count > 0)
+                            {
+                                RTTweet(statuses2.ElementAt(0).Id, statuses2.ElementAt(0).Text);
+                            }
+                            break;
                     }
+                    times--;
                 }
-            }
-            progressBar.PerformStep();
-            if (FavsByTheHour > 0)
+                //progressBar.Visible = true;
+                //progressBar.Minimum = 1;
+                //progressBar.Value = 1;
+                //progressBar.Step = 1;
+                //progressBar.Maximum = 4;
+                //Random rnd = new Random();
+                //FifteenMinutes++;
+                //progressBar.PerformStep();
+                //if (TweetsByTheHour > 0)
+                //{
+                //    //Tweet
+                //    TweetsByTheHour++;
+                //    string nuevoStatus = ConstructTweet(85);
+                //    SendTweet(nuevoStatus);
+                //    //if (SendTweet(nuevoStatus))
+                //    //ShowMessage("Tweet Send!", nuevoStatus);
+                //}
+                //if (RTsByTheHour > 0)
+                //{
+                //    var statuses = GetBestTweets();
+                //    if (statuses.Count > 0) 
+                //    {
+                //        for (int i = 1; i <= 1; i++)
+                //        {
+                //            //Retweet most RT's
+                //            RTTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
+                //            RTsByTheHour--;
+                //        }
+                //    }
+                //}
+                //progressBar.PerformStep();
+                //if (FavsByTheHour > 0)
+                //{
+                //    var statuses = GetBestTweets();
+                //    if (statuses.Count > 0)
+                //    {
+                //        for (int i = 1; i <= 2; i++)
+                //        {
+                //            //Fav most RT's
+                //            if(statuses.Count >= i)
+                //                FavTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
+                //            FavsByTheHour--;
+                //        }
+                //    }
+                //}
+                //progressBar.PerformStep();
+                //if (FifteenMinutes == 2 || FifteenMinutes == 4 && FollowsByTheHour > 0 )
+                //{ 
+                //    //MostRetweeted follow
+                //    FollowsByTheHour--;
+                //}
+                getLog();
+                RandomTime();
+
+                }
+            catch (Exception ex)
             {
-                var statuses = GetBestTweets();
-                if (statuses.Count > 0)
-                {
-                    for (int i = 1; i <= 2; i++)
-                    {
-                        //Fav most RT's
-                        FavTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
-                        FavsByTheHour--;
-                    }
-                }
+                lblErrors.Text = "Error: " + ex.Message;
             }
-            progressBar.PerformStep();
-            if (FifteenMinutes == 2 || FifteenMinutes == 4 && FollowsByTheHour > 0 )
-            { 
-                //MostRetweeted follow
-                FollowsByTheHour--;
-            }
-            progressBar.PerformStep();
-            getLog();
-            progressBar.PerformStep();
+        }
+
+        private void RandomTime()
+        {
+            minutesLeft =
+            rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
+                    Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
+            // Create a random minute timer 
+            //FifteenMinuteTimer = new System.Timers.Timer( minutesLeft * 60 * 1000);
+            timer1.Enabled = true;
+            // Hook up the Elapsed event for the timer.
+            //FifteenMinuteTimer.Elapsed += new ElapsedEventHandler(FifteenMinuteEvent);
+            //FifteenMinuteTimer.Enabled = true;
+            secondsLeft = minutesLeft * 60;
+            timer1.Start();
         }
 
         private void OneHourEvent(object source, ElapsedEventArgs e)
@@ -397,7 +451,14 @@ namespace TweetBooty
                     row.Cells[3].Value = tweet.RetweetCount;            //RT's
                     if (rbtnYesSavePhotos.Checked)
                     {
-                        getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda, tweet.IdStr);
+                        //if (!tweet.Text.Contains("RT @"))
+                        //{
+                            getTweetImage(constructStatusURL(tweet.Author.ScreenName, tweet.IdStr), terminoBusqueda, tweet.IdStr);
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine(tweet.RawSource);
+                        //}
                     }
                     dgvTweets.Rows.Add(row);
                     progressBar.PerformStep();
@@ -686,13 +747,14 @@ namespace TweetBooty
                         Console.WriteLine(link.Attributes["src"].Value);
                         using (WebClient webClient = new WebClient())
                         {
+                            var imgName = Path.GetFileNameWithoutExtension(link.Attributes["src"].Value);
                             extension = Path.GetExtension(link.Attributes["src"].Value);
                             if(extension == ".jpg")
                             {
-                                if (!File.Exists(fullPath + "\\" + hashtag + "-" + tweetId + extension))
+                                if (!File.Exists(fullPath + "\\" + imgName + extension))
                                 {
                                     //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
-                                    webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + tweetId + extension);
+                                    webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + imgName + extension);
                                 }
                             }
                         }
@@ -941,7 +1003,7 @@ namespace TweetBooty
 
         private void btnConstructTweet_Click(object sender, EventArgs e)
         {
-            txtSendTweet.Text = ConstructTweet(110);
+            txtSendTweet.Text = ConstructTweet(85);
         }
 
         private void btnHashtagDelete_Click(object sender, EventArgs e)
@@ -967,6 +1029,29 @@ namespace TweetBooty
         private void btnReloadPhotos_Click(object sender, EventArgs e)
         {
             ScanForMedia();
+        }
+
+        private void btnSchedule_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (secondsLeft != 0)
+            {
+                lblCounter.Text = ((secondsLeft / 60).ToString().Count<char>() == 1 ?
+                    "0" + (secondsLeft / 60).ToString() :
+                    (secondsLeft / 60).ToString()) + ":" +
+                    ((secondsLeft % 60).ToString().Count<char>() == 1 ?
+                    "0" + (secondsLeft % 60).ToString() :
+                    (secondsLeft % 60).ToString());
+                secondsLeft--;
+            }
+            else
+            {
+                FifteenMinuteEvent(this, null);
+            }
         }
 
     }

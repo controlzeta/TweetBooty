@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -52,6 +53,7 @@
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnSchedule = new System.Windows.Forms.Button();
             this.cbTrendingTopics = new System.Windows.Forms.ComboBox();
             this.btnConstructTweet = new System.Windows.Forms.Button();
             this.dgvLog = new System.Windows.Forms.DataGridView();
@@ -113,6 +115,9 @@
             this.TweetCounter = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnReloadPhotos = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lblCounter = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -333,6 +338,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btnSchedule);
             this.tabPage3.Controls.Add(this.cbTrendingTopics);
             this.tabPage3.Controls.Add(this.btnConstructTweet);
             this.tabPage3.Controls.Add(this.dgvLog);
@@ -349,10 +355,20 @@
             this.tabPage3.Text = "Tweet";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // btnSchedule
+            // 
+            this.btnSchedule.Location = new System.Drawing.Point(624, 24);
+            this.btnSchedule.Name = "btnSchedule";
+            this.btnSchedule.Size = new System.Drawing.Size(74, 23);
+            this.btnSchedule.TabIndex = 8;
+            this.btnSchedule.Text = "Schedule";
+            this.btnSchedule.UseVisualStyleBackColor = true;
+            this.btnSchedule.Click += new System.EventHandler(this.btnSchedule_Click);
+            // 
             // cbTrendingTopics
             // 
             this.cbTrendingTopics.FormattingEnabled = true;
-            this.cbTrendingTopics.Location = new System.Drawing.Point(650, 32);
+            this.cbTrendingTopics.Location = new System.Drawing.Point(649, 61);
             this.cbTrendingTopics.Name = "cbTrendingTopics";
             this.cbTrendingTopics.Size = new System.Drawing.Size(247, 21);
             this.cbTrendingTopics.TabIndex = 7;
@@ -410,7 +426,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(731, 16);
+            this.label7.Location = new System.Drawing.Point(727, 42);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(84, 13);
             this.label7.TabIndex = 4;
@@ -421,9 +437,9 @@
             this.dgvTrendingTopics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTrendingTopics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.TrendingTopic});
-            this.dgvTrendingTopics.Location = new System.Drawing.Point(650, 61);
+            this.dgvTrendingTopics.Location = new System.Drawing.Point(650, 88);
             this.dgvTrendingTopics.Name = "dgvTrendingTopics";
-            this.dgvTrendingTopics.Size = new System.Drawing.Size(247, 321);
+            this.dgvTrendingTopics.Size = new System.Drawing.Size(247, 294);
             this.dgvTrendingTopics.TabIndex = 3;
             // 
             // TrendingTopic
@@ -784,7 +800,7 @@
             this.flowLayoutPanel1.Controls.Add(this.lblWaitingTime);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(21, 12);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(497, 28);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(454, 28);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // lblRateLimit
@@ -808,7 +824,7 @@
             // lblNumFotos
             // 
             this.lblNumFotos.AutoSize = true;
-            this.lblNumFotos.Location = new System.Drawing.Point(614, 13);
+            this.lblNumFotos.Location = new System.Drawing.Point(624, 13);
             this.lblNumFotos.Name = "lblNumFotos";
             this.lblNumFotos.Size = new System.Drawing.Size(13, 13);
             this.lblNumFotos.TabIndex = 14;
@@ -817,7 +833,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(577, 13);
+            this.label3.Location = new System.Drawing.Point(587, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(43, 13);
             this.label3.TabIndex = 13;
@@ -894,7 +910,7 @@
             // 
             // btnReloadPhotos
             // 
-            this.btnReloadPhotos.Location = new System.Drawing.Point(558, 30);
+            this.btnReloadPhotos.Location = new System.Drawing.Point(568, 30);
             this.btnReloadPhotos.Name = "btnReloadPhotos";
             this.btnReloadPhotos.Size = new System.Drawing.Size(96, 23);
             this.btnReloadPhotos.TabIndex = 16;
@@ -902,13 +918,38 @@
             this.btnReloadPhotos.UseVisualStyleBackColor = true;
             this.btnReloadPhotos.Click += new System.EventHandler(this.btnReloadPhotos_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // lblCounter
+            // 
+            this.lblCounter.AutoSize = true;
+            this.lblCounter.Location = new System.Drawing.Point(502, 32);
+            this.lblCounter.Name = "lblCounter";
+            this.lblCounter.Size = new System.Drawing.Size(49, 13);
+            this.lblCounter.TabIndex = 4;
+            this.lblCounter.Text = "00:00:00";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(494, 12);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(62, 13);
+            this.label18.TabIndex = 17;
+            this.label18.Text = "Next Action";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(959, 530);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.btnReloadPhotos);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.lblCounter);
             this.Controls.Add(this.lblNumFotos);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label3);
@@ -1031,6 +1072,10 @@
         private System.Windows.Forms.ComboBox cbRTLimit;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button btnReloadPhotos;
+        private System.Windows.Forms.Button btnSchedule;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label lblCounter;
+        private System.Windows.Forms.Label label18;
 
     }
 }
