@@ -16,7 +16,7 @@ using System.Timers;
 using System.Xml;
 using System.Net;
 using HtmlAgilityPack;
-
+using System.Threading;
 
 namespace TweetBooty
 {
@@ -243,7 +243,7 @@ namespace TweetBooty
                 int times = rand.Next(1,5);
                 while (times > 0)
                 {
-                    int action = rand.Next(1, 3);
+                    int action = rand.Next(1, 4);
                     switch (action)
                     {
                         case 1: //Tweet
@@ -262,6 +262,14 @@ namespace TweetBooty
                             if (statuses2.Count > 0)
                             {
                                 RTTweet(statuses2.ElementAt(0).Id, statuses2.ElementAt(0).Text);
+                            }
+                            break;
+                        case 4: //RT & FAV
+                            var statuses3 = GetBestTweets();
+                            if (statuses3.Count > 0)
+                            {
+                                FavTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
+                                RTTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
                             }
                             break;
                     }
@@ -330,9 +338,9 @@ namespace TweetBooty
 
         private void RandomTime()
         {
-            minutesLeft =
-            rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
-                    Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
+            minutesLeft = rand.Next(38, 52);
+            //rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
+            //        Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
             // Create a random minute timer 
             //FifteenMinuteTimer = new System.Timers.Timer( minutesLeft * 60 * 1000);
             timer1.Enabled = true;
@@ -617,6 +625,7 @@ namespace TweetBooty
                     System.IO.File.Move(mediaPath, copyFilePath);
                     return true;
                 }
+                lblErrors.Text = service.Response.StatusDescription + " " + service.Response.Error;
                 return false;
             }
             catch (Exception ex)
