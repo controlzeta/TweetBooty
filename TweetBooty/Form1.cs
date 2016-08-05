@@ -47,6 +47,7 @@ namespace TweetBooty
 
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
+        public List<TwitterUser> friendList = new List<TwitterUser>();
 
         public Form1()
         {
@@ -241,9 +242,10 @@ namespace TweetBooty
                 FifteenMinuteTimer.Stop();
                 // Create Random number 
                 int times = rand.Next(1,5);
+                bool AlreadyRecommended = false;
                 while (times > 0)
                 {
-                    int action = rand.Next(1, 4);
+                    int action = rand.Next(1, 5);
                     switch (action)
                     {
                         case 1: //Tweet
@@ -270,6 +272,13 @@ namespace TweetBooty
                             {
                                 FavTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
                                 RTTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
+                            }
+                            break;
+                        case 5: //Recommend
+                            if (!AlreadyRecommended)
+                            {
+                                Recommended();
+                                AlreadyRecommended = true;
                             }
                             break;
                     }
@@ -338,7 +347,7 @@ namespace TweetBooty
 
         private void RandomTime()
         {
-            minutesLeft = rand.Next(38, 52);
+            minutesLeft = rand.Next(30, 52);
             //rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
             //        Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
             // Create a random minute timer 
@@ -719,6 +728,29 @@ namespace TweetBooty
             }
             FollowCounter.Text = counter.ToString();
             getLog();
+        }
+
+        public void Recommended()
+        {
+            ListFriendsOptions Friends = new ListFriendsOptions();
+            Friends.ScreenName = "nalgaprontacom";
+            Friends.Count = 50;
+            friendList = service.ListFriends(Friends);
+            string status = "Debes seguirlos: ";
+            int contador = 0;
+            while (status.Length <= 88 && contador <= 6)
+            {
+                int index = rand.Next(0, friendList.Count);
+                //foreach (TwitterUser t in friendList)
+                //{
+                    if (friendList.ElementAt(index).ScreenName.Length + status.Length <= 87)
+                    {
+                        status += " @" + friendList.ElementAt(index).ScreenName + " ";
+                    }
+                    contador++;
+                //}
+            }
+            SendTweet(status);
         }
 
         private TwitterSearchResult Search(string query)
