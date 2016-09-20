@@ -245,7 +245,7 @@ namespace TweetBooty
                 bool AlreadyRecommended = false;
                 while (times > 0)
                 {
-                    int action = rand.Next(1, 5);
+                    int action = rand.Next(1, 6);
                     switch (action)
                     {
                         case 1: //Tweet
@@ -734,9 +734,9 @@ namespace TweetBooty
         {
             ListFriendsOptions Friends = new ListFriendsOptions();
             Friends.ScreenName = "nalgaprontacom";
-            Friends.Count = 50;
+            Friends.Count = 500;
             friendList = service.ListFriends(Friends);
-            string status = "Debes seguirlos: ";
+            string status = "#MustFollow : ";
             int contador = 0;
             while (status.Length <= 88 && contador <= 6)
             {
@@ -748,6 +748,8 @@ namespace TweetBooty
                         status += " @" + friendList.ElementAt(index).ScreenName + " ";
                     }
                     contador++;
+                    friendList.RemoveAt(index);
+
                 //}
             }
             SendTweet(status);
