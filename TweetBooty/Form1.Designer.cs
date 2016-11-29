@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnGetImages = new System.Windows.Forms.Button();
             this.dgvCurrentHashtags = new System.Windows.Forms.DataGridView();
             this.Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cbTypeResult = new System.Windows.Forms.ComboBox();
@@ -118,6 +119,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.cbPhotoLimit = new System.Windows.Forms.ComboBox();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -152,6 +154,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnGetImages);
             this.tabPage1.Controls.Add(this.dgvCurrentHashtags);
             this.tabPage1.Controls.Add(this.cbTypeResult);
             this.tabPage1.Controls.Add(this.cbNumTweets);
@@ -166,6 +169,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tweet Explorer";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnGetImages
+            // 
+            this.btnGetImages.Location = new System.Drawing.Point(651, 10);
+            this.btnGetImages.Name = "btnGetImages";
+            this.btnGetImages.Size = new System.Drawing.Size(99, 23);
+            this.btnGetImages.TabIndex = 12;
+            this.btnGetImages.Text = "Get Images";
+            this.btnGetImages.UseVisualStyleBackColor = true;
+            this.btnGetImages.Click += new System.EventHandler(this.btnGetImages_Click);
             // 
             // dgvCurrentHashtags
             // 
@@ -567,7 +580,7 @@
             this.groupBox3.Controls.Add(this.rbtnYesSaveHashtags);
             this.groupBox3.Location = new System.Drawing.Point(684, 84);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(212, 48);
+            this.groupBox3.Size = new System.Drawing.Size(226, 48);
             this.groupBox3.TabIndex = 19;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Save Hashtags on Searches";
@@ -656,11 +669,12 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbPhotoLimit);
             this.groupBox2.Controls.Add(this.rbtnNoSavePhotos);
             this.groupBox2.Controls.Add(this.rbtnYesSavePhotos);
             this.groupBox2.Location = new System.Drawing.Point(684, 30);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(212, 48);
+            this.groupBox2.Size = new System.Drawing.Size(226, 48);
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Save Photos on Searches";
@@ -941,6 +955,14 @@
             this.label18.TabIndex = 17;
             this.label18.Text = "Next Action";
             // 
+            // cbPhotoLimit
+            // 
+            this.cbPhotoLimit.FormattingEnabled = true;
+            this.cbPhotoLimit.Location = new System.Drawing.Point(164, 19);
+            this.cbPhotoLimit.Name = "cbPhotoLimit";
+            this.cbPhotoLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbPhotoLimit.TabIndex = 22;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1076,6 +1098,8 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblCounter;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Button btnGetImages;
+        private System.Windows.Forms.ComboBox cbPhotoLimit;
 
     }
 }

@@ -1,8 +1,4 @@
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe.config
-F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe
-F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Hammock.ClientProfile.dll
-F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Newtonsoft.Json.dll
-F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetSharp.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.exe
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.pdb
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe
@@ -18,13 +14,17 @@ C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Form
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Properties.Resources.resources
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csproj.GenerateResource.Cache
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.DialogBox.resources
-F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.xml
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.dll
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\AngelC\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.xml
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\EntityFramework.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Hammock.ClientProfile.dll
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\HtmlAgilityPack.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\Newtonsoft.Json.dll
+F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetSharp.dll
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.exe.config
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\TweetBooty.pdb
 F:\Documents\GitHub\TweetBooty\TweetBooty\bin\Debug\nunit.framework.dll
@@ -39,3 +39,4 @@ F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Properties.Resour
 F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csproj.GenerateResource.Cache
 F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.exe
 F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.pdb
+F:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csprojResolveAssemblyReference.cache

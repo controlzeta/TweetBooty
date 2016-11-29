@@ -72,6 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archive.cs" />
     <Compile Include="BannedWord.cs">
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>
@@ -93,6 +94,7 @@
     <Compile Include="Hashtag.cs">
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Imaging.cs" />
     <Compile Include="Link.cs">
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>

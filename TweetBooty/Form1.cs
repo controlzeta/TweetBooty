@@ -17,6 +17,7 @@ using System.Xml;
 using System.Net;
 using HtmlAgilityPack;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 namespace TweetBooty
 {
@@ -29,6 +30,7 @@ namespace TweetBooty
 
         public TwitterService service; public Utilities utility;
         public static string[] fileEntries;
+        public static List<TweetBooty.Archive.FolderName> folderNames;
         public string fullPath;
         public string tweetedPath;
 
@@ -48,6 +50,7 @@ namespace TweetBooty
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
         public List<TwitterUser> friendList = new List<TwitterUser>();
+        public Imaging img = new Imaging();
 
         public Form1()
         {
@@ -55,7 +58,8 @@ namespace TweetBooty
             InitializeComponent();
             Connect();
             init();
-            ScanForMedia();
+            lblNumFotos.Text = img.ScanForMedia();
+            folderNames = img.GetFolderNames();
         }
 
         public void init()
@@ -101,6 +105,11 @@ namespace TweetBooty
             }
             cbFollowLimit.SelectedIndex = 0;
 
+            for (int i = 1; i <= 10; i++)
+            {
+                cbPhotoLimit.Items.Add((i*10).ToString());
+            }
+            cbPhotoLimit.SelectedIndex = 4;
             // Create a 15 minute timer 
             //FifteenMinuteTimer = new System.Timers.Timer(15 * 60 * 1000);
             //// Hook up the Elapsed event for the timer.
@@ -198,39 +207,47 @@ namespace TweetBooty
 
         public string ConstructTweet(int tweetLength)
         {
-            Random rnd = new Random();
-            string nuevoStatus = ""; 
-            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            string nuevoStatus = "";
+            try
             {
-                int NumLinks = (from li in bd.Links
-                             select li).ToList().Count;
-                int random = rnd.Next(1, NumLinks);
-                Link link = (from l in bd.Links
-                             where l.id == random
-                             select l).FirstOrDefault();
-                nuevoStatus = ShortenedString(link.title, tweetLength);
-                int counter = 0;
-                while (nuevoStatus.Length <= tweetLength)
+                Random rnd = new Random();
+                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
                 {
-                    List<Hashtag> lsthashtags = (from h in bd.Hashtags
-                                                 where h.repeated > 80
-                                                 select h).ToList();
-                    random = rnd.Next(0, lsthashtags.Count);
-                    if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
+                    int NumLinks = (from li in bd.Links
+                                    select li).ToList().Count;
+                    int random = rnd.Next(1, NumLinks);
+                    Link link = (from l in bd.Links
+                                 where l.id == random
+                                 select l).FirstOrDefault();
+                    nuevoStatus = ShortenedString(link.title, tweetLength);
+                    int counter = 0;
+                    while (nuevoStatus.Length <= tweetLength)
                     {
-                        nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
+                        List<Hashtag> lsthashtags = (from h in bd.Hashtags
+                                                     where h.repeated > 80
+                                                     select h).ToList();
+                        random = rnd.Next(0, lsthashtags.Count);
+                        if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
+                        {
+                            nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
+                        }
+                        else
+                        {
+                            counter++;
+                        }
+                        if (counter == 5)
+                        {
+                            break;
+                        }
                     }
-                    else
-                    {
-                        counter++;
-                    }
-                    if (counter == 5)
-                    {
-                        break;
-                    }
+                    nuevoStatus = ShortenedString(nuevoStatus, tweetLength) + " " + link.link1;
                 }
-                nuevoStatus = ShortenedString(nuevoStatus, tweetLength) + " " + link.link1;
             }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+
             return nuevoStatus;
         }
 
@@ -281,60 +298,12 @@ namespace TweetBooty
                                 AlreadyRecommended = true;
                             }
                             break;
+                        case 6: //Get new images
+                            SearchNewImagesbyFolder();
+                            break;
                     }
                     times--;
                 }
-                //progressBar.Visible = true;
-                //progressBar.Minimum = 1;
-                //progressBar.Value = 1;
-                //progressBar.Step = 1;
-                //progressBar.Maximum = 4;
-                //Random rnd = new Random();
-                //FifteenMinutes++;
-                //progressBar.PerformStep();
-                //if (TweetsByTheHour > 0)
-                //{
-                //    //Tweet
-                //    TweetsByTheHour++;
-                //    string nuevoStatus = ConstructTweet(85);
-                //    SendTweet(nuevoStatus);
-                //    //if (SendTweet(nuevoStatus))
-                //    //ShowMessage("Tweet Send!", nuevoStatus);
-                //}
-                //if (RTsByTheHour > 0)
-                //{
-                //    var statuses = GetBestTweets();
-                //    if (statuses.Count > 0) 
-                //    {
-                //        for (int i = 1; i <= 1; i++)
-                //        {
-                //            //Retweet most RT's
-                //            RTTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
-                //            RTsByTheHour--;
-                //        }
-                //    }
-                //}
-                //progressBar.PerformStep();
-                //if (FavsByTheHour > 0)
-                //{
-                //    var statuses = GetBestTweets();
-                //    if (statuses.Count > 0)
-                //    {
-                //        for (int i = 1; i <= 2; i++)
-                //        {
-                //            //Fav most RT's
-                //            if(statuses.Count >= i)
-                //                FavTweet(statuses.ElementAt(i).Id, statuses.ElementAt(i).Text);
-                //            FavsByTheHour--;
-                //        }
-                //    }
-                //}
-                //progressBar.PerformStep();
-                //if (FifteenMinutes == 2 || FifteenMinutes == 4 && FollowsByTheHour > 0 )
-                //{ 
-                //    //MostRetweeted follow
-                //    FollowsByTheHour--;
-                //}
                 getLog();
                 RandomTime();
 
@@ -366,7 +335,7 @@ namespace TweetBooty
             ResetCounters();
             GetTrendingTopics(0);
             GetMentions();
-            ScanForMedia();
+            lblNumFotos.Text = img.ScanForMedia();
         }
 
         public List<TwitterStatus> GetBestTweets()
@@ -644,31 +613,6 @@ namespace TweetBooty
             }
         }
 
-        public void ScanForMedia()
-        {
-            string exeFile = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
-            string exeDir = Path.GetDirectoryName(exeFile);
-            //string fullPath = Path.Combine(exeDir, "..\\..\\Images\\");
-            fullPath = Path.Combine(exeDir + "\\Images\\");
-            tweetedPath = Path.Combine(exeDir + "\\Images\\tweeted");
-            if (Directory.Exists(fullPath))
-            {
-                lblNumFotos.Text = ProcessDirectory(fullPath).ToString();
-            }
-            if (!System.IO.Directory.Exists(tweetedPath))
-            {
-                System.IO.Directory.CreateDirectory(tweetedPath);
-            }
-        
-        }
-
-        public static int ProcessDirectory(string targetDirectory)
-        {
-            // Process the list of files found in the directory.
-            fileEntries = Directory.GetFiles(targetDirectory);
-            return fileEntries.Length;
-        }
-
         private string ShortenedString(string linea, int medida)
         {
             if (linea.Length <= medida)
@@ -730,27 +674,38 @@ namespace TweetBooty
             getLog();
         }
 
+        public string MustFollow()
+        {
+            string[] mustFollow = { 
+                                      "#mustFollow: ", 
+                                      "#RT y #Follow plis! ",
+                                      "Tienes que seguirlos: ", 
+                                      "Siguelos y te sigo ", 
+                                      "#NeedToFollow: ", 
+                                      "Los tweets más candentes de la red son de: ", 
+                                      "Siguelos: ", 
+                                  };
+            int randomNumber = rand.Next(0, mustFollow.Length);
+            return mustFollow[randomNumber];
+        }
+
         public void Recommended()
         {
             ListFriendsOptions Friends = new ListFriendsOptions();
             Friends.ScreenName = "nalgaprontacom";
             Friends.Count = 500;
             friendList = service.ListFriends(Friends);
-            string status = "#MustFollow : ";
+            string status = MustFollow();
             int contador = 0;
             while (status.Length <= 88 && contador <= 6)
             {
                 int index = rand.Next(0, friendList.Count);
-                //foreach (TwitterUser t in friendList)
-                //{
-                    if (friendList.ElementAt(index).ScreenName.Length + status.Length <= 87)
-                    {
-                        status += " @" + friendList.ElementAt(index).ScreenName + " ";
-                    }
-                    contador++;
-                    friendList.RemoveAt(index);
-
-                //}
+                if (friendList.ElementAt(index).ScreenName.Length + status.Length <= 87)
+                {
+                    status += " @" + friendList.ElementAt(index).ScreenName + " ";
+                }
+                contador++;
+                friendList.RemoveAt(index);
             }
             SendTweet(status);
         }
@@ -768,6 +723,40 @@ namespace TweetBooty
             return results;
         }
 
+        public void SearchNewImagesbyFolder()
+        {
+            try
+            {
+                folderNames = img.GetFolderNames();
+                int count = 0;
+                bool SavePhotosState = false;
+                SavePhotosState = rbtnYesSavePhotos.Checked;
+                rbtnYesSavePhotos.Checked = true;
+                foreach (TweetBooty.Archive.FolderName folder in folderNames)
+                {
+                    if (count <= 3)
+                    {
+                        txtSearch.Text = folder.folderName;
+                        SearchOptions search = new SearchOptions();
+                        search.Q = folder.folderName;
+                        search.Count = 50;
+                        search.IncludeEntities = true;
+                        search.Resulttype = TwitterSearchResultType.Recent;
+                        ShowTweets(service.Search(search), folder.folderName);
+                        RateLimit(service.Response.RateLimitStatus);
+                        Directory.SetLastWriteTime(folder.path, DateTime.Now);
+                        count++;
+                        txtSearch.Text = "";
+                    }
+                }
+                rbtnYesSavePhotos.Checked = SavePhotosState;
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
         public void getTweetImage(string urlAddress, string hashtag, string tweetId)
         {
             try
@@ -783,23 +772,58 @@ namespace TweetBooty
                 HtmlWeb client = new HtmlWeb();
                 HtmlAgilityPack.HtmlDocument doc = client.Load(urlAddress);
                 HtmlNodeCollection Nodes = doc.DocumentNode.SelectNodes("//img[@src]");
-                foreach (var link in Nodes)
+                HtmlNodeCollection VideoNodes = doc.DocumentNode.SelectNodes("//*[contains(@class,'PlayableMedia-player')]");
+                //doc.DocumentNode.SelectNodes("//*[contains(@class,'float')]");
+                if (VideoNodes != null)
                 {
-                    if (link.OuterHtml.Contains("aria"))
+                    foreach (var link in VideoNodes)
                     {
-                        Console.WriteLine(link.Attributes["src"].Value);
-                        using (WebClient webClient = new WebClient())
+                        string oldStyle = link.Attributes["style"].Value;
+                        var images = doc.DocumentNode.Descendants("div").Where(d => d.Attributes.Contains("style") && d.Attributes["style"].Value.Contains("background-image:url")).FirstOrDefault();
+
+                        if (oldStyle.Contains("https://pbs.twimg.com/tweet_video_thumb/"))
                         {
-                            var imgName = Path.GetFileNameWithoutExtension(link.Attributes["src"].Value);
-                            extension = Path.GetExtension(link.Attributes["src"].Value);
-                            if(extension == ".jpg")
+                            string foundIt = Path.GetFileNameWithoutExtension(Regex.Match(oldStyle, @"\(([^)]*)\)").Groups[1].Value);
+                            string ext = Path.GetExtension(Regex.Match(oldStyle, @"\(([^)]*)\)").Groups[1].Value);
+                            if (ext == ".jpg'")
                             {
-                                if (!File.Exists(fullPath + "\\" + imgName + extension))
+                                if (!File.Exists(fullPath + "\\" + foundIt + ".mp4"))
                                 {
-                                    //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
-                                    webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + imgName + extension);
+                                    using (WebClient webClient = new WebClient())
+                                    {
+                                        string URL = "https://pbs.twimg.com/tweet_video/"; //CxvQiYrXEAEHCml.mp4
+                                        URL += foundIt + ".mp4";
+                                        webClient.DownloadFile(new Uri(URL), fullPath + "\\" + foundIt + ".mp4");
+                                    }
                                 }
                             }
+                        }
+                    }
+                }
+                if (Nodes != null)
+                {
+                    foreach (var link in Nodes)
+                    {
+                        if (link.OuterHtml.Contains("aria"))
+                        {
+                            Console.WriteLine(link.Attributes["src"].Value);
+                            using (WebClient webClient = new WebClient())
+                            {
+                                var imgName = Path.GetFileNameWithoutExtension(link.Attributes["src"].Value);
+                                extension = Path.GetExtension(link.Attributes["src"].Value);
+                                if (extension == ".jpg")
+                                {
+                                    if (!File.Exists(fullPath + "\\" + imgName + extension))
+                                    {
+                                        //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
+                                        webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + imgName + extension);
+                                    }
+                                }
+                            }
+                        }
+                        if (link.OuterHtml.Contains("video-display"))
+                        {
+                            Console.WriteLine(link.Attributes["src"].Value);
                         }
                     }
                 }
@@ -1071,30 +1095,42 @@ namespace TweetBooty
 
         private void btnReloadPhotos_Click(object sender, EventArgs e)
         {
-            ScanForMedia();
+            lblNumFotos.Text = img.ScanForMedia();
         }
 
         private void btnSchedule_Click(object sender, EventArgs e)
         {
-
+            //Programar un tweet con una hora especifica o automática 
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (secondsLeft != 0)
+            try
             {
-                lblCounter.Text = ((secondsLeft / 60).ToString().Count<char>() == 1 ?
-                    "0" + (secondsLeft / 60).ToString() :
-                    (secondsLeft / 60).ToString()) + ":" +
-                    ((secondsLeft % 60).ToString().Count<char>() == 1 ?
-                    "0" + (secondsLeft % 60).ToString() :
-                    (secondsLeft % 60).ToString());
-                secondsLeft--;
+                if (secondsLeft != 0)
+                {
+                    lblCounter.Text = ((secondsLeft / 60).ToString().Count<char>() == 1 ?
+                        "0" + (secondsLeft / 60).ToString() :
+                        (secondsLeft / 60).ToString()) + ":" +
+                        ((secondsLeft % 60).ToString().Count<char>() == 1 ?
+                        "0" + (secondsLeft % 60).ToString() :
+                        (secondsLeft % 60).ToString());
+                    secondsLeft--;
+                }
+                else
+                {
+                    FifteenMinuteEvent(this, null);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                FifteenMinuteEvent(this, null);
+                lblErrors.Text = "Error: " + ex.Message;
             }
+        }
+
+        private void btnGetImages_Click(object sender, EventArgs e)
+        {
+            SearchNewImagesbyFolder();
         }
 
     }
