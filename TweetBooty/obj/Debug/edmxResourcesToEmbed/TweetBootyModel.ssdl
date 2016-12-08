@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="BannedWords">
     <Key>
       <PropertyRef Name="id" />
@@ -8,8 +8,8 @@
     <Property Name="bannedWord" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="timestamp" Type="datetime" Nullable="false" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="Configuration">
     <Key>
       <PropertyRef Name="ConsumerKey" />
@@ -21,6 +21,10 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
       <PropertyRef Name="TweetLimit" />
       <PropertyRef Name="FavLimit" />
       <PropertyRef Name="FollowLimit" />
+      <PropertyRef Name="TweetCounter" />
+      <PropertyRef Name="FavCounter" />
+      <PropertyRef Name="FollowCounter" />
+      <PropertyRef Name="ImageCounter" />
     </Key>
     <Property Name="ConsumerKey" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -31,6 +35,10 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
     <Property Name="TweetLimit" Type="int" Nullable="false" />
     <Property Name="FavLimit" Type="int" Nullable="false" />
     <Property Name="FollowLimit" Type="int" Nullable="false" />
+    <Property Name="TweetCounter" Type="int" Nullable="false" />
+    <Property Name="FavCounter" Type="int" Nullable="false" />
+    <Property Name="FollowCounter" Type="int" Nullable="false" />
+    <Property Name="ImageCounter" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Hashtags">
     <Key>
@@ -50,6 +58,16 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
     <Property Name="description" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="sortOrder" Type="int" Nullable="false" />
     <Property Name="link" Type="nvarchar" MaxLength="255" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProgrammedTweets">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Tweet" Type="nchar" MaxLength="280" Nullable="false" />
+    <Property Name="Time" Type="datetime" Nullable="false" />
+    <Property Name="Tweeted" Type="bit" Nullable="false" />
+    <Property Name="Link" Type="nchar" MaxLength="255" />
   </EntityType>
   <EntityType Name="Tweeted">
     <Key>
@@ -75,6 +93,7 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
     <EntitySet Name="BannedWords" EntityType="Self.BannedWords" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Hashtags" EntityType="Self.Hashtags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProgrammedTweets" EntityType="Self.ProgrammedTweets" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Configuration" EntityType="Self.Configuration" store:Type="Tables" store:Schema="dbo">
@@ -87,7 +106,11 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
 [Configuration].[RTCount] AS [RTCount], 
 [Configuration].[TweetLimit] AS [TweetLimit], 
 [Configuration].[FavLimit] AS [FavLimit], 
-[Configuration].[FollowLimit] AS [FollowLimit]
+[Configuration].[FollowLimit] AS [FollowLimit], 
+[Configuration].[TweetCounter] AS [TweetCounter], 
+[Configuration].[FavCounter] AS [FavCounter], 
+[Configuration].[FollowCounter] AS [FollowCounter], 
+[Configuration].[ImageCounter] AS [ImageCounter]
 FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
     </EntitySet>
   </EntityContainer>

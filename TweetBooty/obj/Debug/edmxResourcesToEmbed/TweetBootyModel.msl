@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="TweetBotDBModelStoreContainer" CdmEntityContainer="TweetBootyDBEntities">
+  <EntityContainerMapping StorageEntityContainer="TweetBotDBModelStoreContainer" CdmEntityContainer="TweetBotDBEntities">
     <EntitySetMapping Name="BannedWords">
       <EntityTypeMapping TypeName="TweetBotDBModel.BannedWord">
         <MappingFragment StoreEntitySet="BannedWords">
@@ -31,6 +31,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ProgrammedTweets">
+      <EntityTypeMapping TypeName="TweetBotDBModel.ProgrammedTweet">
+        <MappingFragment StoreEntitySet="ProgrammedTweets">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Tweet" ColumnName="Tweet" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="Tweeted" ColumnName="Tweeted" />
+          <ScalarProperty Name="Link" ColumnName="Link" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tweeteds">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Tweeted">
+        <MappingFragment StoreEntitySet="Tweeted">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+          <ScalarProperty Name="Action" ColumnName="Action" />
+          <ScalarProperty Name="Username" ColumnName="Username" />
+          <ScalarProperty Name="TweetId" ColumnName="TweetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Tweets">
       <EntityTypeMapping TypeName="TweetBotDBModel.Tweet">
         <MappingFragment StoreEntitySet="Tweets">
@@ -41,30 +64,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Tweeteds">
-      <EntityTypeMapping TypeName="TweetBotDBModel.Tweeted">
-        <MappingFragment StoreEntitySet="Tweeted">
-          <ScalarProperty Name="TweetId" ColumnName="TweetId" />
-          <ScalarProperty Name="Username" ColumnName="Username" />
-          <ScalarProperty Name="Action" ColumnName="Action" />
-          <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-          <ScalarProperty Name="Text" ColumnName="Text" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Configurations">
       <EntityTypeMapping TypeName="TweetBotDBModel.Configuration">
         <MappingFragment StoreEntitySet="Configuration">
-          <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
-          <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
-          <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
-          <ScalarProperty Name="RTCount" ColumnName="RTCount" />
-          <ScalarProperty Name="Minutes" ColumnName="Minutes" />
-          <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
-          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-          <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+          <ScalarProperty Name="ImageCounter" ColumnName="ImageCounter" />
+          <ScalarProperty Name="FollowCounter" ColumnName="FollowCounter" />
+          <ScalarProperty Name="FavCounter" ColumnName="FavCounter" />
+          <ScalarProperty Name="TweetCounter" ColumnName="TweetCounter" />
           <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+          <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+          <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
+          <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+          <ScalarProperty Name="RTCount" ColumnName="RTCount" />
+          <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
+          <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
+          <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -12,11 +12,12 @@ namespace TweetBooty
     using System;
     using System.Collections.Generic;
     
-    public partial class Hashtag
+    public partial class ProgrammedTweet
     {
-        public int id { get; set; }
-        public string hashtag1 { get; set; }
-        public System.DateTime timestamp { get; set; }
-        public int repeated { get; set; }
+        public int Id { get; set; }
+        public string Tweet { get; set; }
+        public System.DateTime Time { get; set; }
+        public bool Tweeted { get; set; }
+        public string Link { get; set; }
     }
 }

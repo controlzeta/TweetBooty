@@ -17,7 +17,7 @@ namespace TweetBooty
         private string tweetedPath = "";
         private string path = "";
         public static string[] fileEntries;
-        public string ScanForMedia()
+        public string[] ScanForMedia()
         {
             exeFile = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
             exeDir = Path.GetDirectoryName(exeFile);
@@ -29,16 +29,21 @@ namespace TweetBooty
             }
             if (Directory.Exists(fullPath))
             {
-                return ProcessDirectory(fullPath).ToString();
+                return ProcessDirectory(fullPath);
             }
-            return "0";
+            return new string[] { "" };
         }
 
-        public static int ProcessDirectory(string targetDirectory)
+        public string[] ProcessDirectory(string targetDirectory)
         {
             // Process the list of files found in the directory.
             fileEntries = Directory.GetFiles(targetDirectory);
-            return fileEntries.Length;
+            return fileEntries;
+        }
+
+        public string NumPhotos(string[] fileEntries) 
+        {
+            return fileEntries.Length.ToString();
         }
 
         public List<TweetBooty.Archive.FolderName> GetFolderNames()

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TweetBotDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BannedWords">
           <Key>
             <PropertyRef Name="id" />
@@ -13,8 +13,8 @@
           <Property Name="bannedWord" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="timestamp" Type="datetime" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="Configuration">
           <Key>
             <PropertyRef Name="ConsumerKey" />
@@ -26,6 +26,10 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
             <PropertyRef Name="TweetLimit" />
             <PropertyRef Name="FavLimit" />
             <PropertyRef Name="FollowLimit" />
+            <PropertyRef Name="TweetCounter" />
+            <PropertyRef Name="FavCounter" />
+            <PropertyRef Name="FollowCounter" />
+            <PropertyRef Name="ImageCounter" />
           </Key>
           <Property Name="ConsumerKey" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -36,6 +40,10 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
           <Property Name="TweetLimit" Type="int" Nullable="false" />
           <Property Name="FavLimit" Type="int" Nullable="false" />
           <Property Name="FollowLimit" Type="int" Nullable="false" />
+          <Property Name="TweetCounter" Type="int" Nullable="false" />
+          <Property Name="FavCounter" Type="int" Nullable="false" />
+          <Property Name="FollowCounter" Type="int" Nullable="false" />
+          <Property Name="ImageCounter" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Hashtags">
           <Key>
@@ -55,6 +63,16 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
           <Property Name="description" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="sortOrder" Type="int" Nullable="false" />
           <Property Name="link" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProgrammedTweets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tweet" Type="nchar" MaxLength="280" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Tweeted" Type="bit" Nullable="false" />
+          <Property Name="Link" Type="nchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Tweeted">
           <Key>
@@ -80,6 +98,7 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
           <EntitySet Name="BannedWords" EntityType="Self.BannedWords" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hashtags" EntityType="Self.Hashtags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgrammedTweets" EntityType="Self.ProgrammedTweets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Configuration" EntityType="Self.Configuration" store:Type="Tables" store:Schema="dbo">
@@ -92,7 +111,11 @@ warning 6002: The table/view 'TweetBotDB.dbo.Configuration' does not have a prim
 [Configuration].[RTCount] AS [RTCount], 
 [Configuration].[TweetLimit] AS [TweetLimit], 
 [Configuration].[FavLimit] AS [FavLimit], 
-[Configuration].[FollowLimit] AS [FollowLimit]
+[Configuration].[FollowLimit] AS [FollowLimit], 
+[Configuration].[TweetCounter] AS [TweetCounter], 
+[Configuration].[FavCounter] AS [FavCounter], 
+[Configuration].[FollowCounter] AS [FollowCounter], 
+[Configuration].[ImageCounter] AS [ImageCounter]
 FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
@@ -127,6 +150,27 @@ FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
           <Property Name="sortOrder" Type="Int32" Nullable="false" />
           <Property Name="link1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProgrammedTweet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tweet" Type="String" MaxLength="280" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Tweeted" Type="Boolean" Nullable="false" />
+          <Property Name="Link" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Tweeted">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Action" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TweetId" Type="Double" />
+        </EntityType>
         <EntityType Name="Tweet">
           <Key>
             <PropertyRef Name="id" />
@@ -135,25 +179,6 @@ FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
           <Property Name="tweet1" Type="String" MaxLength="140" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="tweeted" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityContainer Name="TweetBootyDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BannedWords" EntityType="Self.BannedWord" />
-          <EntitySet Name="Hashtags" EntityType="Self.Hashtag" />
-          <EntitySet Name="Links" EntityType="Self.Link" />
-          <EntitySet Name="Tweets" EntityType="Self.Tweet" />
-          <EntitySet Name="Tweeteds" EntityType="TweetBotDBModel.Tweeted" />
-          <EntitySet Name="Configurations" EntityType="TweetBotDBModel.Configuration" />
-        </EntityContainer>
-        <EntityType Name="Tweeted">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Text" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TweetId" Type="Double" />
         </EntityType>
         <EntityType Name="Configuration">
           <Key>
@@ -166,23 +191,40 @@ FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
             <PropertyRef Name="TweetLimit" />
             <PropertyRef Name="FavLimit" />
             <PropertyRef Name="FollowLimit" />
+            <PropertyRef Name="TweetCounter" />
+            <PropertyRef Name="FavCounter" />
+            <PropertyRef Name="FollowCounter" />
+            <PropertyRef Name="ImageCounter" />
           </Key>
-          <Property Name="ConsumerKey" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="ConsumerSecret" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AccessToken" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="AccessTokenSecret" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ConsumerKey" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ConsumerSecret" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccessToken" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AccessTokenSecret" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Minutes" Type="Int32" Nullable="false" />
           <Property Name="RTCount" Type="Int32" Nullable="false" />
           <Property Name="TweetLimit" Type="Int32" Nullable="false" />
           <Property Name="FavLimit" Type="Int32" Nullable="false" />
           <Property Name="FollowLimit" Type="Int32" Nullable="false" />
+          <Property Name="TweetCounter" Type="Int32" Nullable="false" />
+          <Property Name="FavCounter" Type="Int32" Nullable="false" />
+          <Property Name="FollowCounter" Type="Int32" Nullable="false" />
+          <Property Name="ImageCounter" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityContainer Name="TweetBotDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BannedWords" EntityType="Self.BannedWord" />
+          <EntitySet Name="Hashtags" EntityType="Self.Hashtag" />
+          <EntitySet Name="Links" EntityType="Self.Link" />
+          <EntitySet Name="ProgrammedTweets" EntityType="Self.ProgrammedTweet" />
+          <EntitySet Name="Tweeteds" EntityType="Self.Tweeted" />
+          <EntitySet Name="Tweets" EntityType="Self.Tweet" />
+          <EntitySet Name="Configurations" EntityType="Self.Configuration" />
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="TweetBotDBModelStoreContainer" CdmEntityContainer="TweetBootyDBEntities">
+        <EntityContainerMapping StorageEntityContainer="TweetBotDBModelStoreContainer" CdmEntityContainer="TweetBotDBEntities">
           <EntitySetMapping Name="BannedWords">
             <EntityTypeMapping TypeName="TweetBotDBModel.BannedWord">
               <MappingFragment StoreEntitySet="BannedWords">
@@ -213,6 +255,29 @@ FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProgrammedTweets">
+            <EntityTypeMapping TypeName="TweetBotDBModel.ProgrammedTweet">
+              <MappingFragment StoreEntitySet="ProgrammedTweets">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tweet" ColumnName="Tweet" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Tweeted" ColumnName="Tweeted" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tweeteds">
+            <EntityTypeMapping TypeName="TweetBotDBModel.Tweeted">
+              <MappingFragment StoreEntitySet="Tweeted">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="TweetId" ColumnName="TweetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Tweets">
             <EntityTypeMapping TypeName="TweetBotDBModel.Tweet">
               <MappingFragment StoreEntitySet="Tweets">
@@ -223,30 +288,22 @@ FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Tweeteds">
-            <EntityTypeMapping TypeName="TweetBotDBModel.Tweeted">
-              <MappingFragment StoreEntitySet="Tweeted">
-                <ScalarProperty Name="TweetId" ColumnName="TweetId" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Action" ColumnName="Action" />
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="Text" ColumnName="Text" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Configurations">
             <EntityTypeMapping TypeName="TweetBotDBModel.Configuration">
               <MappingFragment StoreEntitySet="Configuration">
-                <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
-                <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
-                <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
-                <ScalarProperty Name="RTCount" ColumnName="RTCount" />
-                <ScalarProperty Name="Minutes" ColumnName="Minutes" />
-                <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
-                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-                <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+                <ScalarProperty Name="ImageCounter" ColumnName="ImageCounter" />
+                <ScalarProperty Name="FollowCounter" ColumnName="FollowCounter" />
+                <ScalarProperty Name="FavCounter" ColumnName="FavCounter" />
+                <ScalarProperty Name="TweetCounter" ColumnName="TweetCounter" />
                 <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+                <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
+                <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+                <ScalarProperty Name="RTCount" ColumnName="RTCount" />
+                <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
+                <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
+                <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

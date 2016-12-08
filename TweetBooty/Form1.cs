@@ -58,8 +58,9 @@ namespace TweetBooty
             InitializeComponent();
             Connect();
             init();
-            lblNumFotos.Text = img.ScanForMedia();
+            getNumberOfPhotos();
             folderNames = img.GetFolderNames();
+            //GetFollowList();
         }
 
         public void init()
@@ -139,7 +140,7 @@ namespace TweetBooty
 
         public void GetConfiguration()
         {
-            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            using (TweetBotDBEntities bd = new TweetBotDBEntities())
             {
                 var config = (from cfg in bd.Configurations
                               select cfg).FirstOrDefault();
@@ -158,6 +159,12 @@ namespace TweetBooty
                 txtAccessToken.Text = _accessToken;
                 txtAccessTokenSecret.Text = _accessTokenSecret;
             }
+        }
+
+        private void getNumberOfPhotos()
+        {
+            fileEntries = img.ScanForMedia();
+            lblNumFotos.Text = fileEntries.Length.ToString();
         }
 
         public void GetMentions()
@@ -180,7 +187,7 @@ namespace TweetBooty
         {
             dgvHashtagExplorer.Rows.Clear();
             dgvHashtagExplorer.Refresh();
-            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            using (TweetBotDBEntities bd = new TweetBotDBEntities())
             {
                 var lsthashtags = (from h in bd.Hashtags
                                    where h.repeated > 50
@@ -211,7 +218,7 @@ namespace TweetBooty
             try
             {
                 Random rnd = new Random();
-                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
                     int NumLinks = (from li in bd.Links
                                     select li).ToList().Count;
@@ -335,7 +342,7 @@ namespace TweetBooty
             ResetCounters();
             GetTrendingTopics(0);
             GetMentions();
-            lblNumFotos.Text = img.ScanForMedia();
+            getNumberOfPhotos();
         }
 
         public List<TwitterStatus> GetBestTweets()
@@ -493,7 +500,7 @@ namespace TweetBooty
             {
                 dgvLog.Rows.Clear();
                 dgvLog.Refresh();
-                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
                     var oldTweets = (from o in bd.Tweeteds
                                      orderby o.Id descending
@@ -674,6 +681,48 @@ namespace TweetBooty
             getLog();
         }
 
+        public void SendDirectMessage(string message, string screenName, long userId)
+        {
+            try
+            {
+                TwitterDirectMessage DM = new TwitterDirectMessage();
+                SendDirectMessageOptions options = new SendDirectMessageOptions();
+                options.Text = message;
+                options.ScreenName = screenName;
+                options.UserId = userId;
+                DM = service.SendDirectMessage(options);
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+        public void GetFollowList()
+        { 
+            TwitterCursorList<TwitterUser> lstUsers;
+            ListFriendsOptions lstOptions = new ListFriendsOptions();
+            lstOptions.ScreenName = "nalgaprontacom";
+            lstOptions.IncludeUserEntities = true;
+            lstOptions.UserId = 2290097750;
+            lstOptions.Count = 500;
+            lstUsers = service.ListFriends(lstOptions);
+            FollowListOptions followList = new FollowListOptions();
+            followList.OwnerId = 2290097750;
+            followList.OwnerScreenName = "nalgaprontacom";
+
+            ListFollowersOptions lstFollowers = new ListFollowersOptions();
+            lstFollowers.ScreenName = "nalgaprontacom";
+            lstFollowers.IncludeUserEntities = true;
+            lstFollowers.UserId = 2290097750;
+            TwitterCursorList<TwitterUser> lstFollows = service.ListFollowers(lstFollowers);
+
+            foreach (TwitterUser t in lstFollows)
+            {
+                SendDirectMessage("Gracias por seguirnos, visita nalgapronta.com papi.", t.ScreenName, t.Id);
+            }
+        }
+
         public string MustFollow()
         {
             string[] mustFollow = { 
@@ -682,7 +731,7 @@ namespace TweetBooty
                                       "Tienes que seguirlos: ", 
                                       "Siguelos y te sigo ", 
                                       "#NeedToFollow: ", 
-                                      "Los tweets más candentes de la red son de: ", 
+                                      "Los mejores tweet son de: ", 
                                       "Siguelos: ", 
                                   };
             int randomNumber = rand.Next(0, mustFollow.Length);
@@ -742,9 +791,9 @@ namespace TweetBooty
                         search.Count = 50;
                         search.IncludeEntities = true;
                         search.Resulttype = TwitterSearchResultType.Recent;
+                        Directory.SetLastWriteTime(folder.path, DateTime.Now);
                         ShowTweets(service.Search(search), folder.folderName);
                         RateLimit(service.Response.RateLimitStatus);
-                        Directory.SetLastWriteTime(folder.path, DateTime.Now);
                         count++;
                         txtSearch.Text = "";
                     }
@@ -868,7 +917,7 @@ namespace TweetBooty
                 // Poner un Examinar para elegir el archivo de sitemap
                 xdoc.Load(@"C:\Users\Francisco\Dropbox\Freelance Ko\TweetBot\TweetBot\App_Data\sitemap.xml");
                 XmlNodeList nodelist = xdoc.SelectNodes("//item");
-                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
                     Link link = new Link();
                     foreach (XmlNode node in nodelist)
@@ -896,7 +945,7 @@ namespace TweetBooty
         {
             try
             {
-                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
                     List<BannedWord> lstBanned = (from banned in bd.BannedWords
                                                   select banned).ToList();
@@ -948,7 +997,7 @@ namespace TweetBooty
         {
             Random rnd = new Random(); int random = 0;
             List<Hashtag> lsthashtags;
-            using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+            using (TweetBotDBEntities bd = new TweetBotDBEntities())
             {
                 lsthashtags = (from h in bd.Hashtags
                                where h.repeated > 40
@@ -962,7 +1011,7 @@ namespace TweetBooty
         {
             try
             {
-                using (TweetBootyDBEntities bd = new TweetBootyDBEntities())
+                using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
                     Tweeted t = new Tweeted();
                     t.Action = action;
@@ -1073,6 +1122,46 @@ namespace TweetBooty
             txtSendTweet.Text = ConstructTweet(85);
         }
 
+        private void btnReloadPhotos_Click(object sender, EventArgs e)
+        {
+            getNumberOfPhotos();
+        }
+
+        private void btnSchedule_Click(object sender, EventArgs e)
+        {
+            //Programar un tweet con una hora especifica o automática 
+            try
+            {
+                if (txtSendTweet.Text == "" || txtSendTweet.Text.Length <= 8)
+                { lblErrors.Text = "You Need to write something to schedule a tweet."; }
+                else
+                {
+                    using (TweetBotDBEntities bd = new TweetBotDBEntities())
+                    {
+                        var TweetsProgramados = (from prog in bd.ProgrammedTweets
+                                                 select prog).Take(25).ToList();
+
+                        ProgrammedTweet pt = new ProgrammedTweet();
+                        pt.Tweet = txtSendTweet.Text;
+                        pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(40, 80));
+                        pt.Tweeted = false;
+                        pt.Link = getLink(txtSendTweet.Text);
+                        bd.ProgrammedTweets.Add(pt);
+                        bd.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void btnGetImages_Click(object sender, EventArgs e)
+        {
+            SearchNewImagesbyFolder();
+        }
+
         private void btnHashtagDelete_Click(object sender, EventArgs e)
         {
 
@@ -1092,16 +1181,6 @@ namespace TweetBooty
         }
 
         #endregion "Botones"
-
-        private void btnReloadPhotos_Click(object sender, EventArgs e)
-        {
-            lblNumFotos.Text = img.ScanForMedia();
-        }
-
-        private void btnSchedule_Click(object sender, EventArgs e)
-        {
-            //Programar un tweet con una hora especifica o automática 
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -1128,9 +1207,15 @@ namespace TweetBooty
             }
         }
 
-        private void btnGetImages_Click(object sender, EventArgs e)
+        public string getLink(string Status)
         {
-            SearchNewImagesbyFolder();
+            Regex regx = new Regex("http://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*)?", RegexOptions.IgnoreCase);
+            MatchCollection matches = regx.Matches(Status);
+            foreach (Match m in matches)
+            {
+                return m.Value;
+            }
+            return "";
         }
 
     }
