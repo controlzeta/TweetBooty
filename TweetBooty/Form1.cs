@@ -18,6 +18,7 @@ using System.Net;
 using HtmlAgilityPack;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Data.Objects;
 
 namespace TweetBooty
 {
@@ -1143,7 +1144,14 @@ namespace TweetBooty
 
                         ProgrammedTweet pt = new ProgrammedTweet();
                         pt.Tweet = txtSendTweet.Text;
-                        pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(40, 80));
+                        if (TweetsProgramados.Last().Time.Date < DateTime.Now.Date)
+                        {
+                            pt.Time = DateTime.Now.AddMinutes(rand.Next(40, 80));
+                        }
+                        else
+                        {
+                            pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(40, 80));
+                        }
                         pt.Tweeted = false;
                         pt.Link = getLink(txtSendTweet.Text);
                         bd.ProgrammedTweets.Add(pt);
@@ -1188,6 +1196,8 @@ namespace TweetBooty
             {
                 if (secondsLeft != 0)
                 {
+                    if (secondsLeft % 60 == 0)
+                    { CheckProgrammedTweets(); }
                     lblCounter.Text = ((secondsLeft / 60).ToString().Count<char>() == 1 ?
                         "0" + (secondsLeft / 60).ToString() :
                         (secondsLeft / 60).ToString()) + ":" +
@@ -1204,6 +1214,34 @@ namespace TweetBooty
             catch (Exception ex)
             {
                 lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+        public void CheckProgrammedTweets()
+        {
+            using (TweetBotDBEntities bd = new TweetBotDBEntities())
+            {
+                DateTime thisMoment = new DateTime();
+                thisMoment = DateTime.Now;
+                var ProgTweets = (from pt in bd.ProgrammedTweets
+                                  where EntityFunctions.TruncateTime(pt.Time) >= EntityFunctions.TruncateTime(thisMoment)
+                                  && pt.Tweeted == false
+                              select pt 
+                              ).ToList();
+                if (ProgTweets.Count > 0)
+                {
+                    foreach (ProgrammedTweet pT in ProgTweets)
+                    {
+                        if (pT.Time.ToString("HH:mm") == thisMoment.ToString("HH:mm"))
+                        {
+                            SendTweet(pT.Tweet);
+                            pT.Tweeted = true;
+                            bd.ProgrammedTweets.Attach(pT);
+                            bd.Entry(pT).State = EntityState.Modified;
+                            bd.SaveChanges();
+                        }
+                    }
+                }
             }
         }
 
