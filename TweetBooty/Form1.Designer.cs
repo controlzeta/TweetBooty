@@ -88,6 +88,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbPhotoLimit = new System.Windows.Forms.ComboBox();
             this.rbtnNoSavePhotos = new System.Windows.Forms.RadioButton();
             this.rbtnYesSavePhotos = new System.Windows.Forms.RadioButton();
             this.cbSpanMinutes = new System.Windows.Forms.ComboBox();
@@ -119,7 +120,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.cbPhotoLimit = new System.Windows.Forms.ComboBox();
+            this.lblScheduled = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -351,6 +352,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.lblScheduled);
             this.tabPage3.Controls.Add(this.btnSchedule);
             this.tabPage3.Controls.Add(this.cbTrendingTopics);
             this.tabPage3.Controls.Add(this.btnConstructTweet);
@@ -370,7 +372,7 @@
             // 
             // btnSchedule
             // 
-            this.btnSchedule.Location = new System.Drawing.Point(624, 24);
+            this.btnSchedule.Location = new System.Drawing.Point(647, 21);
             this.btnSchedule.Name = "btnSchedule";
             this.btnSchedule.Size = new System.Drawing.Size(74, 23);
             this.btnSchedule.TabIndex = 8;
@@ -679,6 +681,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Save Photos on Searches";
             // 
+            // cbPhotoLimit
+            // 
+            this.cbPhotoLimit.FormattingEnabled = true;
+            this.cbPhotoLimit.Location = new System.Drawing.Point(164, 19);
+            this.cbPhotoLimit.Name = "cbPhotoLimit";
+            this.cbPhotoLimit.Size = new System.Drawing.Size(56, 21);
+            this.cbPhotoLimit.TabIndex = 22;
+            // 
             // rbtnNoSavePhotos
             // 
             this.rbtnNoSavePhotos.AutoSize = true;
@@ -955,13 +965,13 @@
             this.label18.TabIndex = 17;
             this.label18.Text = "Next Action";
             // 
-            // cbPhotoLimit
+            // lblScheduled
             // 
-            this.cbPhotoLimit.FormattingEnabled = true;
-            this.cbPhotoLimit.Location = new System.Drawing.Point(164, 19);
-            this.cbPhotoLimit.Name = "cbPhotoLimit";
-            this.cbPhotoLimit.Size = new System.Drawing.Size(56, 21);
-            this.cbPhotoLimit.TabIndex = 22;
+            this.lblScheduled.AutoSize = true;
+            this.lblScheduled.Location = new System.Drawing.Point(742, 21);
+            this.lblScheduled.Name = "lblScheduled";
+            this.lblScheduled.Size = new System.Drawing.Size(0, 13);
+            this.lblScheduled.TabIndex = 9;
             // 
             // Form1
             // 
@@ -1100,6 +1110,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Button btnGetImages;
         private System.Windows.Forms.ComboBox cbPhotoLimit;
+        private System.Windows.Forms.Label lblScheduled;
 
     }
 }

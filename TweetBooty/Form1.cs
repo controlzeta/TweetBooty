@@ -854,19 +854,19 @@ namespace TweetBooty
                 {
                     foreach (var link in Nodes)
                     {
-                        if (link.OuterHtml.Contains("aria"))
+                        if (link.OuterHtml.Contains("media"))
                         {
-                            Console.WriteLine(link.Attributes["src"].Value);
+                            var imgURL = link.Attributes["src"].Value.ToString().Substring(0, link.Attributes["src"].Value.Length -6);
                             using (WebClient webClient = new WebClient())
                             {
-                                var imgName = Path.GetFileNameWithoutExtension(link.Attributes["src"].Value);
-                                extension = Path.GetExtension(link.Attributes["src"].Value);
+                                var imgName = Path.GetFileNameWithoutExtension(imgURL);
+                                extension = Path.GetExtension(imgURL);
                                 if (extension == ".jpg")
                                 {
                                     if (!File.Exists(fullPath + "\\" + imgName + extension))
                                     {
                                         //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
-                                        webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + imgName + extension);
+                                        webClient.DownloadFile(new Uri(imgURL), fullPath + "\\" + imgName + extension);
                                     }
                                 }
                             }
@@ -1156,12 +1156,14 @@ namespace TweetBooty
                         pt.Link = getLink(txtSendTweet.Text);
                         bd.ProgrammedTweets.Add(pt);
                         bd.SaveChanges();
+                        lblScheduled.Text = "Your tweet has been programmed!";
                     }
                 }
             }
             catch (Exception ex)
             {
                 lblErrors.Text = "Error: " + ex.Message;
+                lblScheduled.Text = "We are not able to program your tweet!";
             }
         }
 
