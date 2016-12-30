@@ -121,6 +121,7 @@
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.lblScheduled = new System.Windows.Forms.Label();
+            this.lblDownloadImages = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -155,6 +156,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.DimGray;
+            this.tabPage1.Controls.Add(this.lblDownloadImages);
             this.tabPage1.Controls.Add(this.btnGetImages);
             this.tabPage1.Controls.Add(this.dgvCurrentHashtags);
             this.tabPage1.Controls.Add(this.cbTypeResult);
@@ -169,7 +172,6 @@
             this.tabPage1.Size = new System.Drawing.Size(927, 410);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tweet Explorer";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // btnGetImages
             // 
@@ -530,6 +532,7 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.BackColor = System.Drawing.Color.DimGray;
             this.tabPage5.Controls.Add(this.cbRTLimit);
             this.tabPage5.Controls.Add(this.label17);
             this.tabPage5.Controls.Add(this.groupBox3);
@@ -557,7 +560,6 @@
             this.tabPage5.Size = new System.Drawing.Size(927, 410);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Configuration";
-            this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // cbRTLimit
             // 
@@ -973,10 +975,19 @@
             this.lblScheduled.Size = new System.Drawing.Size(0, 13);
             this.lblScheduled.TabIndex = 9;
             // 
+            // lblDownloadImages
+            // 
+            this.lblDownloadImages.AutoSize = true;
+            this.lblDownloadImages.Location = new System.Drawing.Point(767, 14);
+            this.lblDownloadImages.Name = "lblDownloadImages";
+            this.lblDownloadImages.Size = new System.Drawing.Size(0, 13);
+            this.lblDownloadImages.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(959, 530);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.btnReloadPhotos);
@@ -1111,6 +1122,7 @@
         private System.Windows.Forms.Button btnGetImages;
         private System.Windows.Forms.ComboBox cbPhotoLimit;
         private System.Windows.Forms.Label lblScheduled;
+        private System.Windows.Forms.Label lblDownloadImages;
 
     }
 }

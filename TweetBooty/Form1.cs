@@ -19,6 +19,8 @@ using HtmlAgilityPack;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Data.Objects;
+using System.Threading;
+
 
 namespace TweetBooty
 {
@@ -46,12 +48,15 @@ namespace TweetBooty
         public int Hours = 0;
         public int minutesLeft = 0;
         public int secondsLeft = 0;
+        public int DownloadCounter = 0;
         Random rand = new Random();
 
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
         public List<TwitterUser> friendList = new List<TwitterUser>();
         public Imaging img = new Imaging();
+
+        private Thread trd;
 
         public Form1()
         {
@@ -62,6 +67,7 @@ namespace TweetBooty
             getNumberOfPhotos();
             folderNames = img.GetFolderNames();
             //GetFollowList();
+            //Recommended();
         }
 
         public void init()
@@ -110,6 +116,10 @@ namespace TweetBooty
             for (int i = 1; i <= 10; i++)
             {
                 cbPhotoLimit.Items.Add((i*10).ToString());
+            }
+            for (int i = 2; i <= 6; i++)
+            {
+                cbPhotoLimit.Items.Add((i * 100).ToString());
             }
             cbPhotoLimit.SelectedIndex = 4;
             // Create a 15 minute timer 
@@ -265,53 +275,9 @@ namespace TweetBooty
                 {
                 timer1.Stop();
                 FifteenMinuteTimer.Stop();
-                // Create Random number 
-                int times = rand.Next(1,5);
-                bool AlreadyRecommended = false;
-                while (times > 0)
-                {
-                    int action = rand.Next(1, 6);
-                    switch (action)
-                    {
-                        case 1: //Tweet
-                            string nuevoStatus = ConstructTweet(85);
-                            SendTweet(nuevoStatus);
-                            break;
-                        case 2: //Fav
-                            var statuses = GetBestTweets();
-                            if (statuses.Count > 0)
-                            {
-                                FavTweet(statuses.ElementAt(0).Id, statuses.ElementAt(0).Text);
-                            }
-                            break;
-                        case 3: //RT
-                            var statuses2 = GetBestTweets();
-                            if (statuses2.Count > 0)
-                            {
-                                RTTweet(statuses2.ElementAt(0).Id, statuses2.ElementAt(0).Text);
-                            }
-                            break;
-                        case 4: //RT & FAV
-                            var statuses3 = GetBestTweets();
-                            if (statuses3.Count > 0)
-                            {
-                                FavTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
-                                RTTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
-                            }
-                            break;
-                        case 5: //Recommend
-                            if (!AlreadyRecommended)
-                            {
-                                Recommended();
-                                AlreadyRecommended = true;
-                            }
-                            break;
-                        case 6: //Get new images
-                            SearchNewImagesbyFolder();
-                            break;
-                    }
-                    times--;
-                }
+                trd = new Thread(new ThreadStart(this.RandomTasks));
+                trd.IsBackground = true;
+                trd.Start();
                 getLog();
                 RandomTime();
 
@@ -319,6 +285,56 @@ namespace TweetBooty
             catch (Exception ex)
             {
                 lblErrors.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void RandomTasks()
+        {
+            int times = rand.Next(1, 5);
+            bool AlreadyRecommended = false;
+            while (times > 0)
+            {
+                int action = rand.Next(1, 6);
+                switch (action)
+                {
+                    case 1: //Tweet
+                        string nuevoStatus = ConstructTweet(85);
+                        SendTweet(nuevoStatus);
+                        break;
+                    case 2: //Fav
+                        var statuses = GetBestTweets();
+                        if (statuses.Count > 0)
+                        {
+                            FavTweet(statuses.ElementAt(0).Id, statuses.ElementAt(0).Text);
+                        }
+                        break;
+                    case 3: //RT
+                        var statuses2 = GetBestTweets();
+                        if (statuses2.Count > 0)
+                        {
+                            RTTweet(statuses2.ElementAt(0).Id, statuses2.ElementAt(0).Text);
+                        }
+                        break;
+                    case 4: //RT & FAV
+                        var statuses3 = GetBestTweets();
+                        if (statuses3.Count > 0)
+                        {
+                            FavTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
+                            RTTweet(statuses3.ElementAt(0).Id, statuses3.ElementAt(0).Text);
+                        }
+                        break;
+                    case 5: //Recommend
+                        if (!AlreadyRecommended)
+                        {
+                            Recommended();
+                            AlreadyRecommended = true;
+                        }
+                        break;
+                    case 6: //Get new images
+                        SearchNewImagesbyFolder();
+                        break;
+                }
+                times--;
             }
         }
 
@@ -730,6 +746,7 @@ namespace TweetBooty
                                       "#mustFollow: ", 
                                       "#RT y #Follow plis! ",
                                       "Tienes que seguirlos: ", 
+                                      "Necesitas seguir estas cuentas: ", 
                                       "Siguelos y te sigo ", 
                                       "#NeedToFollow: ", 
                                       "Los mejores tweet son de: ", 
@@ -741,9 +758,16 @@ namespace TweetBooty
 
         public void Recommended()
         {
-            ListFriendsOptions Friends = new ListFriendsOptions();
-            Friends.ScreenName = "nalgaprontacom";
-            Friends.Count = 500;
+            /// To do:
+            /// Get a bio from user
+            /// use info to relate user and find hashtags
+            /// Recommend with random texts
+            ListFriendsOptions Friends = new ListFriendsOptions
+            {
+                IncludeUserEntities = true,
+                ScreenName = "nalgaprontamx",
+                Count = 200
+            };
             friendList = service.ListFriends(Friends);
             string status = MustFollow();
             int contador = 0;
@@ -784,12 +808,13 @@ namespace TweetBooty
                 rbtnYesSavePhotos.Checked = true;
                 foreach (TweetBooty.Archive.FolderName folder in folderNames)
                 {
-                    if (count <= 3)
+                    if (count <= 5)
                     {
                         txtSearch.Text = folder.folderName;
+                        txtSearch.Update();
                         SearchOptions search = new SearchOptions();
                         search.Q = folder.folderName;
-                        search.Count = 50;
+                        search.Count = Convert.ToInt32(cbPhotoLimit.SelectedItem);
                         search.IncludeEntities = true;
                         search.Resulttype = TwitterSearchResultType.Recent;
                         Directory.SetLastWriteTime(folder.path, DateTime.Now);
@@ -844,6 +869,7 @@ namespace TweetBooty
                                         string URL = "https://pbs.twimg.com/tweet_video/"; //CxvQiYrXEAEHCml.mp4
                                         URL += foundIt + ".mp4";
                                         webClient.DownloadFile(new Uri(URL), fullPath + "\\" + foundIt + ".mp4");
+                                        DownloadCounter++;
                                     }
                                 }
                             }
@@ -867,6 +893,9 @@ namespace TweetBooty
                                     {
                                         //webClient.DownloadFile(new Uri(link.Attributes["src"].Value), fullPath + "\\" + hashtag + "-" + DateTime.Now.ToUniversalTime().ToString("MMMM-dd-yyyy-H-mm-ss") + extension);
                                         webClient.DownloadFile(new Uri(imgURL), fullPath + "\\" + imgName + extension);
+                                        DownloadCounter++;
+                                        lblDownloadImages.Text = "Downloading : " + DownloadCounter +" pics.";
+                                        lblDownloadImages.Update();
                                     }
                                 }
                             }
