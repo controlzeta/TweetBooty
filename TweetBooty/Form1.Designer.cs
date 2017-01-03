@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lblDownloadImages = new System.Windows.Forms.Label();
             this.btnGetImages = new System.Windows.Forms.Button();
             this.dgvCurrentHashtags = new System.Windows.Forms.DataGridView();
             this.Hashtag = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -54,6 +55,7 @@
             this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Repeated = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.lblScheduled = new System.Windows.Forms.Label();
             this.btnSchedule = new System.Windows.Forms.Button();
             this.cbTrendingTopics = new System.Windows.Forms.ComboBox();
             this.btnConstructTweet = new System.Windows.Forms.Button();
@@ -102,6 +104,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.ScheduledTab = new System.Windows.Forms.TabPage();
+            this.dgvScheduledTweets = new System.Windows.Forms.DataGridView();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -120,8 +124,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.lblScheduled = new System.Windows.Forms.Label();
-            this.lblDownloadImages = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -136,6 +141,8 @@
             this.tabPage5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.ScheduledTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvScheduledTweets)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -147,12 +154,13 @@
             this.TabControl.Controls.Add(this.tabPage3);
             this.TabControl.Controls.Add(this.tabPage4);
             this.TabControl.Controls.Add(this.tabPage5);
+            this.TabControl.Controls.Add(this.ScheduledTab);
             this.TabControl.Location = new System.Drawing.Point(12, 47);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
             this.TabControl.Size = new System.Drawing.Size(935, 436);
             this.TabControl.TabIndex = 0;
-            this.TabControl.Tag = "Mentions";
+            this.TabControl.Tag = "Scheduled";
             // 
             // tabPage1
             // 
@@ -172,6 +180,14 @@
             this.tabPage1.Size = new System.Drawing.Size(927, 410);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Tweet Explorer";
+            // 
+            // lblDownloadImages
+            // 
+            this.lblDownloadImages.AutoSize = true;
+            this.lblDownloadImages.Location = new System.Drawing.Point(767, 14);
+            this.lblDownloadImages.Name = "lblDownloadImages";
+            this.lblDownloadImages.Size = new System.Drawing.Size(0, 13);
+            this.lblDownloadImages.TabIndex = 13;
             // 
             // btnGetImages
             // 
@@ -371,6 +387,14 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Tweet";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // lblScheduled
+            // 
+            this.lblScheduled.AutoSize = true;
+            this.lblScheduled.Location = new System.Drawing.Point(742, 21);
+            this.lblScheduled.Name = "lblScheduled";
+            this.lblScheduled.Size = new System.Drawing.Size(0, 13);
+            this.lblScheduled.TabIndex = 9;
             // 
             // btnSchedule
             // 
@@ -804,6 +828,31 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "Configuration Panel";
             // 
+            // ScheduledTab
+            // 
+            this.ScheduledTab.Controls.Add(this.dgvScheduledTweets);
+            this.ScheduledTab.Location = new System.Drawing.Point(4, 22);
+            this.ScheduledTab.Name = "ScheduledTab";
+            this.ScheduledTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ScheduledTab.Size = new System.Drawing.Size(927, 410);
+            this.ScheduledTab.TabIndex = 5;
+            this.ScheduledTab.Text = "Scheduled";
+            this.ScheduledTab.UseVisualStyleBackColor = true;
+            this.ScheduledTab.Click += new System.EventHandler(this.ScheduledTab_Click);
+            // 
+            // dgvScheduledTweets
+            // 
+            this.dgvScheduledTweets.AllowUserToOrderColumns = true;
+            this.dgvScheduledTweets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvScheduledTweets.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3});
+            this.dgvScheduledTweets.Location = new System.Drawing.Point(23, 25);
+            this.dgvScheduledTweets.Name = "dgvScheduledTweets";
+            this.dgvScheduledTweets.Size = new System.Drawing.Size(553, 322);
+            this.dgvScheduledTweets.TabIndex = 1;
+            // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(666, 495);
@@ -967,21 +1016,23 @@
             this.label18.TabIndex = 17;
             this.label18.Text = "Next Action";
             // 
-            // lblScheduled
+            // dataGridViewTextBoxColumn1
             // 
-            this.lblScheduled.AutoSize = true;
-            this.lblScheduled.Location = new System.Drawing.Point(742, 21);
-            this.lblScheduled.Name = "lblScheduled";
-            this.lblScheduled.Size = new System.Drawing.Size(0, 13);
-            this.lblScheduled.TabIndex = 9;
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 50;
             // 
-            // lblDownloadImages
+            // dataGridViewTextBoxColumn2
             // 
-            this.lblDownloadImages.AutoSize = true;
-            this.lblDownloadImages.Location = new System.Drawing.Point(767, 14);
-            this.lblDownloadImages.Name = "lblDownloadImages";
-            this.lblDownloadImages.Size = new System.Drawing.Size(0, 13);
-            this.lblDownloadImages.TabIndex = 13;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tweet";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 325;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "TimeToTweet";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // Form1
             // 
@@ -1020,6 +1071,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.ScheduledTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvScheduledTweets)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -1123,6 +1176,11 @@
         private System.Windows.Forms.ComboBox cbPhotoLimit;
         private System.Windows.Forms.Label lblScheduled;
         private System.Windows.Forms.Label lblDownloadImages;
+        private System.Windows.Forms.TabPage ScheduledTab;
+        private System.Windows.Forms.DataGridView dgvScheduledTweets;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
 
     }
 }

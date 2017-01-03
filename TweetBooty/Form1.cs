@@ -140,6 +140,7 @@ namespace TweetBooty
             getLog();
             GetMentions();
             GetCountries();
+            GetScheduledTweets();
         }
 
         public void Connect()
@@ -223,6 +224,37 @@ namespace TweetBooty
             }
         }
 
+        public void GetScheduledTweets()
+        {
+            dgvScheduledTweets.Rows.Clear();
+            dgvScheduledTweets.Refresh();
+            using (TweetBotDBEntities bd = new TweetBotDBEntities())
+            {
+                DateTime thisMoment = new DateTime();
+                thisMoment = DateTime.Now;
+                var lstProgrammedTweets = (from pt in bd.ProgrammedTweets
+                                   where pt.Tweeted == false 
+                                   && EntityFunctions.TruncateTime(pt.Time) >= EntityFunctions.TruncateTime(thisMoment)
+                                   select pt).ToList();
+                foreach (var ptweet in lstProgrammedTweets)
+                {
+                    try
+                    {
+                        DataGridViewRow row = (DataGridViewRow)dgvScheduledTweets.Rows[0].Clone();
+                        row.Cells[0].Value = ptweet.Id;                                 //ProgrammedTweetId
+                        row.Cells[1].Value = ptweet.Tweet;                              //TweetText
+                        row.Cells[2].Value = ptweet.Time.ToShortTimeString();           //TimeToTweet
+                        dgvScheduledTweets.Rows.Add(row);
+                    }
+                    catch (Exception ex)
+                    {
+                        lblErrors.Text = "Error: " + ex.Message;
+                    }
+                }
+
+            }
+        }
+
         public string ConstructTweet(int tweetLength)
         {
             string nuevoStatus = "";
@@ -265,7 +297,6 @@ namespace TweetBooty
             {
                 lblErrors.Text = "Error: " + ex.Message;
             }
-
             return nuevoStatus;
         }
 
@@ -1149,7 +1180,9 @@ namespace TweetBooty
 
         private void btnConstructTweet_Click(object sender, EventArgs e)
         {
-            txtSendTweet.Text = ConstructTweet(85);
+            var nuevoStatus = ConstructTweet(85);
+            Clipboard.SetText(nuevoStatus);
+            txtSendTweet.Text = nuevoStatus;
         }
 
         private void btnReloadPhotos_Click(object sender, EventArgs e)
@@ -1163,29 +1196,40 @@ namespace TweetBooty
             try
             {
                 if (txtSendTweet.Text == "" || txtSendTweet.Text.Length <= 8)
-                { lblErrors.Text = "You Need to write something to schedule a tweet."; }
+                {
+                    lblScheduled.Text = "";
+                    lblErrors.Text = "You Need to write something to schedule a tweet.";
+                }
                 else
                 {
                     using (TweetBotDBEntities bd = new TweetBotDBEntities())
                     {
+                        DateTime thisMoment = new DateTime();
+                        thisMoment = DateTime.Now;
+
                         var TweetsProgramados = (from prog in bd.ProgrammedTweets
+                                                 where EntityFunctions.TruncateTime(prog.Time) >= EntityFunctions.TruncateTime(thisMoment)
+                                                 && prog.Tweeted != true
                                                  select prog).Take(25).ToList();
+
+                        TweetsProgramados.Sort((y, x) => y.Time.CompareTo(x.Time));
 
                         ProgrammedTweet pt = new ProgrammedTweet();
                         pt.Tweet = txtSendTweet.Text;
                         if (TweetsProgramados.Last().Time.Date < DateTime.Now.Date)
                         {
-                            pt.Time = DateTime.Now.AddMinutes(rand.Next(40, 80));
+                            pt.Time = DateTime.Now.AddMinutes(rand.Next(60, 90));
                         }
                         else
                         {
-                            pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(40, 80));
+                            pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(65, 100));
                         }
                         pt.Tweeted = false;
                         pt.Link = getLink(txtSendTweet.Text);
                         bd.ProgrammedTweets.Add(pt);
                         bd.SaveChanges();
                         lblScheduled.Text = "Your tweet has been programmed!";
+                        GetScheduledTweets();
                     }
                 }
             }
@@ -1193,6 +1237,7 @@ namespace TweetBooty
             {
                 lblErrors.Text = "Error: " + ex.Message;
                 lblScheduled.Text = "We are not able to program your tweet!";
+                lblScheduled.Text = "";
             }
         }
 
@@ -1285,6 +1330,11 @@ namespace TweetBooty
                 return m.Value;
             }
             return "";
+        }
+
+        private void ScheduledTab_Click(object sender, EventArgs e)
+        {
+            GetScheduledTweets();
         }
 
     }
