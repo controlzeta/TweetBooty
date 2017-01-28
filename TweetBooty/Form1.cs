@@ -66,6 +66,7 @@ namespace TweetBooty
             init();
             getNumberOfPhotos();
             folderNames = img.GetFolderNames();
+            //readSiteMap();
             //GetFollowList();
             //Recommended();
         }
@@ -274,7 +275,7 @@ namespace TweetBooty
                     while (nuevoStatus.Length <= tweetLength)
                     {
                         List<Hashtag> lsthashtags = (from h in bd.Hashtags
-                                                     where h.repeated > 80
+                                                     where h.repeated > 15
                                                      select h).ToList();
                         random = rnd.Next(0, lsthashtags.Count);
                         if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
@@ -976,7 +977,7 @@ namespace TweetBooty
             {
                 XmlDocument xdoc = new XmlDocument();
                 // Poner un Examinar para elegir el archivo de sitemap
-                xdoc.Load(@"C:\Users\Francisco\Dropbox\Freelance Ko\TweetBot\TweetBot\App_Data\sitemap.xml");
+                xdoc.Load(@"H:\Dropbox\Puebla\Sitemap\ror.xml");
                 XmlNodeList nodelist = xdoc.SelectNodes("//item");
                 using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {

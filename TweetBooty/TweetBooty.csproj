@@ -107,6 +107,8 @@
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringHandling.cs" />
+    <Compile Include="TimeHandling.cs" />
     <Compile Include="Tweet.cs">
       <DependentUpon>TweetBootyModel.tt</DependentUpon>
     </Compile>
