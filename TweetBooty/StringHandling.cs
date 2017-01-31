@@ -9,8 +9,6 @@ namespace TweetBooty
 {
     public class HandlingString
     {
-        public string oldString = "Estamos en Querétaro sin hacer nada";
-
         public string[] states = { "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Coahuila", "Colima", 
                              "Distrito Federal", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos",
                               "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", 
@@ -44,7 +42,7 @@ namespace TweetBooty
         public string ChangeState(string oldString)
         {
             string[] myStates = (string[])states.Clone();
-            string newString = "";
+            string newString = oldString;
             if (findState(oldString) != null)
             {
                 string getOff = oldString.Substring(intArr[0], intArr[1]);
@@ -73,7 +71,6 @@ namespace TweetBooty
                 .Where(ch => CharUnicodeInfo.GetUnicodeCategory(ch) !=
                                               UnicodeCategory.NonSpacingMark)
               ).Normalize(NormalizationForm.FormC);
-        }
-
+        }       
     }
 }

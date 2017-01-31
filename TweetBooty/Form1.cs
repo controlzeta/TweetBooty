@@ -54,6 +54,8 @@ namespace TweetBooty
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
         public List<TwitterUser> friendList = new List<TwitterUser>();
+        TwitterTrends trendss = new TwitterTrends();
+        IEnumerable<WhereOnEarthLocation> countries;
         public Imaging img = new Imaging();
 
         private Thread trd;
@@ -244,7 +246,7 @@ namespace TweetBooty
                         DataGridViewRow row = (DataGridViewRow)dgvScheduledTweets.Rows[0].Clone();
                         row.Cells[0].Value = ptweet.Id;                                 //ProgrammedTweetId
                         row.Cells[1].Value = ptweet.Tweet;                              //TweetText
-                        row.Cells[2].Value = ptweet.Time.ToShortTimeString();           //TimeToTweet
+                        row.Cells[2].Value = ptweet.Time;           //TimeToTweet
                         dgvScheduledTweets.Rows.Add(row);
                     }
                     catch (Exception ex)
@@ -256,40 +258,110 @@ namespace TweetBooty
             }
         }
 
+        public string GetRandomTrends(int howMany)
+        {
+            TwitterTrends aux = new TwitterTrends();
+            string hashtags = "";
+            if (trendss.Count() > 1)
+            {
+                foreach (var t in trendss)
+                {
+                    if (t.Name.Contains("#"))
+                    {
+                        aux.Trends.Add(t);
+                    }
+                }
+                if (aux.Trends.Count < 5)
+                {
+                    GetTrendingTopics(Convert.ToInt32(countries.ElementAt(rand.Next(0, countries.Count())).CountryCode));
+                    foreach (var t in trendss)
+                    {
+                        if (t.Name.Contains("#"))
+                        {
+                            aux.Trends.Add(t);
+                        }
+                    }
+                }
+                for (int i = 1; i <= howMany; i++)
+                {
+                    hashtags += " " + aux.Trends.ElementAt(rand.Next(0, aux.Trends.Count)).Name;
+                }           
+            }
+            return hashtags;     
+        }
+
         public string ConstructTweet(int tweetLength)
         {
             string nuevoStatus = "";
             try
             {
                 Random rnd = new Random();
+                TimeHandling TH = new TimeHandling();
+                HandlingString HS = new HandlingString();
                 using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
+                    int counter = 0;
                     int NumLinks = (from li in bd.Links
                                     select li).ToList().Count;
                     int random = rnd.Next(1, NumLinks);
                     Link link = (from l in bd.Links
                                  where l.id == random
                                  select l).FirstOrDefault();
-                    nuevoStatus = ShortenedString(link.title, tweetLength);
-                    int counter = 0;
-                    while (nuevoStatus.Length <= tweetLength)
-                    {
-                        List<Hashtag> lsthashtags = (from h in bd.Hashtags
-                                                     where h.repeated > 15
-                                                     select h).ToList();
-                        random = rnd.Next(0, lsthashtags.Count);
-                        if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
-                        {
-                            nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
-                        }
-                        else
-                        {
-                            counter++;
-                        }
-                        if (counter == 5)
-                        {
+                    switch (rand.Next(1, 5))
+                    { 
+                        case 1: // Normal
+                            nuevoStatus = ShortenedString(link.title, tweetLength);
+                            while (nuevoStatus.Length <= tweetLength)
+                            {
+                                List<Hashtag> lsthashtags = (from h in bd.Hashtags
+                                                             where h.repeated > 60
+                                                             select h).ToList();
+                                random = rnd.Next(0, lsthashtags.Count);
+                                if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
+                                {
+                                    nuevoStatus = nuevoStatus + " #" + lsthashtags.ElementAt(random).hashtag1.Trim();
+                                }
+                                else
+                                {
+                                    counter++;
+                                }
+                                if (counter == 5)
+                                {
+                                    break;
+                                }
+                            }
                             break;
-                        }
+                        case 2: // Based on Time
+                            nuevoStatus = TH.forTimeOfTheDay(DateTime.Now) + " " + ShortenedString(HS.ChangeState(link.title), tweetLength);
+                            break;
+                        case 3: // Based on the day
+                            nuevoStatus = TH.forDaysOfTheWeek(DateTime.Now) + " " + ShortenedString(HS.ChangeState(link.title), tweetLength);
+                            break;
+                        case 4: // Today's hashtags 
+                            nuevoStatus = ShortenedString((HS.ChangeState(link.title) + " " + GetRandomTrends(1)), tweetLength);
+                            break;
+                        case 5: // Normal hashtags first
+                             nuevoStatus = ShortenedString(link.title, tweetLength);
+                            while (nuevoStatus.Length <= tweetLength)
+                            {
+                                List<Hashtag> lsthashtags = (from h in bd.Hashtags
+                                                             where h.repeated > 60
+                                                             select h).ToList();
+                                random = rnd.Next(0, lsthashtags.Count);
+                                if ((nuevoStatus.Length + lsthashtags.ElementAt(random).hashtag1.Trim().Length + 2) < tweetLength)
+                                {
+                                    nuevoStatus = " #" + lsthashtags.ElementAt(random).hashtag1.Trim() + " " + nuevoStatus;
+                                }
+                                else
+                                {
+                                    counter++;
+                                }
+                                if (counter == 5)
+                                {
+                                    break;
+                                }
+                            }
+                            break;
                     }
                     nuevoStatus = ShortenedString(nuevoStatus, tweetLength) + " " + link.link1;
                 }
@@ -416,7 +488,7 @@ namespace TweetBooty
             //lctfo.Id = 395269; //Caracas
             //lctfo.Id = 753692; //Barcelona
             //lctfo.Id = 766273; //Madrid
-            var trendss = service.ListLocalTrendsFor(lctfo);
+            trendss = service.ListLocalTrendsFor(lctfo);
             dgvTrendingTopics.Rows.Clear();
             dgvTrendingTopics.Refresh();
             foreach(TwitterTrend tt in trendss)
@@ -437,7 +509,7 @@ namespace TweetBooty
 
         public void GetCountries()
         {
-            var countries = service.ListAvailableTrendsLocations();
+            countries = service.ListAvailableTrendsLocations();
             cbTrendingTopics.DisplayMember = "Text";
             cbTrendingTopics.ValueMember = "Value";
             foreach(WhereOnEarthLocation country in countries )
@@ -445,11 +517,7 @@ namespace TweetBooty
                 ComboboxItem cbi = new ComboboxItem();
                 cbi.Text = country.Country + " - " + country.Name;
                 cbi.Value = country.WoeId;
-                cbTrendingTopics.Items.Add(cbi);
-                //cbTrendingTopics.Items.Add(new { 
-                //    Text = country.Country + " - " + country.Name , 
-                //    Value = country.WoeId });
-                
+                cbTrendingTopics.Items.Add(cbi);                
             }
         }
 
@@ -639,6 +707,9 @@ namespace TweetBooty
         {
             try
             {
+                string path = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
+                string exeDir = Path.GetDirectoryName(path);
+                string fullPath = Path.Combine(exeDir + "\\Images\\");
                 TwitterStatus result;
                 SendTweetWithMediaOptions MediaOp = new SendTweetWithMediaOptions();
                 Bitmap img = new Bitmap(mediaPath); //Bitmap img = new Bitmap(@"C:\Users\AngelC\Dropbox\Freelance Ko\TweetBot\logo.jpg");
@@ -655,7 +726,7 @@ namespace TweetBooty
                 if (result != null)
                 {
                     SaveAction("Tweet", status, result.Id, result.User.ScreenName);
-                    string copyFilePath = tweetedPath + "\\" + Path.GetFileName(mediaPath);
+                    string copyFilePath = fullPath + "\\tweeted\\" + Path.GetFileName(mediaPath);
                     System.IO.File.Move(mediaPath, copyFilePath);
                     return true;
                 }
@@ -977,7 +1048,7 @@ namespace TweetBooty
             {
                 XmlDocument xdoc = new XmlDocument();
                 // Poner un Examinar para elegir el archivo de sitemap
-                xdoc.Load(@"H:\Dropbox\Puebla\Sitemap\ror.xml");
+                xdoc.Load(@"H:\Dropbox\Puebla\Bot\ror.xml");
                 XmlNodeList nodelist = xdoc.SelectNodes("//item");
                 using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
@@ -1181,9 +1252,17 @@ namespace TweetBooty
 
         private void btnConstructTweet_Click(object sender, EventArgs e)
         {
-            var nuevoStatus = ConstructTweet(85);
-            Clipboard.SetText(nuevoStatus);
-            txtSendTweet.Text = nuevoStatus;
+            try
+            {
+                var nuevoStatus = ConstructTweet(85);
+                Clipboard.SetText(nuevoStatus);
+                txtSendTweet.Text = nuevoStatus;
+            }
+            catch (Exception ex)
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
+
         }
 
         private void btnReloadPhotos_Click(object sender, EventArgs e)
@@ -1213,17 +1292,32 @@ namespace TweetBooty
                                                  && prog.Tweeted != true
                                                  select prog).Take(25).ToList();
 
-                        TweetsProgramados.Sort((y, x) => y.Time.CompareTo(x.Time));
-
                         ProgrammedTweet pt = new ProgrammedTweet();
                         pt.Tweet = txtSendTweet.Text;
-                        if (TweetsProgramados.Last().Time.Date < DateTime.Now.Date)
+                        if (TweetsProgramados != null && TweetsProgramados.Count > 0)
                         {
-                            pt.Time = DateTime.Now.AddMinutes(rand.Next(60, 90));
+                            TweetsProgramados.Sort((y, x) => y.Time.CompareTo(x.Time));
+                            if (TweetsProgramados.Last().Time.Date < DateTime.Now.Date)
+                            {
+                                pt.Time = thisMoment.AddMinutes(rand.Next(60, 90));
+                            }
+                            if (TweetsProgramados.Last().Time.Date == DateTime.Now.Date)
+                            {
+                                if (TweetsProgramados.Last().Time >= DateTime.Now)
+                                {
+                                    pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(65, 100));
+                                }
+                                else
+                                {
+                                    thisMoment = DateTime.Now.AddMinutes(rand.Next(60, 90));
+                                    pt.Time = thisMoment;
+                                }
+                            }
                         }
                         else
                         {
-                            pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(65, 100));
+                            pt.Time = DateTime.Now.AddMinutes(rand.Next(60, 90));
+                            
                         }
                         pt.Tweeted = false;
                         pt.Link = getLink(txtSendTweet.Text);
