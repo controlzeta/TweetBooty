@@ -8,23 +8,9 @@
     <Property Name="bannedWord" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="timestamp" Type="datetime" Nullable="false" />
   </EntityType>
-  <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
   <EntityType Name="Configuration">
     <Key>
-      <PropertyRef Name="ConsumerKey" />
-      <PropertyRef Name="ConsumerSecret" />
-      <PropertyRef Name="AccessToken" />
-      <PropertyRef Name="AccessTokenSecret" />
-      <PropertyRef Name="Minutes" />
-      <PropertyRef Name="RTCount" />
-      <PropertyRef Name="TweetLimit" />
-      <PropertyRef Name="FavLimit" />
-      <PropertyRef Name="FollowLimit" />
-      <PropertyRef Name="TweetCounter" />
-      <PropertyRef Name="FavCounter" />
-      <PropertyRef Name="FollowCounter" />
-      <PropertyRef Name="ImageCounter" />
+      <PropertyRef Name="id" />
     </Key>
     <Property Name="ConsumerKey" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -35,10 +21,11 @@ advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene defin
     <Property Name="TweetLimit" Type="int" Nullable="false" />
     <Property Name="FavLimit" Type="int" Nullable="false" />
     <Property Name="FollowLimit" Type="int" Nullable="false" />
-    <Property Name="TweetCounter" Type="int" Nullable="false" />
+    <Property Name="ImageCounter" Type="int" Nullable="false" />
     <Property Name="FavCounter" Type="int" Nullable="false" />
     <Property Name="FollowCounter" Type="int" Nullable="false" />
-    <Property Name="ImageCounter" Type="int" Nullable="false" />
+    <Property Name="TweetCounter" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="Hashtags">
     <Key>
@@ -64,10 +51,10 @@ advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene defin
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Tweet" Type="nchar" MaxLength="280" Nullable="false" />
+    <Property Name="Tweet" Type="varchar(max)" Nullable="false" />
     <Property Name="Time" Type="datetime" Nullable="false" />
     <Property Name="Tweeted" Type="bit" Nullable="false" />
-    <Property Name="Link" Type="nchar" MaxLength="255" />
+    <Property Name="Link" Type="varchar(max)" />
   </EntityType>
   <EntityType Name="Tweeted">
     <Key>
@@ -91,27 +78,11 @@ advertencia 6002: La tabla o vista 'TweetBotDB.dbo.Configuration' no tiene defin
   </EntityType>
   <EntityContainer Name="TweetBotDBModelStoreContainer">
     <EntitySet Name="BannedWords" EntityType="Self.BannedWords" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Configuration" EntityType="Self.Configuration" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Hashtags" EntityType="Self.Hashtags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProgrammedTweets" EntityType="Self.ProgrammedTweets" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Configuration" EntityType="Self.Configuration" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-[Configuration].[ConsumerKey] AS [ConsumerKey], 
-[Configuration].[ConsumerSecret] AS [ConsumerSecret], 
-[Configuration].[AccessToken] AS [AccessToken], 
-[Configuration].[AccessTokenSecret] AS [AccessTokenSecret], 
-[Configuration].[Minutes] AS [Minutes], 
-[Configuration].[RTCount] AS [RTCount], 
-[Configuration].[TweetLimit] AS [TweetLimit], 
-[Configuration].[FavLimit] AS [FavLimit], 
-[Configuration].[FollowLimit] AS [FollowLimit], 
-[Configuration].[TweetCounter] AS [TweetCounter], 
-[Configuration].[FavCounter] AS [FavCounter], 
-[Configuration].[FollowCounter] AS [FollowCounter], 
-[Configuration].[ImageCounter] AS [ImageCounter]
-FROM [dbo].[Configuration] AS [Configuration]</DefiningQuery>
-    </EntitySet>
   </EntityContainer>
 </Schema>

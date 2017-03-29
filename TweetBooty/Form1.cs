@@ -727,7 +727,14 @@ namespace TweetBooty
                 {
                     SaveAction("Tweet", status, result.Id, result.User.ScreenName);
                     string copyFilePath = fullPath + "\\tweeted\\" + Path.GetFileName(mediaPath);
-                    System.IO.File.Move(mediaPath, copyFilePath);
+                    if (!System.IO.File.Exists(copyFilePath))
+                    {
+                        System.IO.File.Move(mediaPath, copyFilePath);
+                    }
+                    else 
+                    {
+                        System.IO.File.Delete(mediaPath);
+                    }
                     return true;
                 }
                 lblErrors.Text = service.Response.StatusDescription + " " + service.Response.Error;
@@ -868,23 +875,29 @@ namespace TweetBooty
             ListFriendsOptions Friends = new ListFriendsOptions
             {
                 IncludeUserEntities = true,
-                ScreenName = "nalgaprontamx",
+                ScreenName = "nalgaprontacom",
                 Count = 200
             };
             friendList = service.ListFriends(Friends);
             string status = MustFollow();
             int contador = 0;
-            while (status.Length <= 88 && contador <= 6)
+            if (friendList != null)
             {
-                int index = rand.Next(0, friendList.Count);
-                if (friendList.ElementAt(index).ScreenName.Length + status.Length <= 87)
+                if (friendList.Count > 0)
                 {
-                    status += " @" + friendList.ElementAt(index).ScreenName + " ";
+                    while (status.Length <= 88 && contador <= 6)
+                    {
+                        int index = rand.Next(0, friendList.Count);
+                        if (friendList.ElementAt(index).ScreenName.Length + status.Length <= 87)
+                        {
+                            status += " @" + friendList.ElementAt(index).ScreenName + " ";
+                        }
+                        contador++;
+                        friendList.RemoveAt(index);
+                    }
+                    SendTweet(status);
                 }
-                contador++;
-                friendList.RemoveAt(index);
             }
-            SendTweet(status);
         }
 
         private TwitterSearchResult Search(string query)
@@ -1153,6 +1166,26 @@ namespace TweetBooty
                     t.TweetId = TweetId;
                     t.Username = Username;
                     bd.Tweeteds.Add(t);
+                    var config = bd.Configurations.Select(m => m).FirstOrDefault();
+                    switch (action)
+                    {
+                        case "Favorite":
+                            config.FavCounter = Convert.ToInt32(FavCounter.Text) + 1;
+                            break;
+                        case "Tweet":
+                            config.TweetCounter = Convert.ToInt32(TweetCounter.Text) + 1;
+                            break;
+                        case "ReTweet":
+                            config.TweetCounter = Convert.ToInt32(TweetCounter.Text) + 1;
+                            break;
+                        case "Follow":
+                            config.FollowCounter = Convert.ToInt32(FollowCounter.Text) + 1;
+                            break;
+                        case "Unfollow":
+                            config.FollowCounter = Convert.ToInt32(FollowCounter.Text) - 1;
+                            break;
+                    }
+                    bd.Entry(config).State = EntityState.Modified;
                     bd.SaveChanges();
                 }
             }
@@ -1313,6 +1346,10 @@ namespace TweetBooty
                                     pt.Time = thisMoment;
                                 }
                             }
+                            else 
+                            {
+                                pt.Time = TweetsProgramados.Last().Time.AddMinutes(rand.Next(65, 100));
+                            }
                         }
                         else
                         {
@@ -1430,6 +1467,14 @@ namespace TweetBooty
         private void ScheduledTab_Click(object sender, EventArgs e)
         {
             GetScheduledTweets();
+        }
+
+        private void btnOpenImagesFolder_Click(object sender, EventArgs e)
+        {
+            string path = (new System.Uri(Assembly.GetEntryAssembly().CodeBase)).AbsolutePath;
+            string exeDir = Path.GetDirectoryName(path);
+            path = Path.Combine(exeDir + "\\Images\\");
+            Process.Start(path);
         }
 
     }

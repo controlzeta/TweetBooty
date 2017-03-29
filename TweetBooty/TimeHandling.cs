@@ -10,18 +10,35 @@ namespace TweetBooty
     public class TimeHandling
     {
         public Random rand = new Random();
-        public static string[] Monday = { "#LunesDeOjos", "#FelizLunes", "#MirrorMonday","#LunesIntratable", "#LunesEnTanguita", "#LunesDeLenceria", "#LunesSensual" };
-        public static string[] Tuesday = { "#MartesDeTetas", "#MartesDeBellas", "#MartesDeCulos", "#TuesdayMotivation" };
-        public static string[] Wednesday = { "#MiercolesDeNalgas", "#FelizMiercoles", "#MiercolesDeCulitos", "#MiercolesDeSexo" };
-        public static string[] Thursday = { "#ThursdayMotivation", "#JuevesDePiernalgotas", "#JuevesDeSexoSalvaje", "#JuevesDeCulosPerfectos", "#JuevesDeEspaldas" };
-        public static string[] Friday = { "#ViernesDePrincesasPerversas", "#ViernesDeTacones", "#ViernesDeSeductoras", "#ViernesDeSexo" };
-        public static string[] Saturday = { "#SabadoDeSeduccion", "#SabadosSensuales", "#SabadoDePutas", "#SabadoEnLaNoche" };
-        public static string[] Sunday = { "#SluttySunday", "#DomingoCachondo", "#FelizDomingo", "#DomingoSensual" };
-
-        public static string[] Dawn = { "Ya deberia estar dormida pero", "En la madrugada me dan ganas de", "#DeMadrugada" };
-        public static string[] Morning = { "#BuenosDías", "#DesayunoSaludable", "#HoraDeIrAlGym" };
+        public static string[] Monday = 
+        { "#LunesDeOjos", "#FelizLunes", "#MirrorMonday", "#LunesEnTanguita", "#LunesDePerversiones",
+          "#LunesIntratable", "#LunesEnTanguita", "#LunesDeLenceria", "#LunesSensual" };
+        public static string[] Tuesday = 
+        { "#MartesDeTetasReales","#BuenMartes" , "#MartesDeTetas", "#MartesDeTuitsAmano"
+          , "#MartesDeBellas", "#MartesDeCulos", "#TuesdayMotivation" };
+        public static string[] Wednesday = 
+        { "#MiercolesDeNalgas", "#FelizMiercoles", "#MiercolesDeCulitos", "#MiercolesDeSexo", 
+          "#MiercolesDeCulos", "#BuenMiercoles", "#MiercolesDeSuperCulos"};
+        public static string[] Thursday = 
+        { "#ThursdayMotivation", "#JuevesDePiernalgotas", "#JuevesDeSexoSalvaje", "#JuevesDeCulosPerfectos", 
+            "#JuevesDeEspaldas" , "#FelizJueves", "#JuevesDePiernas", "#JuevesDeDesvergue"};
+        public static string[] Friday = 
+        { "#BuenViernes","#ViernesDePrincesasPerversas", "#ViernesDeTacones", "#ViernesDeSeductoras", 
+            "#ViernesDeSexo", "#ViernesSensual", "#ViernesDeGordibuenas" };
+        public static string[] Saturday = 
+        { "#SabadoDeSeduccion", "#SabadosSensuales", "#SabadoDePutas", "#SabadoEnLaNoche", "#FelizSabado",
+          "#SabadosDeTetas", "#SabadosDeLadiesEnTanga", "#SabadosDeLujo" };
+        public static string[] Sunday = { "#SluttySunday", "#DomingoCachondo", "#FelizDomingo", 
+          "#DomingoSensual", "#DomingoDeFlojera", "#SinfulSunday", "#MilfSunday", "#SexySunday" };
+        public static string[] Dawn = 
+        { "Ya deberia estar dormida pero", "Por las mañanas se me antoja " ,"En la madrugada me dan ganas de", 
+            "#DeMadrugada", "Ya casi tengo que despertar " };
+        public static string[] Morning =
+        { "#BuenosDías", "#DesayunoSaludable", "#HoraDeIrAlGym", "#DiaDeAntojo", "#CuloDelDia", "#TangaDelDia" };
         public static string[] Afternoon = { "#BuenasTardes", "Es hora de comer", "Se me antojo" };
-        public static string[] Night = { "Ya es hora de coger", "#BuenasNoches", "#EsDeNocheY" };
+        public static string[] Night = 
+        { "Ya es hora de coger", "#BuenasNoches", "#NocheDeSexo", "#EsDeNocheY", "#FelizNoche", "#NocheDeTentación",
+        "#LindaNoche", "#NocheLoca", "#NocheSexy"};
 
         public DateTime getRandomTime()
         {
