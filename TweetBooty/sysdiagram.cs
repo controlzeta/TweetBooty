@@ -12,13 +12,12 @@ namespace TweetBooty
     using System;
     using System.Collections.Generic;
     
-    public partial class ProgrammedTweet
+    public partial class sysdiagram
     {
-        public int Id { get; set; }
-        public string Tweet { get; set; }
-        public System.DateTime Time { get; set; }
-        public bool Tweeted { get; set; }
-        public string Link { get; set; }
-        public string Account { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

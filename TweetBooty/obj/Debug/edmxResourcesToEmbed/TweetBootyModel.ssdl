@@ -12,6 +12,7 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ConsumerKey" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="ConsumerSecret" Type="nvarchar" MaxLength="255" Nullable="false" />
     <Property Name="AccessToken" Type="nvarchar" MaxLength="255" Nullable="false" />
@@ -25,7 +26,8 @@
     <Property Name="FavCounter" Type="int" Nullable="false" />
     <Property Name="FollowCounter" Type="int" Nullable="false" />
     <Property Name="TweetCounter" Type="int" Nullable="false" />
-    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AccountName" Type="nvarchar" MaxLength="50" />
+    <Property Name="LastUse" Type="datetime" />
   </EntityType>
   <EntityType Name="Hashtags">
     <Key>
@@ -55,6 +57,17 @@
     <Property Name="Time" Type="datetime" Nullable="false" />
     <Property Name="Tweeted" Type="bit" Nullable="false" />
     <Property Name="Link" Type="varchar(max)" />
+    <Property Name="Account" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="Tweeted">
     <Key>
@@ -82,6 +95,7 @@
     <EntitySet Name="Hashtags" EntityType="Self.Hashtags" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Links" EntityType="Self.Links" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProgrammedTweets" EntityType="Self.ProgrammedTweets" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweeted" EntityType="Self.Tweeted" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tweets" EntityType="Self.Tweets" Schema="dbo" store:Type="Tables" />
   </EntityContainer>

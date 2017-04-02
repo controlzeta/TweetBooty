@@ -107,9 +107,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.ScheduledTab = new System.Windows.Forms.TabPage();
             this.dgvScheduledTweets = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -128,6 +125,12 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.ddlActualAccount = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -598,6 +601,8 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.Color.DimGray;
+            this.tabPage5.Controls.Add(this.ddlActualAccount);
+            this.tabPage5.Controls.Add(this.label19);
             this.tabPage5.Controls.Add(this.cbRTLimit);
             this.tabPage5.Controls.Add(this.label17);
             this.tabPage5.Controls.Add(this.groupBox3);
@@ -818,7 +823,7 @@
             // 
             // txtAccessTokenSecret
             // 
-            this.txtAccessTokenSecret.Location = new System.Drawing.Point(39, 322);
+            this.txtAccessTokenSecret.Location = new System.Drawing.Point(39, 374);
             this.txtAccessTokenSecret.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtAccessTokenSecret.Name = "txtAccessTokenSecret";
             this.txtAccessTokenSecret.Size = new System.Drawing.Size(616, 26);
@@ -826,7 +831,7 @@
             // 
             // txtAccessToken
             // 
-            this.txtAccessToken.Location = new System.Drawing.Point(39, 238);
+            this.txtAccessToken.Location = new System.Drawing.Point(39, 290);
             this.txtAccessToken.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtAccessToken.Name = "txtAccessToken";
             this.txtAccessToken.Size = new System.Drawing.Size(616, 26);
@@ -834,7 +839,7 @@
             // 
             // txtConsumerSecret
             // 
-            this.txtConsumerSecret.Location = new System.Drawing.Point(39, 163);
+            this.txtConsumerSecret.Location = new System.Drawing.Point(39, 215);
             this.txtConsumerSecret.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtConsumerSecret.Name = "txtConsumerSecret";
             this.txtConsumerSecret.Size = new System.Drawing.Size(616, 26);
@@ -842,7 +847,7 @@
             // 
             // txtConsumerKey
             // 
-            this.txtConsumerKey.Location = new System.Drawing.Point(39, 85);
+            this.txtConsumerKey.Location = new System.Drawing.Point(39, 137);
             this.txtConsumerKey.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtConsumerKey.Name = "txtConsumerKey";
             this.txtConsumerKey.Size = new System.Drawing.Size(616, 26);
@@ -851,7 +856,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(40, 297);
+            this.label12.Location = new System.Drawing.Point(40, 349);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(160, 20);
@@ -861,7 +866,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(40, 214);
+            this.label11.Location = new System.Drawing.Point(40, 266);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(105, 20);
@@ -871,7 +876,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(40, 138);
+            this.label10.Location = new System.Drawing.Point(40, 190);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(133, 20);
@@ -881,7 +886,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(40, 60);
+            this.label9.Location = new System.Drawing.Point(40, 112);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(112, 20);
@@ -919,30 +924,13 @@
             this.dgvScheduledTweets.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3});
+            this.dataGridViewTextBoxColumn3,
+            this.Account});
             this.dgvScheduledTweets.Location = new System.Drawing.Point(34, 38);
             this.dgvScheduledTweets.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvScheduledTweets.Name = "dgvScheduledTweets";
             this.dgvScheduledTweets.Size = new System.Drawing.Size(830, 495);
             this.dgvScheduledTweets.TabIndex = 1;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "id";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tweet";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 325;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "TimeToTweet";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // progressBar
             // 
@@ -1125,6 +1113,49 @@
             this.label18.TabIndex = 17;
             this.label18.Text = "Next Action";
             // 
+            // ddlActualAccount
+            // 
+            this.ddlActualAccount.FormattingEnabled = true;
+            this.ddlActualAccount.Location = new System.Drawing.Point(40, 71);
+            this.ddlActualAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ddlActualAccount.Name = "ddlActualAccount";
+            this.ddlActualAccount.Size = new System.Drawing.Size(344, 28);
+            this.ddlActualAccount.TabIndex = 23;
+            this.ddlActualAccount.SelectedIndexChanged += new System.EventHandler(this.ddlActualAccount_SelectedIndexChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(35, 46);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(115, 20);
+            this.label19.TabIndex = 22;
+            this.label19.Text = "Active Account";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tweet";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 325;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "TimeToTweet";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 125;
+            // 
+            // Account
+            // 
+            this.Account.HeaderText = "Account";
+            this.Account.Name = "Account";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1270,10 +1301,13 @@
         private System.Windows.Forms.Label lblDownloadImages;
         private System.Windows.Forms.TabPage ScheduledTab;
         private System.Windows.Forms.DataGridView dgvScheduledTweets;
+        private System.Windows.Forms.Button btnOpenImagesFolder;
+        private System.Windows.Forms.ComboBox ddlActualAccount;
+        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.Button btnOpenImagesFolder;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Account;
 
     }
 }

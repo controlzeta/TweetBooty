@@ -14,6 +14,7 @@ namespace TweetBooty
     
     public partial class Configuration
     {
+        public int id { get; set; }
         public string ConsumerKey { get; set; }
         public string ConsumerSecret { get; set; }
         public string AccessToken { get; set; }
@@ -27,6 +28,7 @@ namespace TweetBooty
         public int FavCounter { get; set; }
         public int FollowCounter { get; set; }
         public int TweetCounter { get; set; }
-        public int id { get; set; }
+        public string AccountName { get; set; }
+        public Nullable<System.DateTime> LastUse { get; set; }
     }
 }

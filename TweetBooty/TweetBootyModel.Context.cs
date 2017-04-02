@@ -26,11 +26,12 @@ namespace TweetBooty
         }
     
         public DbSet<BannedWord> BannedWords { get; set; }
-        public DbSet<Configuration> Configurations { get; set; }
         public DbSet<Hashtag> Hashtags { get; set; }
         public DbSet<Link> Links { get; set; }
         public DbSet<Tweeted> Tweeteds { get; set; }
         public DbSet<Tweet> Tweets { get; set; }
         public DbSet<ProgrammedTweet> ProgrammedTweets { get; set; }
+        public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

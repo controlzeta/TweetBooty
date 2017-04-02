@@ -10,26 +10,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Configurations">
-      <EntityTypeMapping TypeName="TweetBotDBModel.Configuration">
-        <MappingFragment StoreEntitySet="Configuration">
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="TweetCounter" ColumnName="TweetCounter" />
-          <ScalarProperty Name="FollowCounter" ColumnName="FollowCounter" />
-          <ScalarProperty Name="FavCounter" ColumnName="FavCounter" />
-          <ScalarProperty Name="ImageCounter" ColumnName="ImageCounter" />
-          <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
-          <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
-          <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
-          <ScalarProperty Name="RTCount" ColumnName="RTCount" />
-          <ScalarProperty Name="Minutes" ColumnName="Minutes" />
-          <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
-          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
-          <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
-          <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Hashtags">
       <EntityTypeMapping TypeName="TweetBotDBModel.Hashtag">
         <MappingFragment StoreEntitySet="Hashtags">
@@ -76,11 +56,45 @@
     <EntitySetMapping Name="ProgrammedTweets">
       <EntityTypeMapping TypeName="TweetBotDBModel.ProgrammedTweet">
         <MappingFragment StoreEntitySet="ProgrammedTweets">
+          <ScalarProperty Name="Account" ColumnName="Account" />
           <ScalarProperty Name="Link" ColumnName="Link" />
           <ScalarProperty Name="Tweeted" ColumnName="Tweeted" />
           <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="Tweet" ColumnName="Tweet" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Configurations">
+      <EntityTypeMapping TypeName="TweetBotDBModel.Configuration">
+        <MappingFragment StoreEntitySet="Configuration">
+          <ScalarProperty Name="LastUse" ColumnName="LastUse" />
+          <ScalarProperty Name="AccountName" ColumnName="AccountName" />
+          <ScalarProperty Name="TweetCounter" ColumnName="TweetCounter" />
+          <ScalarProperty Name="FollowCounter" ColumnName="FollowCounter" />
+          <ScalarProperty Name="FavCounter" ColumnName="FavCounter" />
+          <ScalarProperty Name="ImageCounter" ColumnName="ImageCounter" />
+          <ScalarProperty Name="FollowLimit" ColumnName="FollowLimit" />
+          <ScalarProperty Name="FavLimit" ColumnName="FavLimit" />
+          <ScalarProperty Name="TweetLimit" ColumnName="TweetLimit" />
+          <ScalarProperty Name="RTCount" ColumnName="RTCount" />
+          <ScalarProperty Name="Minutes" ColumnName="Minutes" />
+          <ScalarProperty Name="AccessTokenSecret" ColumnName="AccessTokenSecret" />
+          <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+          <ScalarProperty Name="ConsumerSecret" ColumnName="ConsumerSecret" />
+          <ScalarProperty Name="ConsumerKey" ColumnName="ConsumerKey" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="TweetBotDBModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
