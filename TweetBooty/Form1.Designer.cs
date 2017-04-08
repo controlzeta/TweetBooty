@@ -78,6 +78,8 @@
             this.MentionText = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MentionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.ddlActualAccount = new System.Windows.Forms.ComboBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.cbRTLimit = new System.Windows.Forms.ComboBox();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -107,6 +109,10 @@
             this.label8 = new System.Windows.Forms.Label();
             this.ScheduledTab = new System.Windows.Forms.TabPage();
             this.dgvScheduledTweets = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.lblErrors = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -125,12 +131,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblCounter = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.ddlActualAccount = new System.Windows.Forms.ComboBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblTwitterName = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCurrentHashtags)).BeginInit();
@@ -632,6 +633,26 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Configuration";
             // 
+            // ddlActualAccount
+            // 
+            this.ddlActualAccount.FormattingEnabled = true;
+            this.ddlActualAccount.Location = new System.Drawing.Point(40, 71);
+            this.ddlActualAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.ddlActualAccount.Name = "ddlActualAccount";
+            this.ddlActualAccount.Size = new System.Drawing.Size(344, 28);
+            this.ddlActualAccount.TabIndex = 23;
+            this.ddlActualAccount.SelectedIndexChanged += new System.EventHandler(this.ddlActualAccount_SelectedIndexChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(35, 46);
+            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(115, 20);
+            this.label19.TabIndex = 22;
+            this.label19.Text = "Active Account";
+            // 
             // cbRTLimit
             // 
             this.cbRTLimit.FormattingEnabled = true;
@@ -932,6 +953,29 @@
             this.dgvScheduledTweets.Size = new System.Drawing.Size(830, 495);
             this.dgvScheduledTweets.TabIndex = 1;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "id";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.Width = 50;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.HeaderText = "Tweet";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.Width = 325;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.HeaderText = "TimeToTweet";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Width = 125;
+            // 
+            // Account
+            // 
+            this.Account.HeaderText = "Account";
+            this.Account.Name = "Account";
+            // 
             // progressBar
             // 
             this.progressBar.Location = new System.Drawing.Point(999, 762);
@@ -957,7 +1001,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(32, 18);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(681, 43);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(494, 43);
             this.flowLayoutPanel1.TabIndex = 5;
             // 
             // lblRateLimit
@@ -1113,48 +1157,15 @@
             this.label18.TabIndex = 17;
             this.label18.Text = "Next Action";
             // 
-            // ddlActualAccount
+            // lblTwitterName
             // 
-            this.ddlActualAccount.FormattingEnabled = true;
-            this.ddlActualAccount.Location = new System.Drawing.Point(40, 71);
-            this.ddlActualAccount.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.ddlActualAccount.Name = "ddlActualAccount";
-            this.ddlActualAccount.Size = new System.Drawing.Size(344, 28);
-            this.ddlActualAccount.TabIndex = 23;
-            this.ddlActualAccount.SelectedIndexChanged += new System.EventHandler(this.ddlActualAccount_SelectedIndexChanged);
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(35, 46);
-            this.label19.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(115, 20);
-            this.label19.TabIndex = 22;
-            this.label19.Text = "Active Account";
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "id";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.Width = 50;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tweet";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 325;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "TimeToTweet";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Width = 125;
-            // 
-            // Account
-            // 
-            this.Account.HeaderText = "Account";
-            this.Account.Name = "Account";
+            this.lblTwitterName.AutoSize = true;
+            this.lblTwitterName.Location = new System.Drawing.Point(594, 29);
+            this.lblTwitterName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblTwitterName.Name = "lblTwitterName";
+            this.lblTwitterName.Size = new System.Drawing.Size(114, 20);
+            this.lblTwitterName.TabIndex = 18;
+            this.lblTwitterName.Text = "@TwitterName";
             // 
             // Form1
             // 
@@ -1162,6 +1173,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1438, 815);
+            this.Controls.Add(this.lblTwitterName);
             this.Controls.Add(this.label18);
             this.Controls.Add(this.btnReloadPhotos);
             this.Controls.Add(this.groupBox1);
@@ -1308,6 +1320,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Account;
+        private System.Windows.Forms.Label lblTwitterName;
 
     }
 }

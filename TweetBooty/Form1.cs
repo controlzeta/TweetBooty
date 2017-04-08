@@ -26,6 +26,7 @@ namespace TweetBooty
 {
     public partial class Form1 : Form
     {
+        #region Local Variables
         public string _consumerKey = "";
         public string _consumerSecret = "";
         public string _accessToken = "";
@@ -54,6 +55,7 @@ namespace TweetBooty
         public int DownloadCounter = 0;
         Random rand = new Random();
 
+        public List<Configuration> configuraciones = new List<Configuration>();
         public List<TwitterHashTag> hashtags = new List<TwitterHashTag>();
         public List<TwitterHashTag> hashtagsDistintos = new List<TwitterHashTag>();
         public List<TwitterUser> friendList = new List<TwitterUser>();
@@ -63,11 +65,13 @@ namespace TweetBooty
 
         private Thread trd;
 
+        #endregion Local Variables
+
         public Form1()
         {
             CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
-            TestConnect(0, "nalgaprontacom");
+            TestConnect(0, "");
             //Connect();
             init();
             getNumberOfPhotos();
@@ -148,6 +152,7 @@ namespace TweetBooty
             GetMentions();
             GetCountries();
             GetScheduledTweets();
+            //RandomAccountConnect();
         }
 
         public void Connect()
@@ -161,10 +166,17 @@ namespace TweetBooty
         {
             try
             {
-                GetConfiguration(idAccount, accountName);
-                service = new TwitterService(_consumerKey, _consumerSecret);
-                service.AuthenticateWith(_accessToken, _accessTokenSecret);
-                service.GetConfiguration();
+                if (idAccount == 0 && accountName == "")
+                {
+                    RandomAccountConnect();
+                }
+                else
+                {
+                    GetConfiguration(idAccount, accountName);
+                    service = new TwitterService(_consumerKey, _consumerSecret);
+                    service.AuthenticateWith(_accessToken, _accessTokenSecret);
+                    service.GetConfiguration();
+                }
                 return service.Response.Errors == null;
             }
             catch (Exception ex)
@@ -181,43 +193,46 @@ namespace TweetBooty
             {
                 using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
-                    //if (idAccount != 0 && accountName != "")
-                    //{
-                        if (idAccount == 0)
-                        {
-                            config = (from cfg in bd.Configurations
-                                      where cfg.AccountName == accountName
-                                      select cfg).FirstOrDefault();
-                        }
-                        else
-                        {
-                            config = (from cfg in bd.Configurations
-                                      where cfg.id == idAccount
-                                      select cfg).FirstOrDefault();
-                        }
-
-                        _consumerKey = config.ConsumerKey;
-                        _consumerSecret = config.ConsumerSecret;
-                        _accessToken = config.AccessToken;
-                        _accessTokenSecret = config.AccessTokenSecret;
-                        _accountName = config.AccountName;
-                        _lastUse = Convert.ToDateTime(config.LastUse);
-
-                        TweetsByTheHour = config.TweetLimit;
-                        RTsByTheHour = config.TweetLimit;
-                        FavsByTheHour = config.FavLimit;
-                        FollowsByTheHour = config.FollowLimit;
-
-                        txtConsumerKey.Text = _consumerKey;
-                        txtConsumerSecret.Text = _consumerSecret;
-                        txtAccessToken.Text = _accessToken;
-                        txtAccessTokenSecret.Text = _accessTokenSecret;
-
-                        config.LastUse = DateTime.Now;
-                        bd.Entry(config).State = EntityState.Modified;
-                        bd.SaveChanges();
+                    if (configuraciones.Count == 0)
+                    {
+                        configuraciones = (from cfg in bd.Configurations
+                                           select cfg).ToList();
                     }
-                //}
+                    if (idAccount == 0)
+                    {
+                        config = (from cfg in bd.Configurations
+                                    where cfg.AccountName == accountName
+                                    select cfg).FirstOrDefault();
+                    }
+                    else
+                    {
+                        config = (from cfg in bd.Configurations
+                                    where cfg.id == idAccount
+                                    select cfg).FirstOrDefault();
+                    }
+
+                    _consumerKey = config.ConsumerKey;
+                    _consumerSecret = config.ConsumerSecret;
+                    _accessToken = config.AccessToken;
+                    _accessTokenSecret = config.AccessTokenSecret;
+                    _accountName = config.AccountName;
+                    _lastUse = Convert.ToDateTime(config.LastUse);
+                    lblTwitterName.Text = "@" + _accountName;
+
+                    TweetsByTheHour = config.TweetLimit;
+                    RTsByTheHour = config.TweetLimit;
+                    FavsByTheHour = config.FavLimit;
+                    FollowsByTheHour = config.FollowLimit;
+
+                    txtConsumerKey.Text = _consumerKey;
+                    txtConsumerSecret.Text = _consumerSecret;
+                    txtAccessToken.Text = _accessToken;
+                    txtAccessTokenSecret.Text = _accessTokenSecret;
+
+                    config.LastUse = DateTime.Now;
+                    bd.Entry(config).State = EntityState.Modified;
+                    bd.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -472,8 +487,24 @@ namespace TweetBooty
             }
         }
 
+        private void RandomAccountConnect()
+        {
+            if (configuraciones.Count == 0)
+            {
+                GetAccounts();
+            }
+            int randomIndex = 0;
+            randomIndex = rand.Next(0, configuraciones.Count);
+            while (configuraciones.ElementAt(randomIndex).AccountName == _accountName)
+            {
+                randomIndex = rand.Next(0, configuraciones.Count);
+            }
+            TestConnect(0, configuraciones.ElementAt(randomIndex).AccountName);
+        }
+
         private void RandomTasks()
         {
+            RandomAccountConnect();
             int times = rand.Next(1, 5);
             bool AlreadyRecommended = false;
             while (times > 0)
@@ -594,18 +625,21 @@ namespace TweetBooty
             {
                 using (TweetBotDBEntities bd = new TweetBotDBEntities())
                 {
-                    configs = (from cfg in bd.Configurations
-                                select cfg).ToList();
-                    ddlActualAccount.DisplayMember = "Text";
-                    ddlActualAccount.ValueMember = "Value";
-                    foreach (Configuration cfg in configs)
+                    if (configuraciones.Count == 0)
                     {
-                        ComboboxItem cbi = new ComboboxItem();
-                        cbi.Text = "@" + cfg.AccountName;
-                        cbi.Value = cfg.id.ToString();
-                        ddlActualAccount.Items.Add(cbi);
+                        configuraciones = (from cfg in bd.Configurations
+                                           select cfg).ToList();
+                        ddlActualAccount.DisplayMember = "Text";
+                        ddlActualAccount.ValueMember = "Value";
+                        foreach (Configuration cfg in configuraciones)
+                        {
+                            ComboboxItem cbi = new ComboboxItem();
+                            cbi.Text = "@" + cfg.AccountName;
+                            cbi.Value = cfg.id.ToString();
+                            ddlActualAccount.Items.Add(cbi);
+                        }
+                        ddlActualAccount.SelectedIndex = 0;
                     }
-                    ddlActualAccount.SelectedIndex = 0;
                 }
             }
             catch (Exception ex)
@@ -1464,6 +1498,7 @@ namespace TweetBooty
                             
                         }
                         pt.Tweeted = false;
+                        pt.Account = _accountName;
                         pt.Link = getLink(txtSendTweet.Text);
                         bd.ProgrammedTweets.Add(pt);
                         bd.SaveChanges();
@@ -1549,6 +1584,7 @@ namespace TweetBooty
                     {
                         if (pT.Time.ToString("HH:mm") == thisMoment.ToString("HH:mm"))
                         {
+                            TestConnect(0, _accountName);
                             SendTweet(pT.Tweet);
                             pT.Tweeted = true;
                             bd.ProgrammedTweets.Attach(pT);
@@ -1589,7 +1625,10 @@ namespace TweetBooty
             if (_accountName != "")
             {
                 if ("@" + _accountName != ((TweetBooty.Form1.ComboboxItem)(ddlActualAccount.SelectedItem)).Text)
+                {
                     GetConfiguration(Convert.ToInt32(((TweetBooty.Form1.ComboboxItem)(ddlActualAccount.SelectedItem)).Value), "");
+                    TestConnect(0, _accountName);
+                }
             }
         }
 
