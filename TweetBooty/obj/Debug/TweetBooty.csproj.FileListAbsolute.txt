@@ -20,3 +20,4 @@ H:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.Properties.Resour
 H:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csproj.GenerateResource.Cache
 H:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.exe
 H:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.pdb
+H:\Documents\GitHub\TweetBooty\TweetBooty\obj\Debug\TweetBooty.csprojResolveAssemblyReference.cache

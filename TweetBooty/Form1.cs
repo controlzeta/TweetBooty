@@ -555,7 +555,7 @@ namespace TweetBooty
 
         private void RandomTime()
         {
-            minutesLeft = rand.Next(30, 52);
+            minutesLeft = rand.Next(21, 49);
             //rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
             //        Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
             // Create a random minute timer 
