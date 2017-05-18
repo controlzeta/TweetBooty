@@ -555,7 +555,7 @@ namespace TweetBooty
 
         private void RandomTime()
         {
-            minutesLeft = rand.Next(21, 49);
+            minutesLeft = rand.Next(19, 35);
             //rand.Next(Convert.ToInt32(cbNumTweets.SelectedItem),
             //        Convert.ToInt32(cbNumTweets.SelectedItem) + 20);
             // Create a random minute timer 
@@ -664,12 +664,19 @@ namespace TweetBooty
 
         private void ShowMessage(string Caption, string Message)
         {
-            string message = Message;
-            string caption = Caption;
-            MessageBoxButtons buttons = MessageBoxButtons.OK;
-            DialogResult result;
-            // Displays the MessageBox.
-            result = MessageBox.Show(message, caption, buttons);
+            try
+            {
+                string message = Message;
+                string caption = Caption;
+                MessageBoxButtons buttons = MessageBoxButtons.OK;
+                DialogResult result;
+                // Displays the MessageBox.
+                result = MessageBox.Show(message, caption, buttons);
+            }
+            catch (Exception ex )
+            {
+                lblErrors.Text = "Error: " + ex.Message;
+            }
         }
 
         public void ResetCounters()
